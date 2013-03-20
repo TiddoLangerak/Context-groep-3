@@ -1,13 +1,13 @@
 using System;
 
-public class stateManagerStateManager {
+public class StateManager {
 	private State currentState;
 	private int track = 2;
 	private enum State {
 		PAUSING, PLAYING	
 	}
 	
-	public stateManagerStateManager () {
+	public StateManager () {
 		currentState = State.PAUSING;
 	}
 	
@@ -22,7 +22,7 @@ public class stateManagerStateManager {
 	public int right() {
 		if(State.PLAYING == currentState && track > 1) {
 			track--;
-			return -1;
+			return 1;
 		} else {
 			return 0;	
 		}
@@ -31,7 +31,7 @@ public class stateManagerStateManager {
 	public int left() {
 		if(State.PLAYING == currentState && track < 3) {
 			track++;
-			return 1;
+			return -1;
 		} else {
 			return 0;	
 		}
