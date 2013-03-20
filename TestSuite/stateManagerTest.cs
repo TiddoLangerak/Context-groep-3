@@ -1,14 +1,11 @@
 using NUnit.Framework;
 using System;
 
-namespace AssemblyCSharp 
-{
+namespace AssemblyCSharp {
 	[TestFixture()]
-	public class stateManagerTest
-	{
+	public class stateManagerTest {
 		[Test()]
-		public void TestCase ()
-		{
+		public void Initialization () {
 			Assert.IsTrue(true);
 		}
 	}

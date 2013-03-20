@@ -16,7 +16,11 @@ public class avatarMovement : MonoBehaviour {
 		if (Input.GetKey(KeyCode.W))
             transform.Translate(Vector3.forward * 1);
         if (Input.GetKey(KeyCode.S))
-            transform.Translate(Vector3.forward * -1);		
+            transform.Translate(Vector3.forward * -1);
+		if (Input.GetKey(KeyCode.Escape))
+			stateM.restart();
+		if (Input.GetKey(KeyCode.Space))
+			stateM.pause();
 	}
 	
 	IEnumerator sideMovement(){

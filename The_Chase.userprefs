@@ -1,25 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\New Unity Project\stateManagerTest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\avatarMovement.cs">
     <Files>
-      <File FileName="..\New Unity Project\stateManagerTest.cs" Line="16" Column="3" />
-      <File FileName="Assets\avatarMovement.cs" Line="30" Column="42" />
+      <File FileName="Assets\stateManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\avatarMovement.cs" Line="21" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="avatarMovement.cs" selected="True" />
-            </Node>
+          <Node name="Assembly-CSharp" expanded="True" selected="True">
+            <Node name="TestSuite" expanded="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True" selected="True" />
+        </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" selected="True" />
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
