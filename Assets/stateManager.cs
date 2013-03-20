@@ -1,12 +1,13 @@
 using System;
 
-public class stateManager {
-	private State currentState;	
+public class StateManager {
+	private State currentState;
+	private int track = 2;
 	private enum State {
-		PAUSING, PLAYING, DEAD	
+		PAUSING, PLAYING	
 	}
 	
-	public stateManager () {
+	public StateManager () {
 		currentState = State.PAUSING;
 	}
 	
@@ -14,20 +15,45 @@ public class stateManager {
 		currentState = State.PLAYING;
 	}
 	
-	public void pause() {
-		currentState = State.PAUSING;	
+	public void pauseOrUnpause() {
+		if(currentState == State.PLAYING){
+			currentState = State.PAUSING;	
+		} else {
+			currentState = State.PLAYING;	
+		}		
+	}
+
+	public int makeMove() {
+		if(State.PLAYING == currentState) {
+			return 1;
+		} else {
+			return 0;	
+		} 
 	}
 	
-	public void restart() {
+	public int right() {
+		if(State.PLAYING == currentState && track > 1) {
+			track--;
+			return -1;
+		} else {
+			return 0;	
+		}
+	}
 	
+	public int left() {
+		if(State.PLAYING == currentState && track < 3) {
+			track++;
+			return 1;
+		} else {
+			return 0;	
+		}
 	}
 	
 	public String getCurrentState() {
 		switch (currentState) {
 			case State.PAUSING 	: return "Pausing";
 			case State.PLAYING 	: return "Playing";
-			case State.DEAD 	: return "Dead";
 			default 			: return null; // should not happen
 		}
 	}
-	}
+}

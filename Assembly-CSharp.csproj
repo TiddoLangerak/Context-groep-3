@@ -47,8 +47,9 @@
   <ItemGroup>
     <Compile Include="Assets\avatarMovement.cs" />
     <Compile Include="Assets\obstacle.cs" />
-    <Compile Include="Assets\stateManager.cs" />
-    <Compile Include="TestSuite\stateManagerTest.cs" />
+    <Compile Include="Assets\StateManager.cs" />
+    <Compile Include="TestSuite\AvatarMovementTest.cs" />
+    <Compile Include="TestSuite\StateManagerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
