@@ -27,11 +27,11 @@ public class avatarMovement : MonoBehaviour {
 		while(true){
 			if (Input.GetKey(KeyCode.A) && track > 1){
 				track--;
-				transform.Translate(Vector3.left * 5);
+				transform.Translate(Vector3.left * 5 * stateM.right());
 				yield return new WaitForSeconds(0.5f);
 			} else if (Input.GetKey(KeyCode.D) && track < 3) {
 				track++;
-				transform.Translate(Vector3.left * -5);
+				transform.Translate(Vector3.left * 5 * stateM.left());
 				yield return new WaitForSeconds(0.5f);
 			} else {
 				yield return 0;
