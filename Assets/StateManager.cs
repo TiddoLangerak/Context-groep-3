@@ -1,6 +1,6 @@
 using System;
 
-public class StateManager {
+public class stateManager {
 	private State currentState;	
 	private enum State {
 		PAUSING, PLAYING, DEAD	
@@ -22,22 +22,6 @@ public class StateManager {
 	
 	}
 	
-	public int forward() {
-		
-	}
-	
-	public int backward() {
-		
-	}
-	
-	public int left() {
-		if(State.PLAYING == 
-	}
-	
-	public int right() {
-		
-	}
-	
 	public String getCurrentState() {
 		switch (currentState) {
 			case State.PAUSING 	: return "Pausing";
@@ -46,4 +30,4 @@ public class StateManager {
 			default 			: return null; // should not happen
 		}
 	}
-}
+	}
