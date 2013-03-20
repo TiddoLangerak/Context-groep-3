@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System;
 
-namespace AssemblyCSharp
+namespace AssemblyCSharp 
 {
 	[TestFixture()]
 	public class stateManagerTest
