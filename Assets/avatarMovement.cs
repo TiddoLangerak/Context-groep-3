@@ -14,10 +14,9 @@ public class avatarMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey(KeyCode.W))
-            transform.Translate(Vector3.forward * 1);
+		transform.Translate(Vector3.forward * 4 * Time.smoothDeltaTime);
         if (Input.GetKey(KeyCode.S))
-            transform.Translate(Vector3.forward * -1);
+            transform.Translate(Vector3.forward * -2);
 		if (Input.GetKey(KeyCode.Space))
 			stateM.pauseOrUnpause();
 	}
