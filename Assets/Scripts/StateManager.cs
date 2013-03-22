@@ -1,35 +1,75 @@
 using System;
+using UnityEngine;
 
-public class StateManager {
+public class StateManager
+{
 	private State currentState;
 	private int track = 2;
-	private enum State {
-		PAUSING, PLAYING
-	}
+	private static StateManager instance;
+	public enum State
+	{
+		PAUSING,
+		PLAYING
+	};
 	
-	public StateManager () {
-		currentState = State.PAUSING;
-	}
-	
-	public void pauseOrUnpause() {
-		if(currentState == State.PLAYING){
-			currentState = State.PAUSING;	
-		} else {
-			currentState = State.PLAYING;	
-		}		
-	}
-
-	public int right() {
-		if(State.PLAYING == currentState && track > 1) {
-			track--;
-			return 1;
-		} else {
-			return 0;	
+	public static StateManager Instance 
+	{
+		get 
+		{
+			if (instance == null) 
+			{
+				instance = new StateManager();
+			} 
+			return instance; 
 		}
 	}
 	
-	public int left() {
-		if(State.PLAYING == currentState && track < 3) {
+	private StateManager ()
+	{
+		this.currentState = State.PAUSING;
+	}
+	
+	/**
+	 * Toggle between the pausing and playing state
+	 */
+	public void pauseOrUnpause()
+	{
+		if (currentState == State.PLAYING) {
+			this.pause();
+		} else {
+			this.play();
+		}
+	}
+
+	/**
+	 * Pause the game
+	 */
+	public void pause()
+	{
+		this.currentState = State.PAUSING;
+	}
+
+	/**
+	 * Resume the game
+	 */
+	public void play()
+	{
+		this.currentState = State.PLAYING;
+	}
+
+	public int right()
+	{
+		if (State.PLAYING == currentState && track > 1) {
+			track--;
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	public int left()
+	{
+		if (State.PLAYING == currentState && track < 3) {
 			track++;
 			return -1;
 		} else {
@@ -37,8 +77,15 @@ public class StateManager {
 		}
 	}
 	
-	public String getCurrentState() {
-		switch (currentState) {
+	public State getCurrentState()
+	{
+		return this.currentState;
+	}
+
+	public String toString()
+	{
+		switch (currentState)
+		{
 			case State.PAUSING 	: return "Pausing";
 			case State.PLAYING 	: return "Playing";
 			default 			: return null; // should not happen
