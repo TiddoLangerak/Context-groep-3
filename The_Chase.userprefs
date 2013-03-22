@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\avatarMovement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\StateManager.cs">
     <Files>
+      <File FileName="Assets\Scripts\StartGame.cs" Line="9" Column="4" />
       <File FileName="Assets\Scripts\WorldBehaviour.cs" Line="7" Column="16" />
-      <File FileName="Assets\Scripts\StateManager.cs" Line="18" Column="11" />
-      <File FileName="Assets\Scripts\avatarMovement.cs" Line="17" Column="26" />
+      <File FileName="Assets\Scripts\StateManager.cs" Line="11" Column="32" />
+      <File FileName="Assets\Scripts\avatarMovement.cs" Line="7" Column="27" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,9 +14,10 @@
             <Node name="References" expanded="True" />
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="avatarMovement.cs" selected="True" />
+                <Node name="StateManager.cs" selected="True" />
               </Node>
             </Node>
+            <Node name="TestSuite" expanded="True" />
           </Node>
         </State>
       </Pad>

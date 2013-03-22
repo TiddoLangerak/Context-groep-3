@@ -4,7 +4,7 @@ public class StateManager {
 	private State currentState;
 	private int track = 2;
 	private enum State {
-		PAUSING, PLAYING	
+		PAUSING, PLAYING
 	}
 	
 	public StateManager () {
