@@ -6,32 +6,32 @@ namespace AssemblyCSharp {
 	public class StateManagerTest {
 		[Test()]
 		public void InitializationTest () {
-			StateManager stateM = new StateManager();
-			StringAssert.IsMatch("Pausing", stateM.getCurrentState());
+			StateManager stateM = StateManager.Instance;
+			Assert.IsTrue(stateM.isPausing());
 		}
 		
 		[Test()]
 		public void StartingTest () {
-			StateManager stateM = new StateManager();
-			stateM.start();
-			StringAssert.IsMatch("Playing", stateM.getCurrentState());		
+			StateManager stateM = StateManager.Instance;
+			stateM.play();
+			Assert.IsFalse(stateM.isPausing());
 		}
 		
 		[Test()]
 		public void PausingTest1 () {
-			StateManager stateM = new StateManager();
-			stateM.start();
+			StateManager stateM = StateManager.Instance;
+			stateM.play();
 			stateM.pauseOrUnpause();
-			StringAssert.IsMatch("Pausing", stateM.getCurrentState());
+			Assert.IsTrue(stateM.isPausing());
 		}
 		
 		[Test()]
 		public void PausingTest2 () {
-			StateManager stateM = new StateManager();
-			stateM.start();
+			StateManager stateM = StateManager.Instance;
+			stateM.play();
 			stateM.pauseOrUnpause();
 			stateM.pauseOrUnpause();
-			StringAssert.IsMatch("Playing", stateM.getCurrentState());
+			Assert.IsFalse(stateM.isPausing());
 		}
 		
 		[Test()]
@@ -41,8 +41,19 @@ namespace AssemblyCSharp {
 		
 		[Test()]
 		public void PauseWithMovementTest() {
-			Assert.IsTrue(true);
+			StateManager stateM = StateManager.Instance;
+			Assert.IsTrue(stateM.isPausing());
+			Assert.AreEqual(0, stateM.left());
+			Assert.AreEqual(0, stateM.right());
+		}
+		
+		[Test()]
+		public void PlayingWithMovementTest() {
+			StateManager stateM = StateManager.Instance;
+			stateM.play();
+			Assert.IsFalse(stateM.isPausing());
+			Assert.AreEqual(-1, stateM.left());
+			Assert.AreEqual( 1, stateM.right());
 		}
 	}
 }
-

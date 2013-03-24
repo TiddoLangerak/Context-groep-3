@@ -56,7 +56,16 @@ public class StateManager
 	{
 		this.currentState = State.PLAYING;
 	}
-
+	
+	/** 
+	 * Returns true iff the game is in the PAUSING state 
+	 */
+	public Boolean isPausing()
+	{
+		return this.currentState == State.PAUSING;
+	}
+	
+	
 	public int right()
 	{
 		if (State.PLAYING == currentState && track > 1) {
