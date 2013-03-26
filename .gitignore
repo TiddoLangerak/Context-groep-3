@@ -3,7 +3,8 @@ Library/*
 obj/
 *.svd
 *.tmp
- 
+*.sln
+
 !Library/*.asset
 !Library/AssetImportState
 !Library/AssetVersioning.db

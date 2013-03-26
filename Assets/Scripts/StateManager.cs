@@ -83,8 +83,17 @@ public class StateManager
 		this.currentState = State.PLAYING;
 	}
 
+	/// <summary>
+    /// Returns true iff the game is in the PAUSING state.
+	/// </summary>
+	/// <returns></returns>
+	public Boolean isPausing()
+	{
+		return this.currentState == State.PAUSING;
+	}
+	
     /// <summary>
-    /// Move player to the right track
+    /// Move player to the right track.
     /// </summary>
     /// <returns>1 iff a movement is possible</returns>
 	public int right()
@@ -98,7 +107,7 @@ public class StateManager
 	}
 	
     /// <summary>
-    /// Move player to the left track
+    /// Move player to the left track.
     /// </summary>
     /// <returns>1 iff a movement is possible</returns>
 	public int left()
@@ -112,7 +121,7 @@ public class StateManager
 	}
 	
     /// <summary>
-    /// Returns the current state
+    /// Returns the current state.
     /// </summary>
     /// <returns>Current state</returns>
 	public State getCurrentState()
@@ -121,7 +130,7 @@ public class StateManager
 	}
 
     /// <summary>
-    /// String representation of the crurent state
+    /// String representation of the crurent state.
     /// </summary>
     /// <returns>Current state</returns>
 	public String toString()

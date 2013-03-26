@@ -27,12 +27,13 @@ public class avatarMovement : MonoBehaviour
 	/// </summary>
 	void Update ()
     {
-		transform.Translate(Vector3.forward * 4 * Time.smoothDeltaTime);
+        if (!StateManager.Instance.isPausing())
+		    transform.Translate(Vector3.forward * 4 * Time.smoothDeltaTime);
 
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
-	}
-	
+    }
+
     /// <summary>
     /// A coroutine responsible for moving the avatar. Yields a
     /// WaitForSeconds to pause execution and prevent moving
@@ -48,9 +49,6 @@ public class avatarMovement : MonoBehaviour
 			} else if (Input.GetKey(KeyCode.D) && track < 3) {
 				track++;
 				transform.Translate(Vector3.left * 5 * StateManager.Instance.left());
-				yield return new WaitForSeconds(0.2f);
-			} else if (Input.GetKey(KeyCode.Space)) {
-				StateManager.Instance.pauseOrUnpause();
 				yield return new WaitForSeconds(0.2f);
 			} else {
 				yield return 0;
