@@ -5,7 +5,7 @@ using System.Collections;
 /// This class is responsible for keeping track of the
 /// avatar movement.
 /// </summary>
-public class avatarMovement : MonoBehaviour
+public class AvatarMovement : MonoBehaviour
 {
 	public float moveSpeed = 1;
 	public int track = 2;
