@@ -89,7 +89,7 @@ public class StateManager
 	/// <returns></returns>
 	public Boolean isPausing()
 	{
-		return this.currentState == State.PAUSING;
+		return State.PAUSING == this.currentState;
 	}
 	
     /// <summary>

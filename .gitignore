@@ -4,7 +4,7 @@ obj/
 *.svd
 *.tmp
 *.sln
-
+*.suo
 
 !Library/*.asset
 !Library/AssetImportState
@@ -36,3 +36,5 @@ Assembly-UnityScript-firstpass.unityproj
 Assembly-UnityScript-firstpass-vs.unityproj
 Project.suo
 test-results/
+doc/
+Kinect/Kinect/bin
