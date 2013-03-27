@@ -140,5 +140,6 @@ public class StateManager
 			case State.PAUSING: return "Pausing";
 			case State.PLAYING: return "Playing";
 		}
+		return null;
 	}
 }
