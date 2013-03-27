@@ -4,7 +4,7 @@ using System;
 namespace AssemblyCSharp
 {
 	[TestFixture()]
-	public class AvatarMovementTest
+	public class WorldBehaviourTest
 	{
 		[Test()]
 		public void TestCase ()
