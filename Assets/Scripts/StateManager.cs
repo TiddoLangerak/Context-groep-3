@@ -114,7 +114,7 @@ public class StateManager
 	{
 		if (State.PLAYING == currentState && track < 3) {
 			track++;
-			return -1;
+			return 1;
 		} else {
 			return 0;	
 		}
