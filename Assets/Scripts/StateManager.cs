@@ -22,11 +22,6 @@ public class StateManager
     private State currentState;
 
     /// <summary>
-    /// Current track the player is on
-    /// </summary>
-    private int track = 2;
-
-    /// <summary>
     /// Singleton StateManager instance
     /// </summary>
     private static StateManager instance;
@@ -92,32 +87,15 @@ public class StateManager
 		return State.PAUSING == this.currentState;
 	}
 	
-    /// <summary>
-    /// Move player to the right track.
-    /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
-	public int right()
+	/// <summary>
+	/// Ises the playing.
+	/// </summary>
+	/// <returns>
+	/// The playing.
+	/// </returns>
+	public Boolean isPlaying()
 	{
-		if (State.PLAYING == currentState && track > 1) {
-			track--;
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-	
-    /// <summary>
-    /// Move player to the left track.
-    /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
-	public int left()
-	{
-		if (State.PLAYING == currentState && track < 3) {
-			track++;
-			return -1;
-		} else {
-			return 0;	
-		}
+		return State.PLAYING == this.currentState;
 	}
 	
     /// <summary>
