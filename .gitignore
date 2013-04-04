@@ -5,7 +5,7 @@ obj/
 *.tmp
 *.sln
 *.suo
- 
+
 !Library/*.asset
 !Library/AssetImportState
 !Library/AssetVersioning.db
@@ -21,7 +21,7 @@ obj/
  
  
  
-Project.userprefs
+*.userprefs
 Assembly-CSharp.csproj
 Assembly-CSharp.pidb
 Assembly-CSharp-Editor.csproj
@@ -37,5 +37,4 @@ Assembly-UnityScript-firstpass-vs.unityproj
 Project.suo
 test-results/
 doc/
-
 Kinect/Kinect/bin
