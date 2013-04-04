@@ -26,11 +26,6 @@ namespace Kinect
         public UserGenerator userGenerator { get; private set; }
 
         /// <summary>
-        /// The thread used to detect player movement.
-        /// </summary>
-        private KinectReaderThread kinectReaderThread;
-
-        /// <summary>
         /// Holds the depth node that has to be present in the OpenNI configuration file.
         /// </summary>
         private DepthGenerator depth;
@@ -74,8 +69,9 @@ namespace Kinect
             userGenerator.LostUser += OnLostUser;
             skeletonCapability.CalibrationComplete += OnCalibrationComplete;
 
-            //And start detecting users
+            //And start generating data
             userGenerator.StartGenerating();
+            context.StartGeneratingAll();
         }
 
         /// <summary>
