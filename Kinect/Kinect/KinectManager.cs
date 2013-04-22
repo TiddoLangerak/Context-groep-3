@@ -33,7 +33,7 @@ namespace Kinect
         /// <summary>
         /// Holds the depth node that has to be present in the OpenNI configuration file.
         /// </summary>
-        private DepthGenerator depth;
+        public DepthGenerator depth;
 
         /// <summary>
         /// This object handles user calibration and tracking.

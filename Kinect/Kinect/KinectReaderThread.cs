@@ -50,7 +50,7 @@ namespace Kinect
         private Thread theThread;
 
         /// <summary>
-        /// Constructor: initialize the kinectManager and the standardThread attribute. 
+        /// Constructor: initialize the kinectManager.
         /// </summary>
         /// <param name="kinectManager">KinectManager used to communicate with</param>
         public KinectReaderThread(KinectManager kinectManager)
@@ -59,7 +59,6 @@ namespace Kinect
             this.kinectManager = kinectManager;
             this.kinectManager.Initialize();
             this.CurrentMovement = Movement.STRAIGHT;
-            this.theThread = new Thread(new ThreadStart(this.RunThread));
         }
 
         /// <summary>
@@ -67,6 +66,7 @@ namespace Kinect
         /// </summary>
         public void Start()
         {
+            this.theThread = new Thread(new ThreadStart(this.RunThread));
             theThread.Start();
         }
 
@@ -87,26 +87,27 @@ namespace Kinect
                 {
                     //DateTime timeBeforeUpdate = DateTime.Now;
                     kinectManager.Context.WaitAnyUpdateAll();
-
-                    lock (this)
-                    {
-                        int[] users = kinectManager.UserGenerator.GetUsers();
-                        if (users.Length > 0)
-                        {
-                            int currUser = users[0];
-                            SkeletonJointPosition torsoPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Torso);
-                            SkeletonJointPosition headPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Head);
-                            SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
-                            SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
-
-                            CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                            PrintCurrentMovement();
-                        }
-                    }
+                    //kinectManager.Context.WaitOneUpdateAll(kinectManager.depth);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
+                }
+
+                lock (this)
+                {
+                    int[] users = kinectManager.UserGenerator.GetUsers();
+                    if (users.Length > 0)
+                    {
+                        int currUser = users[0];
+                        SkeletonJointPosition torsoPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Torso);
+                        SkeletonJointPosition headPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Head);
+                        SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
+                        SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
+
+                        CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
+                        PrintCurrentMovement();
+                    }
                 }
             }
         }
