@@ -48,9 +48,11 @@
 		<Node type="Image" stopOnError="false" />
 
 		<!-- Uncomment nodes from here if you need them.
-		<Node type="Audio" />
+		<Node type="Audio" />-->
+    
 		<Node type="User" />
-		<Node type="Hands" />
+    
+		<!--<Node type="Hands" />
 		<Node type="Gesture" />
 		<Node type="Scene" />
 		-->

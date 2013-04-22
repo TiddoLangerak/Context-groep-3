@@ -18,12 +18,17 @@ namespace Kinect
         /// <summary>
         /// The context in which OpenNI operates (based on the configuration file)
         /// </summary>
-        public Context context { get; private set; }
+        public Context Context { get; private set; }
+
+        /// <summary>
+        /// The parent node of all generators.
+        /// </summary>
+        private ScriptNode scriptNode;
 
         /// <summary>
         /// Detects and creates new users when they enter the range of the Kinect.
         /// </summary>
-        public UserGenerator userGenerator { get; private set; }
+        public UserGenerator UserGenerator { get; private set; }
 
         /// <summary>
         /// Holds the depth node that has to be present in the OpenNI configuration file.
@@ -33,7 +38,7 @@ namespace Kinect
         /// <summary>
         /// This object handles user calibration and tracking.
         /// </summary>
-        public SkeletonCapability skeletonCapability { get; private set; }
+        public SkeletonCapability SkeletonCapability { get; private set; }
 
         /// <summary>
         /// Constructor: initializes all attributes and properties
@@ -49,29 +54,33 @@ namespace Kinect
         /// </summary>
         public void Initialize()
         {
-            //First we need to initialize the openni context
-            ScriptNode scriptNode;
-            context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
-            this.depth = context.FindExistingNode(NodeType.Depth) as DepthGenerator;
+            //First we need to initialize the openni context            
+            Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
+            this.depth = Context.FindExistingNode(NodeType.Depth) as DepthGenerator;
             if (this.depth == null)
             {
                 throw new Exception("Viewer must have a depth node!");
             }
 
             //Now we can initialize skeleton tracking
-            userGenerator = new UserGenerator(context);
-            skeletonCapability = userGenerator.SkeletonCapability;
-            skeletonCapability.SetSkeletonProfile(SkeletonProfile.Upper);
+            UserGenerator = Context.FindExistingNode(NodeType.User) as UserGenerator; //new UserGenerator(context);
+            if (this.UserGenerator == null)
+            {
+                throw new Exception("Viewer must have a user node!");
+            }
+
+            SkeletonCapability = UserGenerator.SkeletonCapability;
+            SkeletonCapability.SetSkeletonProfile(SkeletonProfile.Upper);
 
 
             //And initialize event handlers
-            userGenerator.NewUser += OnNewUser;
-            userGenerator.LostUser += OnLostUser;
-            skeletonCapability.CalibrationComplete += OnCalibrationComplete;
+            UserGenerator.NewUser += OnNewUser;
+            UserGenerator.LostUser += OnLostUser;
+            SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
 
             //And start generating data
-            userGenerator.StartGenerating();
-            context.StartGeneratingAll();
+            //userGenerator.StartGenerating();
+            //context.StartGeneratingAll();
         }
 
         /// <summary>
@@ -84,7 +93,7 @@ namespace Kinect
         {
             Console.WriteLine("New user: {0}", e.ID);
             Console.WriteLine("Requesting calibration for user: {0}", e.ID);
-            skeletonCapability.RequestCalibration(e.ID, true);
+            SkeletonCapability.RequestCalibration(e.ID, true);
         }
 
         /// <summary>
@@ -112,13 +121,13 @@ namespace Kinect
             {
                 Console.WriteLine("Calibration succeeded on user: {0}", e.ID);
                 Console.WriteLine("Start tracking user: {0}", e.ID);
-                skeletonCapability.StartTracking(e.ID);
+                SkeletonCapability.StartTracking(e.ID);
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
                 Console.WriteLine("Calibration failed on user: {0}", e.ID);
                 Console.WriteLine("Retrying calibration on user: {0}", e.ID);
-                skeletonCapability.RequestCalibration(e.ID, true);
+                SkeletonCapability.RequestCalibration(e.ID, true);
             }
         }
     }

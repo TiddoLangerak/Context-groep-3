@@ -22,7 +22,7 @@ namespace Kinect
         /// <summary>
         /// The update interval, set to 1/UPDATE_FREQUENCY seconds 
         /// </summary>
-        private TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(1000.0/UPDATE_FREQUENCY);
+        private TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(1000.0 / UPDATE_FREQUENCY);
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
@@ -37,7 +37,7 @@ namespace Kinect
         /// <summary>
         /// Used to indicate the direction of a user.
         /// </summary>
-        private enum Direction
+        public enum Movement
         {
             STRAIGHT,
             LEFT,
@@ -47,7 +47,7 @@ namespace Kinect
         /// <summary>
         /// The current direction of the user that is being tracked.
         /// </summary>
-        private Direction currentDirection = Direction.STRAIGHT;
+        public Movement CurrentMovement { get; private set; }
 
         /// <summary>
         /// Object needed to communicate with the Kinect.
@@ -68,6 +68,7 @@ namespace Kinect
         {
             this.kinectManager = kinectManager;
             this.kinectManager.Initialize();
+            this.CurrentMovement = Movement.STRAIGHT;
             this.theThread = new Thread(new ThreadStart(this.RunThread));
         }
 
@@ -95,11 +96,11 @@ namespace Kinect
                 try
                 {
                     //DateTime timeBeforeUpdate = DateTime.Now;
-                    kinectManager.context.WaitAnyUpdateAll();                    
-                    
+                    kinectManager.Context.WaitAnyUpdateAll();
+
                     lock (this)
                     {
-                        int[] users = kinectManager.userGenerator.GetUsers();
+                        int[] users = kinectManager.UserGenerator.GetUsers();
                         if (users.Length > 0)
                         {
                             int currUser = users[0];
@@ -108,11 +109,11 @@ namespace Kinect
                             SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
                             SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
 
-                            currentDirection = CalculateCurrentDirection(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                            PrintCurrentDirection();
+                            CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
+                            PrintCurrentMovement();
                         }
                     }
-                    
+
                     /*DateTime timeAfterUpdate = DateTime.Now;
                     TimeSpan updateDuration = timeAfterUpdate.Subtract(timeBeforeUpdate);
                     if(UPDATE_INTERVAL.Subtract(updateDuration).Milliseconds > 0)
@@ -135,7 +136,7 @@ namespace Kinect
         /// <param name="leftShoulderPos">The position of the users left shoulder</param>
         /// <param name="rightShoulderPos">The position of the users right shoulder</param>
         /// <returns>The users current direction</returns>
-        private Direction CalculateCurrentDirection(SkeletonJointPosition torsoPos, SkeletonJointPosition headPos, SkeletonJointPosition leftShoulderPos, SkeletonJointPosition rightShoulderPos)
+        private Movement CalculateCurrentMovement(SkeletonJointPosition torsoPos, SkeletonJointPosition headPos, SkeletonJointPosition leftShoulderPos, SkeletonJointPosition rightShoulderPos)
         {
             float leftDistance = Math.Abs(leftShoulderPos.Position.X - torsoPos.Position.X);
             float rightDistance = Math.Abs(rightShoulderPos.Position.X - torsoPos.Position.X);
@@ -147,14 +148,14 @@ namespace Kinect
             {
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
-                    return Direction.LEFT;
+                    return Movement.LEFT;
                 }
                 else if (rightDistance / leftDistance > TRESHOLD_LEANING)
                 {
-                    return Direction.RIGHT;
+                    return Movement.RIGHT;
                 }
             }
-            return Direction.STRAIGHT;
+            return Movement.STRAIGHT;
         }
 
         /// <summary>
@@ -165,23 +166,23 @@ namespace Kinect
         /// <returns></returns>
         private SkeletonJointPosition GetSkeletonJointPosition(int user, SkeletonJoint skelJoint)
         {
-            return kinectManager.skeletonCapability.GetSkeletonJointPosition(user, skelJoint);
+            return kinectManager.SkeletonCapability.GetSkeletonJointPosition(user, skelJoint);
         }
 
         /// <summary>
         /// Prints the current direction of the user for debugging purposes
         /// </summary>
-        private void PrintCurrentDirection()
+        private void PrintCurrentMovement()
         {
-            switch (currentDirection)
+            switch (CurrentMovement)
             {
-                case Direction.LEFT:
+                case Movement.LEFT:
                     Console.WriteLine("Going to the left");
                     break;
-                case Direction.RIGHT:
+                case Movement.RIGHT:
                     Console.WriteLine("Going to the right");
                     break;
-                case Direction.STRAIGHT:
+                case Movement.STRAIGHT:
                     Console.WriteLine("Going straight ahead");
                     break;
             }
