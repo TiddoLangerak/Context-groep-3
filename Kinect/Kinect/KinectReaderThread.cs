@@ -15,16 +15,6 @@ namespace Kinect
     class KinectReaderThread
     {
         /// <summary>
-        /// The update frequency, set to 30 times per seconds
-        /// </summary>
-        private const double UPDATE_FREQUENCY = 30;
-
-        /// <summary>
-        /// The update interval, set to 1/UPDATE_FREQUENCY seconds 
-        /// </summary>
-        private TimeSpan UPDATE_INTERVAL = TimeSpan.FromMilliseconds(1000.0 / UPDATE_FREQUENCY);
-
-        /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
         /// </summary>
         private const double TRESHOLD_LEANING = 1.5;
@@ -113,13 +103,6 @@ namespace Kinect
                             PrintCurrentMovement();
                         }
                     }
-
-                    /*DateTime timeAfterUpdate = DateTime.Now;
-                    TimeSpan updateDuration = timeAfterUpdate.Subtract(timeBeforeUpdate);
-                    if(UPDATE_INTERVAL.Subtract(updateDuration).Milliseconds > 0)
-                    {
-                        Thread.Sleep(UPDATE_INTERVAL.Subtract(updateDuration).Milliseconds);
-                    }*/
                 }
                 catch (Exception ex)
                 {
