@@ -13,7 +13,8 @@ public class StateManager
     public enum State
 	{
 		PAUSING,
-		PLAYING
+		PLAYING,
+		DEAD
 	};
 
     /// <summary>
@@ -77,7 +78,15 @@ public class StateManager
 	{
 		this.currentState = State.PLAYING;
 	}
-
+	
+	/// <summary>
+	/// The player is dead.
+	/// </summary>/
+	public void die()
+	{
+		this.currentState = State.DEAD;
+	}
+	
 	/// <summary>
     /// Returns true iff the game is in the PAUSING state.
 	/// </summary>
@@ -96,6 +105,11 @@ public class StateManager
 	public Boolean isPlaying()
 	{
 		return State.PLAYING == this.currentState;
+	}
+	
+	public Boolean isDead()
+	{
+		return State.DEAD == this.currentState;
 	}
 	
     /// <summary>
@@ -117,6 +131,7 @@ public class StateManager
 		{
 			case State.PAUSING: return "Pausing";
 			case State.PLAYING: return "Playing";
+			case State.DEAD:	return "Dead";
 		}
 		return null;
 	}

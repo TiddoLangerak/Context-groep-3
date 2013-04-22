@@ -39,6 +39,8 @@ public class WorldBehaviour : MonoBehaviour
 		
         if (StateManager.Instance.isPausing())
 			GUI.TextArea(new Rect(Screen.width/2 - 30, Screen.height/2 - 11, 60, 22), "PAUSED");
+		if (StateManager.Instance.isDead())
+			GUI.TextArea(new Rect(Screen.width/2 - 30, Screen.height/2 - 11, 80, 22), "Game Over");
 	}
 	
     /// <summary>
