@@ -9,9 +9,9 @@ namespace Kinect
     {
         static void Main(string[] args)
         {
-            KinectManager km = new KinectManager();
-            km.Start();
-            System.Console.ReadLine();
+            KinectReaderThread krt = new KinectReaderThread(new KinectManager());
+            krt.Start();
+            Console.ReadLine();
         }
     }
 }
