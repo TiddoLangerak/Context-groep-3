@@ -18,7 +18,7 @@ public class Obstacle : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		if(collision.gameObject.name == "Boll")
+		if(collision.gameObject.name == "Avatar")
 		{
 			StateManager.Instance.die();
 		}
