@@ -1,44 +1,50 @@
-using UnityEngine;
 using System.Collections;
 
 /// <summary>
 /// Level generator.
 /// </summary>
-public class LevelGenerator : MonoBehaviour {
+public class LevelGenerator{
 	
-	public int blockAmount = 4;
-	public float blockLength = 50.0f;
-	public GameObject levelBlock;
+	private int amount;
+	private float length;
 	private int lastAdded = 0;
 	public Queue levelBlockQueue = new Queue();
+	ILevelBlockFactory factory;
 	
 	/// <summary>
-	/// Adds a levelblock to the Queue.
+	/// Sets up the <see cref="LevelGenerator"/> class and creates the first LevelBlocks.
 	/// </summary>
-	void AddLevelblock() {
-		levelBlockQueue.Enqueue(Instantiate(levelBlock, new Vector3(0.0f, 4.875f, blockLength*lastAdded), Quaternion.identity));
-		lastAdded++;
-	}
-
-	/// <summary>
-	/// Fills the queue with levelBlocks.
-	/// </summary>
-	void Start () {
+	/// <param name='blockAmount'>
+	/// Block amount.
+	/// </param>
+	/// <param name='blockLength'>
+	/// Block length.
+	/// </param>
+	/// <param name='blockFactory'>
+	/// Block factory.
+	/// </param>
+	public LevelGenerator(int blockAmount, float blockLength, ILevelBlockFactory blockFactory)
+	{
+		amount = blockAmount;
+		length = blockLength;
+		factory = blockFactory;
 		for(int i=0; i<blockAmount; i++)
 		{
-			AddLevelblock();
+			levelBlockQueue.Enqueue(factory.makeLevelBlock(length*lastAdded));
+			lastAdded++;
 		}
 		levelBlockQueue.TrimToSize();
 	}
 	
 	/// <summary>
-	/// Update this instance.
+	/// Checks if new blocks need to be added.
 	/// </summary>
-	void Update () {
-		if((int)transform.position.z > (lastAdded-(blockAmount-1))*blockLength)
+	public void update (int position) {
+		if(position > (lastAdded-(amount-1))*length)
 		{
-			Destroy((Object)levelBlockQueue.Dequeue());
-			AddLevelblock();
+			factory.destroyLevelBlock(levelBlockQueue.Dequeue());
+			levelBlockQueue.Enqueue(factory.makeLevelBlock(length*lastAdded));
+			lastAdded++;
 		}
 	}
 }
