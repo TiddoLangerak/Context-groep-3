@@ -20,8 +20,15 @@ public class Obstacle : MonoBehaviour
 	{
 		if(collision.gameObject.name == "Avatar")
 		{
-			StateManager.Instance.die();
+			StartCoroutine(Wait(0.5f));
+			
 		}
 	}
 	
+	
+    private IEnumerator Wait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+		StateManager.Instance.die();
+    }
 }

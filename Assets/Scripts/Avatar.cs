@@ -10,7 +10,7 @@ public class Avatar : MonoBehaviour
 	/// <summary>
 	/// The move speed.
 	/// </summary>
-	private float _moveSpeed = 4;
+	private float _moveSpeed = 10;
 	
 	/// <summary>
 	/// Gets or sets the move speed.
