@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{7670FE73-D539-E7C8-DA30-D75C2BA3E3C6}</ProjectGuid>
+	<ProjectGuid>{AF9ED5BA-AD16-67D2-9B82-8F78C0975765}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -47,13 +47,14 @@
      <Compile Include="Assets\Code\XApple.js" />
      <Compile Include="Assets\Code\XAppleTest.js" />
      <Compile Include="Assets\Scripts\TestRunner.js" />
+     <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">
  <HintPath>Assets\Dependencies\OpenNI.Net.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5C0860C6-BC9F-2937-EC1B-EFBF95108C57}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{AE5DCB0D-027B-5E36-CB9A-F8F105861149}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,7 +23,7 @@ namespace Kinect
         /// <summary>
         /// The parent node of all generators.
         /// </summary>
-        private ScriptNode scriptNode;
+        //private ScriptNode scriptNode;
 
         /// <summary>
         /// Detects and creates new users when they enter the range of the Kinect.
@@ -54,7 +54,8 @@ namespace Kinect
         /// </summary>
         private void Initialize()
         {
-            //First we need to initialize the openni context            
+            //First we need to initialize the openni context 
+            ScriptNode scriptNode;
             Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
             this.depth = Context.FindExistingNode(NodeType.Depth) as DepthGenerator;
             if (this.depth == null)
