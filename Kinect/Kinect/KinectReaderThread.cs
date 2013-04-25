@@ -57,7 +57,6 @@ namespace Kinect
             : base()
         {
             this.kinectManager = kinectManager;
-            this.kinectManager.Initialize();
             this.CurrentMovement = Movement.STRAIGHT;
         }
 
@@ -85,9 +84,7 @@ namespace Kinect
             {
                 try
                 {
-                    //DateTime timeBeforeUpdate = DateTime.Now;
                     kinectManager.Context.WaitAnyUpdateAll();
-                    //kinectManager.Context.WaitOneUpdateAll(kinectManager.depth);
                 }
                 catch (Exception ex)
                 {

@@ -52,7 +52,7 @@ namespace Kinect
         /// Function to initialize this classes attributes and properties. 
         /// It also starts detecting users.
         /// </summary>
-        public void Initialize()
+        private void Initialize()
         {
             //First we need to initialize the openni context            
             Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
@@ -63,7 +63,7 @@ namespace Kinect
             }
 
             //Now we can initialize skeleton tracking
-            UserGenerator = Context.FindExistingNode(NodeType.User) as UserGenerator; //new UserGenerator(context);
+            UserGenerator = Context.FindExistingNode(NodeType.User) as UserGenerator;
             if (this.UserGenerator == null)
             {
                 throw new Exception("Viewer must have a user node!");
@@ -72,15 +72,10 @@ namespace Kinect
             SkeletonCapability = UserGenerator.SkeletonCapability;
             SkeletonCapability.SetSkeletonProfile(SkeletonProfile.Upper);
 
-
             //And initialize event handlers
             UserGenerator.NewUser += OnNewUser;
             UserGenerator.LostUser += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
-
-            //And start generating data
-            //userGenerator.StartGenerating();
-            //context.StartGeneratingAll();
         }
 
         /// <summary>
