@@ -79,7 +79,7 @@ namespace Kinect
         /// - His head is tilted
         /// - His shoulders don't have an equal horizontal distance to the torso
         /// </summary>
-        private void RunThread()
+        private unsafe void RunThread()
         {
             while (true)
             {
