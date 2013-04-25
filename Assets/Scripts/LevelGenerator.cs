@@ -25,12 +25,12 @@ public class LevelGenerator : MonoBehaviour {
 	
 	int randomLine()
 	{
-		return Random.Range(-1,1);	
+		return Random.Range(-1,2);	
 	}
 	
 	GameObject randomObject() 
 	{
-		return obstacles[Random.Range(0,obstacles.Length-1)];
+		return obstacles[Random.Range(0,obstacles.Length)];
 	}
 	
 	/// <summary>
@@ -40,9 +40,9 @@ public class LevelGenerator : MonoBehaviour {
 	{
 		
 		obstacleBlockQ.Enqueue(Instantiate(randomObject(), 
-			new Vector3(0.0f + 5*randomLine(), 4.875f, blockLength*lastAdded - blockLength + 10 * randomLine()), Quaternion.identity));
+			new Vector3(0.0f + 5*randomLine(), 4.875f, blockLength*lastAdded - blockLength + 10 * randomLine()), randomObject().transform.rotation));
 		obstacleBlockQ.Enqueue(Instantiate(randomObject(), 
-			new Vector3(0.0f + 5*randomLine(), 4.875f, blockLength*lastAdded - blockLength + 10 * randomLine()), Quaternion.identity));
+			new Vector3(0.0f + 5*randomLine(), 4.875f, blockLength*lastAdded - blockLength + 10 * randomLine()), randomObject().transform.rotation));
 	}
 	
 	/// <summary>
@@ -60,9 +60,10 @@ public class LevelGenerator : MonoBehaviour {
 	/// </summary>
 	void Start ()
 	{
-		obstacles = new GameObject[2];
+		obstacles = new GameObject[3];
 		obstacles[0] = GameObject.Find("Obstacle1");
 		obstacles[1] = GameObject.Find("Obstacle2");
+		obstacles[2] = GameObject.Find("Obstacle3");
 		for(int i=0; i<blockAmount; i++)
 		{
 			AddLevelblock();

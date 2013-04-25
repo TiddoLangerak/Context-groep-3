@@ -45,7 +45,7 @@ public class Avatar : MonoBehaviour
     /// Used for initialization. The Start method is called just
     /// before any of the Update methods is called the first time.
 	/// </summary>
-	void Start()
+	public void Start()
     {
 		StartCoroutine(SideMovement());
 		StateManager.Instance.pauseOrUnpause();
@@ -58,6 +58,7 @@ public class Avatar : MonoBehaviour
 	/// </summary>
 	void Update ()
     {
+		// _moveSpeed += Time.smoothDeltaTime/5;
         if (!StateManager.Instance.isPausing())
 		    transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
 
