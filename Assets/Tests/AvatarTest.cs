@@ -1,56 +1,74 @@
-using UnityEngine;
 using System.Collections;
+using NUnit.Framework;
 
-public class AvatarTest : UUnitTestCase
+[TextFixture]
+public class AvatarTest
 {
-	[UUnitTest]
-	public void setupTest()
+    [Test]
+	public void testAvatarInitialization()
 	{
-		Avatar av = new Avatar();
-		UUnitAssert.Equals(av.track, 2);
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        Avatar av = new Avatar(mockAvatarBehaviour);
+        Assert.Equals(av.track, 2);
 	}
-	
-	[UUnitTest]
-	public void speedTest()
+
+    [Test]
+	public void testAvatarSpeed()
 	{
-		Avatar av = new Avatar();
-		UUnitAssert.Equals(av.moveSpeed, 4);
-		UUnitAssert.Equals(++av.moveSpeed, 5);
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        Avatar av = new Avatar(mockAvatarBehaviour);
+
+		Assert.Equals(av.moveSpeed, 4);
+
+        av.moveSpeed++;
+        Assert.Equals(av.moveSpeed, 5);
+
 		av.moveSpeed = 10;
-		UUnitAssert.Equals(av.moveSpeed, 10);
+		Assert.Equals(av.moveSpeed, 10);
 	}
 	
-	[UUnitTest]
-	public void sideMovementTest()
+	[Test]
+	public void avatarMovementTest()
 	{
-		Avatar av = new Avatar();
-		av.Left();
-		UUnitAssert.Equals(av.track, 3);
-		av.Right();
-		UUnitAssert.Equals(av.track, 2);
-		av.Right();
-		UUnitAssert.Equals(av.track, 1);
-		av.Left();
-		UUnitAssert.Equals(av.track, 2);
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        Avatar av = new Avatar(mockAvatarBehaviour);
+		
+        av.Left();
+		Assert.Equals(av.track, 1);
+		
+        av.Right();
+		Assert.Equals(av.track, 2);
+		
+        av.Right();
+		Assert.Equals(av.track, 3);
+		
+        av.Left();
+		Assert.Equals(av.track, 2);
 	}
 	
-	[UUnitTest]
+	[Test]
 	public void leftBoundryTest()
 	{
-		Avatar av = new Avatar();
-		av.Left();
-		UUnitAssert.Equals(av.track, 3);
-		av.Left();
-		UUnitAssert.Equals(av.track, 3);
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        Avatar av = new Avatar(mockAvatarBehaviour);
+		
+        av.Left();
+		Assert.Equals(av.track, 1);
+		
+        av.Left();
+		Assert.Equals(av.track, 1);
 	}
 	
-	[UUnitTest]
+	[Test]
 	public void rightBoundryTest()
 	{
-		Avatar av = new Avatar();
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        Avatar av = new Avatar(mockAvatarBehaviour);
+
 		av.Right();
-		UUnitAssert.Equals(av.track, 1);
+		Assert.Equals(av.track, 3);
+
 		av.Right();
-		UUnitAssert.Equals(av.track, 1);
+		Assert.Equals(av.track, 3);
 	}
 }
