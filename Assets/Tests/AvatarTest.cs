@@ -3,6 +3,12 @@ using System.Collections;
 
 public class AvatarTest : UUnitTestCase
 {
+	protected override void SetUp() 
+	{
+		Debug.Log("-");
+		StateManager.Instance.play();
+	}
+	
 	[UUnitTest]
 	public void setupTest()
 	{
@@ -14,10 +20,10 @@ public class AvatarTest : UUnitTestCase
 	public void speedTest()
 	{
 		Avatar av = new Avatar();
-		UUnitAssert.Equals(av.moveSpeed, 4);
-		UUnitAssert.Equals(++av.moveSpeed, 5);
-		av.moveSpeed = 10;
 		UUnitAssert.Equals(av.moveSpeed, 10);
+		UUnitAssert.Equals(++av.moveSpeed, 11);
+		av.moveSpeed = 20;
+		UUnitAssert.Equals(av.moveSpeed, 20);
 	}
 	
 	[UUnitTest]
@@ -25,13 +31,13 @@ public class AvatarTest : UUnitTestCase
 	{
 		Avatar av = new Avatar();
 		av.Left();
-		UUnitAssert.Equals(av.track, 3);
+		UUnitAssert.Equals(3, av.track);
 		av.Right();
-		UUnitAssert.Equals(av.track, 2);
+		UUnitAssert.Equals(2, av.track);
 		av.Right();
-		UUnitAssert.Equals(av.track, 1);
+		UUnitAssert.Equals(1, av.track);
 		av.Left();
-		UUnitAssert.Equals(av.track, 2);
+		UUnitAssert.Equals(2, av.track);
 	}
 	
 	[UUnitTest]
@@ -39,9 +45,9 @@ public class AvatarTest : UUnitTestCase
 	{
 		Avatar av = new Avatar();
 		av.Left();
-		UUnitAssert.Equals(av.track, 3);
+		UUnitAssert.Equals(3, av.track);
 		av.Left();
-		UUnitAssert.Equals(av.track, 3);
+		UUnitAssert.Equals(3, av.track);
 	}
 	
 	[UUnitTest]
@@ -49,8 +55,8 @@ public class AvatarTest : UUnitTestCase
 	{
 		Avatar av = new Avatar();
 		av.Right();
-		UUnitAssert.Equals(av.track, 1);
+		UUnitAssert.Equals(1, av.track);
 		av.Right();
-		UUnitAssert.Equals(av.track, 1);
+		UUnitAssert.Equals(1, av.track);
 	}
 }
