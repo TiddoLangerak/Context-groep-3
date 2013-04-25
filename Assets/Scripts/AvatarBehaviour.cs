@@ -5,7 +5,7 @@ using System.Collections;
 /// <summary>
 /// This class represents the avatar in the game environment.
 /// </summary>
-public class AvatarBehaviour : MonoBehaviour
+public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 {
     /// <summary>
     /// The domain-specific avatar instance.
@@ -21,7 +21,7 @@ public class AvatarBehaviour : MonoBehaviour
     /// </summary>
     void Start()
     {
-        this._avatar = new Avatar();
+        this._avatar = new Avatar(this);
 
         StartCoroutine(SideMovement());
     }
