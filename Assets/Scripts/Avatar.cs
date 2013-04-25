@@ -3,20 +3,29 @@ using Kinect;
 using System.Collections;
 
 /// <summary>
-/// This class is responsible for keeping track of the
-/// avatar movement.
+/// This class represents the avatar as domain object. Therefore, it
+/// is a plain old C# object.
 /// </summary>
-public class Avatar : MonoBehaviour
+public class Avatar
 {
+    /// <summary>
+    /// Reference to the kinect thread
+    /// </summary>
     private KinectReaderThread kinectThread;
 
     /// <summary>
-    /// The move speed.
+    /// Reference to IAvatarBehaviour
+    /// </summary>
+    private IAvatarBehaviour _avatarBehaviour;
+
+    /// <summary>
+    /// The speed (an integer in the range [1, 10])
     /// </summary>
     private float _moveSpeed = 4;
 
     /// <summary>
-    /// Gets or sets the move speed.
+    /// Gets or sets the move speed. The move speed should be
+    /// specified as an integer in the range [1, 10].
     /// </summary>
     /// <value>
     /// The move speed.
@@ -24,16 +33,27 @@ public class Avatar : MonoBehaviour
     public float moveSpeed
     {
         get { return _moveSpeed; }
-        set { _moveSpeed = value; }
+        set
+        {
+            if (_moveSpeed < 1 || _moveSpeed > 10)
+            {
+                throw new ArgumentOutOfRangeException("moveSpeed", "The move speed should be in range [1, 10]");
+            }
+            else
+            {
+                _moveSpeed = value;
+            }
+        }
     }
 
     /// <summary>
-    /// The track.
+    /// The track (an integer in range [1, 3])
     /// </summary>
     private int _track = 2;
 
     /// <summary>
-    /// Gets or sets the track.
+    /// Gets or sets the track. The track should be
+    /// specified as an integer in the range [1, 3].
     /// </summary>
     /// <value>
     /// The track.
@@ -41,25 +61,35 @@ public class Avatar : MonoBehaviour
     public int track
     {
         get { return _track; }
-        set { _track = value; }
+        set {
+            if (_track < 1 || _track > 3)
+            {
+                throw new ArgumentOutOfRangeException("track", "The track should be in range [1, 3]");
+            }
+            else
+            {
+                _track = value;
+            }
+        }
     }
+
+    
 
     /// <summary>
-    /// Used for initialization. The Start method is called just
-    /// before any of the Update methods is called the first time.
+    /// Initialize avatar. It is dependend on an IAvatarBehaviour. Also
+    /// sets up the Kinect thread and the state manager.
     /// </summary>
-    void Start()
+    public Avatar(IAvatarBehaviour avatarBehaviour)
     {
-        kinectThread = new KinectReaderThread(new KinectManager());
-        kinectThread.Start();
-        StartCoroutine(SideMovement());
-        StateManager.Instance.pauseOrUnpause();
+        this._avatarBehaviour = avatarBehaviour;
+
+        this.kinectThread = new KinectReaderThread(new KinectManager());
+        this.kinectThread.Start();
+
+        this.StateManager.Instance.pauseOrUnpause();
     }
 
-    void OnDestroy()
-    {
-        kinectThread.Stop();
-    }
+
 
     /// <summary>
     /// Update is called once per frame. It moves the avatar
@@ -69,34 +99,40 @@ public class Avatar : MonoBehaviour
     void Update()
     {
         if (!StateManager.Instance.isPausing())
-            transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
-
-        if (Input.GetKey(KeyCode.S))
-            transform.Translate(Vector3.forward * -2);
-    }
-
-    /// <summary>
-    /// Move player to the right track.
-    /// </summary>
-    public void Right()
-    {
-        if (StateManager.Instance.isPlaying() && _track > 1)
-        {
-            track--;
-            transform.Translate(Vector3.left * -5);
-        }
+            this.avatarBehaviour.Forward(this.moveSpeed);
     }
 
     /// <summary>
     /// Move player to the left track.
     /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
+    /// <remarks>
+    /// Shouldn't we just throw a custom exception, such as
+    /// AvatarOutOfLaneException, if the avatar tries to move out of lane?
+    /// </remarks>
     public void Left()
     {
-        if (StateManager.Instance.isPlaying() && _track < 3)
+        if (StateManager.Instance.isPlaying() && track > 1)
         {
-            track++;
-            transform.Translate(Vector3.left * 5);
+            this.track--;
+            this.avatarBehaviour.Left();
+        }
+    }
+
+    /// <summary>
+    /// Move avatar one track to the right. As precondition we assume that
+    /// the player is allowed to move right (e.g. not already on the
+    /// rightmost lane)
+    /// </summary>
+    /// <remarks>
+    /// Shouldn't we just throw a custom exception, such as
+    /// AvatarOutOfLaneException, if the avatar tries to move out of lane?
+    /// </remarks>
+    public void Right()
+    {
+        if (StateManager.Instance.isPlaying() && track < 3)
+        {
+            this.track++;
+            this.avatarBehaviour.Right();
         }
     }
 
@@ -118,6 +154,7 @@ public class Avatar : MonoBehaviour
         //        yield return 0;
         //    }
         //}
+
         while (true)
         {
             switch (kinectThread.CurrentMovement)
@@ -136,4 +173,13 @@ public class Avatar : MonoBehaviour
             }
         }
 	}
+
+    /// <summary>
+    /// This destructor is responsible for cleaning up resources, such
+    /// as the kinect thread.
+    /// </summary>
+    ~Avatar()
+    {
+        kinectThread.Stop();
+    }
 }
