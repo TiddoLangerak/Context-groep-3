@@ -117,7 +117,7 @@ namespace Kinect
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
-                Debug.Log("Calibration failed on user: }"+ e.ID);
+                Debug.Log("Calibration failed on user: "+ e.ID);
                 Debug.Log("Retrying calibration on user: "+ e.ID);
                 SkeletonCapability.RequestCalibration(e.ID, true);
             }

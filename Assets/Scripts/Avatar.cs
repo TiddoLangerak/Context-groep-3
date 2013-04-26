@@ -121,18 +121,18 @@ public class Avatar : MonoBehaviour
     {
         while (true)
         {
-            //if (Input.GetKey(KeyCode.A))
-            //{
-            //    Left();
-            //    yield return new WaitForSeconds(0.2f);
-            //}
-            //else if (Input.GetKey(KeyCode.D))
-            //{
-            //    Right();
-            //    yield return new WaitForSeconds(0.2f);
-            //}
-            //else
-            //{
+            if (Input.GetKey(KeyCode.A))
+            {
+                Left();
+                yield return new WaitForSeconds(0.2f);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                Right();
+                yield return new WaitForSeconds(0.2f);
+            }
+            else
+            {
                 if (kinectThread != null)
                 {
                     switch (kinectThread.CurrentMovement)
@@ -145,11 +145,14 @@ public class Avatar : MonoBehaviour
                             Right();
                             yield return new WaitForSeconds(0.2f);
                             break;
+                        default:
+                            yield return 0;
+                            break;
                     }
                 }
                 else                
                     yield return 0;
-            //}
+            }
         }
     }
 }
