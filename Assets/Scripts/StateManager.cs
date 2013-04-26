@@ -13,18 +13,14 @@ public class StateManager
     public enum State
 	{
 		PAUSING,
-		PLAYING
+		PLAYING,
+		DEAD
 	};
 
     /// <summary>
     /// Current state of the game
     /// </summary>
     private State currentState;
-
-    /// <summary>
-    /// Current track the player is on
-    /// </summary>
-    private int track = 2;
 
     /// <summary>
     /// Singleton StateManager instance
@@ -82,42 +78,38 @@ public class StateManager
 	{
 		this.currentState = State.PLAYING;
 	}
-
+	
+	/// <summary>
+	/// The player is dead.
+	/// </summary>/
+	public void die()
+	{
+		this.currentState = State.DEAD;
+	}
+	
 	/// <summary>
     /// Returns true iff the game is in the PAUSING state.
 	/// </summary>
 	/// <returns></returns>
 	public Boolean isPausing()
 	{
-		return State.PAUSING == this.currentState;
+		return State.PAUSING == this.currentState || State.DEAD == this.currentState;
 	}
 	
-    /// <summary>
-    /// Move player to the right track.
-    /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
-	public int right()
+	/// <summary>
+	/// Ises the playing.
+	/// </summary>
+	/// <returns>
+	/// The playing.
+	/// </returns>
+	public Boolean isPlaying()
 	{
-		if (State.PLAYING == currentState && track > 1) {
-			track--;
-			return 1;
-		} else {
-			return 0;
-		}
+		return State.PLAYING == this.currentState;
 	}
 	
-    /// <summary>
-    /// Move player to the left track.
-    /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
-	public int left()
+	public Boolean isDead()
 	{
-		if (State.PLAYING == currentState && track < 3) {
-			track++;
-			return 1;
-		} else {
-			return 0;	
-		}
+		return State.DEAD == this.currentState;
 	}
 	
     /// <summary>
@@ -139,6 +131,7 @@ public class StateManager
 		{
 			case State.PAUSING: return "Pausing";
 			case State.PLAYING: return "Playing";
+			case State.DEAD:	return "Dead";
 		}
 		return null;
 	}

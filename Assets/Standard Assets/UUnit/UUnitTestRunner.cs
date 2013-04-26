@@ -29,7 +29,11 @@ public class UUnitTestRunner
 	}
 	
 	[MenuItem("UUnit/Run All Tests %#t")]
+<<<<<<< HEAD
 	private static void RunAllTests ()
+=======
+	public static void RunAllTests ()
+>>>>>>> master
 	{
 		ClearDebugLog ();
 		

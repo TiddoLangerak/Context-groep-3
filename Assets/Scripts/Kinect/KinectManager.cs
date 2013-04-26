@@ -2,6 +2,7 @@ using OpenNI;
 using System.Collections;
 using System.Threading;
 using System;
+using UnityEngine;
 
 namespace Kinect
 {
@@ -13,17 +14,12 @@ namespace Kinect
         /// <summary>
         /// The file name and location of the OpenNI configuration file used in this class.
         /// </summary>
-        private readonly string OPENNI_XML_FILE = @"OpenNIConfig.xml";
+        private readonly string OPENNI_XML_FILE = Application.dataPath + @"/Scripts/Kinect/OpenNIConfig.xml";
 
         /// <summary>
         /// The context in which OpenNI operates (based on the configuration file)
         /// </summary>
         public Context Context { get; private set; }
-
-        /// <summary>
-        /// The parent node of all generators.
-        /// </summary>
-        //private ScriptNode scriptNode;
 
         /// <summary>
         /// Detects and creates new users when they enter the range of the Kinect.
@@ -45,7 +41,9 @@ namespace Kinect
         /// </summary>
         public KinectManager()
         {
+            Debug.Log("Before initialization...");
             this.Initialize();
+            Debug.Log("After initialization...");
         }
 
         /// <summary>
@@ -54,7 +52,8 @@ namespace Kinect
         /// </summary>
         private void Initialize()
         {
-            //First we need to initialize the openni context 
+            //First we need to initialize the openni context      
+            Debug.Log(OPENNI_XML_FILE);
             ScriptNode scriptNode;
             Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
             this.depth = Context.FindExistingNode(NodeType.Depth) as DepthGenerator;
@@ -87,8 +86,8 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnNewUser(object sender, NewUserEventArgs e)
         {
-            Console.WriteLine("New user: {0}", e.ID);
-            Console.WriteLine("Requesting calibration for user: {0}", e.ID);
+            Debug.Log("New user: "+ e.ID);
+            Debug.Log("Requesting calibration for user: "+ e.ID);
             SkeletonCapability.RequestCalibration(e.ID, true);
         }
 
@@ -101,7 +100,7 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnLostUser(object sender, UserLostEventArgs e)
         {
-            Console.WriteLine("Lost user: {0}", e.ID);
+            Debug.Log("Lost user: "+ e.ID);
         }
 
         /// <summary>
@@ -115,14 +114,14 @@ namespace Kinect
         {
             if (e.Status == CalibrationStatus.OK)
             {
-                Console.WriteLine("Calibration succeeded on user: {0}", e.ID);
-                Console.WriteLine("Start tracking user: {0}", e.ID);
+                Debug.Log("Calibration succeeded on user: "+ e.ID);
+                Debug.Log("Start tracking user: "+ e.ID);
                 SkeletonCapability.StartTracking(e.ID);
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
-                Console.WriteLine("Calibration failed on user: {0}", e.ID);
-                Console.WriteLine("Retrying calibration on user: {0}", e.ID);
+                Debug.Log("Calibration failed on user: }"+ e.ID);
+                Debug.Log("Retrying calibration on user: "+ e.ID);
                 SkeletonCapability.RequestCalibration(e.ID, true);
             }
         }

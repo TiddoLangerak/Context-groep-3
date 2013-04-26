@@ -22,15 +22,12 @@ obj/
  
  
 *.userprefs
-Assembly-CSharp.csproj
 Assembly-CSharp.pidb
-Assembly-CSharp-Editor.csproj
 Assembly-CSharp-Editor.pidb
-Assembly-CSharp-Editor-vs.csproj
-Assembly-CSharp-firstpass.csproj
 Assembly-CSharp-firstpass.pidb
-Assembly-CSharp-firstpass-vs.csproj
-Assembly-CSharp-vs.csproj
+Assembly-CSharp-Editor-firstpass.pidb
+Assembly-CSharp-Editor-firstpass.csproj
+Assembly-CSharp-Editor-firstpass-vs.csproj
 Assembly-UnityScript-firstpass.pidb
 Assembly-UnityScript-firstpass.unityproj
 Assembly-UnityScript-firstpass-vs.unityproj

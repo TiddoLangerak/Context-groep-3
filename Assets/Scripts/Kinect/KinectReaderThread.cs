@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using OpenNI;
+using UnityEngine;
 
 namespace Kinect
 {
@@ -50,6 +51,11 @@ namespace Kinect
         private Thread theThread;
 
         /// <summary>
+        /// 
+        /// </summary>
+        private bool shouldRun;
+
+        /// <summary>
         /// Constructor: initialize the kinectManager.
         /// </summary>
         /// <param name="kinectManager">KinectManager used to communicate with</param>
@@ -66,7 +72,16 @@ namespace Kinect
         public void Start()
         {
             this.theThread = new Thread(new ThreadStart(this.RunThread));
+            this.shouldRun = true;
             theThread.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Stop()
+        {
+            this.shouldRun = false;
         }
 
         /// <summary>
@@ -80,7 +95,7 @@ namespace Kinect
         /// </summary>
         private unsafe void RunThread()
         {
-            while (true)
+            while (this.shouldRun)
             {
                 try
                 {
@@ -88,7 +103,7 @@ namespace Kinect
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Debug.Log(ex.ToString());
                 }
 
                 lock (this)
@@ -103,7 +118,6 @@ namespace Kinect
                         SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
 
                         CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                        PrintCurrentMovement();
                     }
                 }
             }
@@ -158,13 +172,13 @@ namespace Kinect
             switch (CurrentMovement)
             {
                 case Movement.LEFT:
-                    Console.WriteLine("Going to the left");
+                    Debug.Log("Going to the left");
                     break;
                 case Movement.RIGHT:
-                    Console.WriteLine("Going to the right");
+                    Debug.Log("Going to the right");
                     break;
                 case Movement.STRAIGHT:
-                    Console.WriteLine("Going straight ahead");
+                    Debug.Log("Going straight ahead");
                     break;
             }
         }
