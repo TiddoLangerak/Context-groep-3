@@ -44,8 +44,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Code\XApple.js" />
-     <Compile Include="Assets\Code\XAppleTest.js" />
      <Compile Include="Assets\Scripts\TestRunner.js" />
      <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">

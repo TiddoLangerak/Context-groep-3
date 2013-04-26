@@ -44,8 +44,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CodeCSharp\XAppleC.cs" />
-     <Compile Include="Assets\CodeCSharp\XAppleCTest.cs" />
      <Compile Include="Assets\Scripts\Avatar.cs" />
      <Compile Include="Assets\Scripts\Kinect\KinectManager.cs" />
      <Compile Include="Assets\Scripts\Kinect\KinectReaderThread.cs" />
