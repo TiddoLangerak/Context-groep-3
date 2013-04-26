@@ -1,6 +1,6 @@
 ﻿using System;
 
-interface IAvatarBehaviour
+public interface IAvatarBehaviour
 {
     void Forward(int moveSpeed);
     void Left();
