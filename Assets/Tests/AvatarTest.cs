@@ -5,6 +5,12 @@ using Moq;
 [TestFixture]
 public class AvatarTest
 {
+    [SetUp]
+    public void testSetup()
+    {
+        StateManager.Instance.pause();
+    }
+
     [Test]
     public void testAvatarInitialization()
     {
