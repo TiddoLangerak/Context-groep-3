@@ -41,9 +41,7 @@ namespace Kinect
         /// </summary>
         public KinectManager()
         {
-            Debug.Log("Before initialization...");
             this.Initialize();
-            Debug.Log("After initialization...");
         }
 
         /// <summary>
@@ -52,8 +50,7 @@ namespace Kinect
         /// </summary>
         private void Initialize()
         {
-            //First we need to initialize the openni context      
-            Debug.Log(OPENNI_XML_FILE);
+            //First we need to initialize the openni context
             ScriptNode scriptNode;
             Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
             this.depth = Context.FindExistingNode(NodeType.Depth) as DepthGenerator;

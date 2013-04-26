@@ -50,15 +50,27 @@ public class Avatar : MonoBehaviour
     /// </summary>
     void Start()
     {
-        kinectThread = new KinectReaderThread(new KinectManager());
-        kinectThread.Start();
-        StartCoroutine(SideMovement());
-        StateManager.Instance.pauseOrUnpause();
+        try
+        {
+            KinectManager kinectMgr = new KinectManager();
+            kinectThread = new KinectReaderThread(kinectMgr);
+            kinectThread.Start();
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
+        }
+        finally
+        {
+            StartCoroutine(SideMovement());
+            StateManager.Instance.pauseOrUnpause();
+        }
     }
 
     void OnDestroy()
     {
-        kinectThread.Stop();
+        if(kinectThread != null)
+            kinectThread.Stop();
     }
 
     /// <summary>
@@ -107,33 +119,37 @@ public class Avatar : MonoBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-        //while (true) {
-        //    if (Input.GetKey(KeyCode.A)) {
-        //        Left();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else if (Input.GetKey(KeyCode.D)) {
-        //        Right();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else {
-        //        yield return 0;
-        //    }
-        //}
         while (true)
         {
-            switch (kinectThread.CurrentMovement)
-            {
-                case KinectReaderThread.Movement.LEFT:
-                    Left();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                case KinectReaderThread.Movement.RIGHT:
-                    Right();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                default:
+            //if (Input.GetKey(KeyCode.A))
+            //{
+            //    Left();
+            //    yield return new WaitForSeconds(0.2f);
+            //}
+            //else if (Input.GetKey(KeyCode.D))
+            //{
+            //    Right();
+            //    yield return new WaitForSeconds(0.2f);
+            //}
+            //else
+            //{
+                if (kinectThread != null)
+                {
+                    switch (kinectThread.CurrentMovement)
+                    {
+                        case KinectReaderThread.Movement.LEFT:
+                            Left();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                        case KinectReaderThread.Movement.RIGHT:
+                            Right();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                    }
+                }
+                else                
                     yield return 0;
-                    break;    
-            }
+            //}
         }
-	}
+    }
 }
