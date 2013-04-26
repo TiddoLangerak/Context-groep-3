@@ -3,13 +3,13 @@ using System.Collections;
 /// <summary>
 /// Level generator.
 /// </summary>
-public class LevelGenerator{
+public class Level{
 	
 	private int amount;
 	private float length;
 	private int lastAdded = 0;
 	public Queue levelBlockQueue = new Queue();
-	ILevelBlockFactory factory;
+	ILevelBehavior behavior;
 	
 	/// <summary>
 	/// Sets up the <see cref="LevelGenerator"/> class and creates the first LevelBlocks.
@@ -23,14 +23,14 @@ public class LevelGenerator{
 	/// <param name='blockFactory'>
 	/// Block factory.
 	/// </param>
-	public LevelGenerator(int blockAmount, float blockLength, ILevelBlockFactory blockFactory)
+	public Level(int blockAmount, float blockLength, ILevelBehavior levelBehavior)
 	{
 		amount = blockAmount;
 		length = blockLength;
-		factory = blockFactory;
+		behavior = levelBehavior;
 		for(int i=0; i<blockAmount; i++)
 		{
-			levelBlockQueue.Enqueue(factory.makeLevelBlock(length*lastAdded));
+			levelBlockQueue.Enqueue(behavior.makeLevelBlock(length*lastAdded));
 			lastAdded++;
 		}
 		levelBlockQueue.TrimToSize();
@@ -40,10 +40,10 @@ public class LevelGenerator{
 	/// Checks if new blocks need to be added.
 	/// </summary>
 	public void update (int position) {
-		if(position > (lastAdded-(amount-1))*length)
+		while(position > (lastAdded-(amount-1))*length)
 		{
-			factory.destroyLevelBlock(levelBlockQueue.Dequeue());
-			levelBlockQueue.Enqueue(factory.makeLevelBlock(length*lastAdded));
+			behavior.destroyLevelBlock(levelBlockQueue.Dequeue());
+			levelBlockQueue.Enqueue(behavior.makeLevelBlock(length*lastAdded));
 			lastAdded++;
 		}
 	}
