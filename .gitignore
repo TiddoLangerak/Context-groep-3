@@ -25,6 +25,9 @@ obj/
 Assembly-CSharp.pidb
 Assembly-CSharp-Editor.pidb
 Assembly-CSharp-firstpass.pidb
+Assembly-CSharp-Editor-firstpass.pidb
+Assembly-CSharp-Editor-firstpass.csproj
+Assembly-CSharp-Editor-firstpass-vs.csproj
 Assembly-UnityScript-firstpass.pidb
 Assembly-UnityScript-firstpass.unityproj
 Assembly-UnityScript-firstpass-vs.unityproj
