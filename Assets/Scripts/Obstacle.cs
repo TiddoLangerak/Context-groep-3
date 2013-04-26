@@ -19,4 +19,12 @@ public class Obstacle
     {
         this._obstacleBehaviour = obstacleBehaviour;
     }
+
+    /// <summary>
+    /// This method handles a collision with the avatar.
+    /// </summary>
+    public void Collision()
+    {
+        StateManager.Instance.die();
+    }
 }

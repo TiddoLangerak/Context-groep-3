@@ -2,33 +2,38 @@
 using System.Collections;
 using Assets.Scripts;
 
-class ObstacleBehaviour : MonoBehaviour
+class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
 {
     /// <summary>
     /// The domain-specific obstacle instance.
     /// </summary>
     private Obstacle obstacle;
 
-    // Use this for initialization
+    /// <summary>
+    /// Used for initialization by Unity. The Start method is called just
+    /// before any of the Update methods is called the first time.
+    /// </summary>
     void Start()
     {
         this.obstacle = new Obstacle(this);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     void Update()
     {
     }
 
+    /// <summary>
+    /// OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider.
+    /// </summary>
+    /// <param name="collision">Collision information</param>
     void OnCollisionEnter(Collision collision)
     {
-        /*
-        Below code should be forwarded to domain object:
-        
         if (collision.gameObject.name == "Avatar")
         {
-            StateManager.Instance.die();
+            this.obstacle.Collision();
         }
-        */
     }
 }

@@ -6,11 +6,12 @@ using Moq;
 class ObstacleTest
 {
     [Test]
-    public void testObstacleInit()
+    public void testObstacleCollision()
     {
         var mockObstacleBehaviour = new Mock<IObstalceBehaviour>();
         Obstacle obstacle = new Obstacle(mockObstacleBehaviour.Object);
-
-        // ToDo: Asserts what needs to be true here..
+        
+        obstacle.Collision();
+        Assert.AreEqual(StateManager.State.DEAD, StateManager.Instance.getCurrentState());
     }
 }
