@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{AF9ED5BA-AD16-67D2-9B82-8F78C0975765}</ProjectGuid>
+	<ProjectGuid>{485E5CF5-F60B-E8E1-A0A6-5FA60B51080E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-UnityScript</AssemblyName>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,17 +44,25 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Code\XApple.js" />
-     <Compile Include="Assets\Code\XAppleTest.js" />
-     <Compile Include="Assets\Scripts\TestRunner.js" />
+     <Compile Include="Assets\CodeCSharp\XAppleC.cs" />
+     <Compile Include="Assets\CodeCSharp\XAppleCTest.cs" />
+     <Compile Include="Assets\Scripts\Avatar.cs" />
+     <Compile Include="Assets\Scripts\Kinect\KinectManager.cs" />
+     <Compile Include="Assets\Scripts\Kinect\KinectReaderThread.cs" />
+     <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\Obstacle.cs" />
+     <Compile Include="Assets\Scripts\StartGame.cs" />
+     <Compile Include="Assets\Scripts\StateManager.cs" />
+     <Compile Include="Assets\Scripts\WorldBehaviour.cs" />
+     <Compile Include="Assets\Tests\AvatarTest.cs" />
      <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">
  <HintPath>Assets\Dependencies\OpenNI.Net.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{AE5DCB0D-027B-5E36-CB9A-F8F105861149}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{AE5DCB0D-027B-5E36-CB9A-F8F105861149}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
