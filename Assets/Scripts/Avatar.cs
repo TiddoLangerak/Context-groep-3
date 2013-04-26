@@ -1,5 +1,5 @@
-using UnityEngine;
-using Kinect;
+//using Kinect;
+using System;
 using System.Collections;
 
 /// <summary>
@@ -11,7 +11,11 @@ public class Avatar
     /// <summary>
     /// Reference to the kinect thread
     /// </summary>
+<<<<<<< arch-refactor
     private KinectReaderThread kinectThread;
+=======
+    //private KinectReaderThread kinectThread;
+>>>>>>> local
 
     /// <summary>
     /// Reference to IAvatarBehaviour
@@ -21,7 +25,7 @@ public class Avatar
     /// <summary>
     /// The speed (an integer in the range [1, 10])
     /// </summary>
-    private float _moveSpeed = 4;
+    private int _moveSpeed = 4;
 
     /// <summary>
     /// Gets or sets the move speed. The move speed should be
@@ -30,7 +34,7 @@ public class Avatar
     /// <value>
     /// The move speed.
     /// </value>
-    public float moveSpeed
+    public int moveSpeed
     {
         get { return _moveSpeed; }
         set
@@ -61,7 +65,12 @@ public class Avatar
     public int track
     {
         get { return _track; }
+<<<<<<< arch-refactor
         set {
+=======
+        set
+        {
+>>>>>>> local
             if (_track < 1 || _track > 3)
             {
                 throw new ArgumentOutOfRangeException("track", "The track should be in range [1, 3]");
@@ -73,7 +82,11 @@ public class Avatar
         }
     }
 
+<<<<<<< arch-refactor
     
+=======
+
+>>>>>>> local
 
     /// <summary>
     /// Initialize avatar. It is dependend on an IAvatarBehaviour. Also
@@ -82,12 +95,25 @@ public class Avatar
     public Avatar(IAvatarBehaviour avatarBehaviour)
     {
         this._avatarBehaviour = avatarBehaviour;
+<<<<<<< arch-refactor
 
         this.kinectThread = new KinectReaderThread(new KinectManager());
         this.kinectThread.Start();
 
         this.StateManager.Instance.pauseOrUnpause();
     }
+=======
+
+        /*
+        this.kinectThread = new KinectReaderThread(new KinectManager());
+        this.kinectThread.Start();
+        */
+
+        StateManager.Instance.pauseOrUnpause();
+    }
+
+
+>>>>>>> local
 
 
 
@@ -99,7 +125,13 @@ public class Avatar
     void Update()
     {
         if (!StateManager.Instance.isPausing())
+<<<<<<< arch-refactor
             this.avatarBehaviour.Forward(this.moveSpeed);
+=======
+        {
+            this._avatarBehaviour.Forward(this.moveSpeed);
+        }
+>>>>>>> local
     }
 
     /// <summary>
@@ -114,7 +146,11 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track > 1)
         {
             this.track--;
+<<<<<<< arch-refactor
             this.avatarBehaviour.Left();
+=======
+            this._avatarBehaviour.Left();
+>>>>>>> local
         }
     }
 
@@ -132,7 +168,11 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track < 3)
         {
             this.track++;
+<<<<<<< arch-refactor
             this.avatarBehaviour.Right();
+=======
+            this._avatarBehaviour.Right();
+>>>>>>> local
         }
     }
 
@@ -157,6 +197,7 @@ public class Avatar
 
         while (true)
         {
+            /*
             switch (kinectThread.CurrentMovement)
             {
                 case KinectReaderThread.Movement.LEFT:
@@ -169,10 +210,15 @@ public class Avatar
                     break;
                 default:
                     yield return 0;
-                    break;    
+                    break;
             }
+            */
         }
+<<<<<<< arch-refactor
 	}
+=======
+    }
+>>>>>>> local
 
     /// <summary>
     /// This destructor is responsible for cleaning up resources, such
@@ -180,6 +226,10 @@ public class Avatar
     /// </summary>
     ~Avatar()
     {
+<<<<<<< arch-refactor
         kinectThread.Stop();
+=======
+        //kinectThread.Stop();
+>>>>>>> local
     }
 }
