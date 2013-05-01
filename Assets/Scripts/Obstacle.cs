@@ -9,13 +9,13 @@ public class Obstacle
     /// <summary>
     /// Reference to IObstacleBehaviour
     /// </summary>
-    private IObstalceBehaviour _obstacleBehaviour;
+    private IObstacleBehaviour _obstacleBehaviour;
 
     /// <summary>
     /// Initialize obstacle. It is dependend on an IObstacleBehaviour.
     /// </summary>
     /// <param name="obstacleBehaviour">The obstacle behaviour</param>
-    public Obstacle(IObstalceBehaviour obstacleBehaviour)
+    public Obstacle(IObstacleBehaviour obstacleBehaviour)
     {
         this._obstacleBehaviour = obstacleBehaviour;
     }

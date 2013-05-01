@@ -8,7 +8,7 @@ class ObstacleTest
     [Test]
     public void testObstacleCollision()
     {
-        var mockObstacleBehaviour = new Mock<IObstalceBehaviour>();
+        var mockObstacleBehaviour = new Mock<IObstacleBehaviour>();
         Obstacle obstacle = new Obstacle(mockObstacleBehaviour.Object);
         
         obstacle.Collision();

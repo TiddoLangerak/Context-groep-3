@@ -21,7 +21,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
-        this._avatar = new Avatar(this);
+        this.avatar = new Avatar(this);
 
         StartCoroutine(SideMovement());
     }
