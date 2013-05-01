@@ -100,6 +100,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         //        yield return 0;
         //    }
         //}
+
+		/*
         while (true)
         {
             switch (kinectThread.CurrentMovement)
@@ -117,5 +119,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                     break;
             }
         }
+        */
+		yield return 0;
     }
 }

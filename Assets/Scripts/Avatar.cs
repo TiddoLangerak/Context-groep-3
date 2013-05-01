@@ -96,7 +96,7 @@ public class Avatar
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
     /// </summary>
-    void Update()
+    public void Update()
     {
         if (!StateManager.Instance.isPausing())
         {
