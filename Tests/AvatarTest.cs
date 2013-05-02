@@ -1,7 +1,7 @@
 using System.Collections;
-//using NUnit.Framework;
-//using Moq;
-/*
+using NUnit.Framework;
+using Moq;
+
 [TestFixture]
 public class AvatarTest
 {
@@ -78,4 +78,4 @@ public class AvatarTest
         av.Right();
         Assert.AreEqual(av.track, 3);
     }
-}*/
+}
