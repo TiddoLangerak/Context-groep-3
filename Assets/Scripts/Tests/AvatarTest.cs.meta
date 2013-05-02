@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Tests/AvatarTest.cs.meta
 guid: bef28635782d25640a704cb0655cdccb
+=======
+guid: 3d60e7d542c95e140b01f0630170794b
+>>>>>>> master:Assets/Tests/AvatarTest.cs.meta
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []
