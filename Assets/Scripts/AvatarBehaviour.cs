@@ -40,7 +40,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
     /// </summary>
-    void Update()
+    public void Update()
     {
         this.avatar.Update();
 
@@ -61,7 +61,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Right()
     {
-        transform.Translate(Vector3.left * 5);
+        StartCoroutine(MoveAnimation(Vector3.right * 5));
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-        transform.Translate(Vector3.left * -5);
+		StartCoroutine(MoveAnimation(Vector3.left * 5));
     }
 
     /// <summary>
@@ -82,10 +82,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         while (true) {
             if (Input.GetKey(KeyCode.A)) {
-                avatar.Right();
+                avatar.Left();
+				
                 yield return new WaitForSeconds(0.2f);
             } else if (Input.GetKey(KeyCode.D)) {
-                avatar.Left();
+                avatar.Right();
+				
                 yield return new WaitForSeconds(0.2f);
             } else {
                 yield return 0;
@@ -112,4 +114,15 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
 		*/
     }
+	IEnumerator MoveAnimation(Vector3 targetlocation)
+	{
+		for(int i=0; i<20; i++) 
+		{
+			transform.Translate(targetlocation/20);
+			
+			yield return new WaitForSeconds(0.008f);
+		}
+		
+		yield return 0;
+	}
 }
