@@ -56,7 +56,10 @@
      <Compile Include="Assets\Scripts\LevelGenerator.cs" />
      <Compile Include="Assets\Scripts\Obstacle.cs" />
      <Compile Include="Assets\Scripts\ObstacleBehaviour.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\ObstacleTest.cs" />
+=======
+>>>>>>> arch-refactor-3
      <Compile Include="Assets\Scripts\StartGame.cs" />
      <Compile Include="Assets\Scripts\StateManager.cs" />
      <Compile Include="Assets\Scripts\WorldBehaviour.cs" />

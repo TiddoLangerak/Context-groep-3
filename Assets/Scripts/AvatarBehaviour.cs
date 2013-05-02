@@ -40,17 +40,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
     /// </summary>
-    void Update()
+    public void Update()
     {
         this.avatar.Update();
 
-        /*
-        if (!StateManager.Instance.isPausing())
-            transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
-
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
-        */
     }
 
     /// <summary>
@@ -66,7 +61,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Right()
     {
-        transform.Translate(Vector3.left * 5);
+        StartCoroutine(MoveAnimation(Vector3.right * 5));
     }
 
     /// <summary>
@@ -75,7 +70,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-        transform.Translate(Vector3.left * -5);
+		StartCoroutine(MoveAnimation(Vector3.left * 5));
     }
 
     /// <summary>
@@ -85,21 +80,19 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-        // Hm.. the code below is used as an input for the avatar. Is it possible to refactor
-        // this piece as a dependency such that we can use different input sources? (e.g.
-        // keyboard for development, kinect for production?)
-
-        //while (true) {
-        //    if (Input.GetKey(KeyCode.A)) {
-        //        Left();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else if (Input.GetKey(KeyCode.D)) {
-        //        Right();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else {
-        //        yield return 0;
-        //    }
-        //}
+        while (true) {
+            if (Input.GetKey(KeyCode.A)) {
+                avatar.Left();
+				
+                yield return new WaitForSeconds(0.2f);
+            } else if (Input.GetKey(KeyCode.D)) {
+                avatar.Right();
+				
+                yield return new WaitForSeconds(0.2f);
+            } else {
+                yield return 0;
+            }
+        }
 
 		/*
         while (true)
@@ -107,11 +100,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             switch (kinectThread.CurrentMovement)
             {
                 case KinectReaderThread.Movement.LEFT:
-                    Left();
+                    avatar.Left();
                     yield return new WaitForSeconds(0.2f);
                     break;
                 case KinectReaderThread.Movement.RIGHT:
-                    Right();
+                    avatar.Right();
                     yield return new WaitForSeconds(0.2f);
                     break;
                 default:
@@ -119,7 +112,17 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                     break;
             }
         }
-        */
-		yield return 0;
+		*/
     }
+	IEnumerator MoveAnimation(Vector3 targetlocation)
+	{
+		for(int i=0; i<20; i++) 
+		{
+			transform.Translate(targetlocation/20);
+			
+			yield return new WaitForSeconds(0.008f);
+		}
+		
+		yield return 0;
+	}
 }

@@ -1,4 +1,4 @@
-//using Kinect;
+using Kinect;
 using System;
 using System.Collections;
 
@@ -13,7 +13,7 @@ public class Avatar
 	/// <summary>
 	/// The move speed.
 	/// </summary>
-	private float _moveSpeed = 10;
+	private int _moveSpeed = 10;
 	
 	/// <summary>
 	/// Gets or sets the move speed.
@@ -21,7 +21,7 @@ public class Avatar
 	/// <value>
 	/// The move speed.
 	/// </value>
-	public float moveSpeed
+	public int moveSpeed
 	{
 		get { return _moveSpeed; }
 		set { _moveSpeed = value; }
@@ -43,26 +43,28 @@ public class Avatar
 		get { return _track; }
 		set { _track = value; }
 	}
+	
+	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
 	/// <summary>
     /// Used for initialization. The Start method is called just
     /// before any of the Update methods is called the first time.
 	/// </summary>
-	public void Start()
+	public Avatar(IAvatarBehaviour avatarBehaviour)
     {
         try
         {
-            KinectManager kinectMgr = new KinectManager();
-            kinectThread = new KinectReaderThread(kinectMgr);
-            kinectThread.Start();
+            //KinectManager kinectMgr = new KinectManager();
+            //kinectThread = new KinectReaderThread(kinectMgr);
+            //kinectThread.Start();
         }
         catch (System.Exception)
         {
-            Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
+            //Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
         }
         finally
         {
-            StartCoroutine(SideMovement());
+			this._avatarBehaviour = avatarBehaviour;
             StateManager.Instance.pauseOrUnpause();
         }
 	}
@@ -72,15 +74,15 @@ public class Avatar
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
 	/// </summary>
-	void Update ()
+	public void Update ()
     {
-		// _moveSpeed += Time.smoothDeltaTime/5;
         if (!StateManager.Instance.isPausing())
         {
+			//moveSpeed += Time.smoothDeltaTime/5;
+			
             this._avatarBehaviour.Forward(this.moveSpeed);
         }
     }
-	
 	
     void OnDestroy()
     {
@@ -112,68 +114,6 @@ public class Avatar
             this.track++;
             this._avatarBehaviour.Right();
         }
-    }
-
-    /// <summary>
-    /// A coroutine responsible for moving the avatar. Yields a
-    /// WaitForSeconds to pause execution and prevent moving
-    /// over multiple tracks at a time.
-    /// </summary>
-	IEnumerator SideMovement()
-    {
-        //while (true) {
-        //    if (Input.GetKey(KeyCode.A)) {
-        //        Left();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else if (Input.GetKey(KeyCode.D)) {
-        //        Right();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else {
-        //        yield return 0;
-        //    }
-        //}
-
-
-		 while (true)
-        {
-            /*
-            switch (kinectThread.CurrentMovement)
-            {
-<<<<<<< HEAD
-                case KinectReaderThread.Movement.LEFT:
-                    Left();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                case KinectReaderThread.Movement.RIGHT:
-                    Right();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                default:
-=======
-                if (kinectThread != null)
-                {
-                    switch (kinectThread.CurrentMovement)
-                    {
-                        case KinectReaderThread.Movement.LEFT:
-                            Left();
-                            yield return new WaitForSeconds(0.2f);
-                            break;
-                        case KinectReaderThread.Movement.RIGHT:
-                            Right();
-                            yield return new WaitForSeconds(0.2f);
-                            break;
-                        default:
-                            yield return 0;
-                            break;
-                    }
-                }
-                else
->>>>>>> 7194fa428583eb652c5d60cfcec0e7f39fc35121
-                    yield return 0;
-                    break;
-            }
-            */
-        }
 	}
 
     /// <summary>
@@ -184,15 +124,4 @@ public class Avatar
     {
         //kinectThread.Stop();
     }
-	
-	
-	IEnumerator MoveAnimation(Vector3 targetlocation)
-	{
-		for(int i=0; i<20; i++) 
-		{
-			transform.Translate(targetlocation/20);
-			yield return new WaitForSeconds(0.008f);
-		}
-		yield return 0;
-	}
 }
