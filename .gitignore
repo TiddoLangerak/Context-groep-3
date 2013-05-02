@@ -5,6 +5,8 @@ obj/
 *.tmp
 *.sln
 *.suo
+*.csproj
+
 
 !Library/*.asset
 !Library/AssetImportState
