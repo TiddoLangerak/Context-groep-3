@@ -73,7 +73,7 @@ public class Avatar : MonoBehaviour
 	{
 		if (StateManager.Instance.isPlaying() && _track > 1) {
 			track--;
-			transform.Translate(Vector3.left * -5);
+			StartCoroutine(MoveAnimation(Vector3.left * -5));
 		}
 	}
 
@@ -85,7 +85,7 @@ public class Avatar : MonoBehaviour
 	{
 		if (StateManager.Instance.isPlaying() && _track < 3) {
 			track++;
-			transform.Translate(Vector3.left * 5);
+			StartCoroutine(MoveAnimation(Vector3.left * 5));
 		}
 	}
 
@@ -99,13 +99,24 @@ public class Avatar : MonoBehaviour
 		while (true) {
 			if (Input.GetKey(KeyCode.A)) {
 				Left();
-				yield return new WaitForSeconds(0.2f);
+				yield return new WaitForSeconds(0.3f);
 			} else if (Input.GetKey(KeyCode.D)) {
 				Right();
-				yield return new WaitForSeconds(0.2f);
+				yield return new WaitForSeconds(0.3f);
 			} else {
 				yield return 0;
 			}
 		}
+	}
+	
+	
+	IEnumerator MoveAnimation(Vector3 targetlocation)
+	{
+		for(int i=0; i<20; i++) 
+		{
+			transform.Translate(targetlocation/20);
+			yield return new WaitForSeconds(0.008f);
+		}
+		yield return 0;
 	}
 }

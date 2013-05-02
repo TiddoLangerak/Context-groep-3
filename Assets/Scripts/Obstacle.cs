@@ -18,7 +18,7 @@ public class Obstacle : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		if(collision.gameObject.name == "Avatar")
+		if(collision.gameObject.name == "ShoppingCart")
 		{
 			StartCoroutine(Wait(0.5f));
 			
