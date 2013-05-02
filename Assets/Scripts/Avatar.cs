@@ -8,109 +8,89 @@ using System.Collections;
 /// </summary>
 public class Avatar
 {
-    /// <summary>
-    /// Reference to the kinect thread
-    /// </summary>
-    //private KinectReaderThread kinectThread;
+	private KinectReaderThread kinectThread;
+	
+	/// <summary>
+	/// The move speed.
+	/// </summary>
+	private float _moveSpeed = 10;
+	
+	/// <summary>
+	/// Gets or sets the move speed.
+	/// </summary>
+	/// <value>
+	/// The move speed.
+	/// </value>
+	public float moveSpeed
+	{
+		get { return _moveSpeed; }
+		set { _moveSpeed = value; }
+	}
+	
+	/// <summary>
+	/// The track.
+	/// </summary>
+	private int _track = 2;
+	
+	/// <summary>
+	/// Gets or sets the track.
+	/// </summary>
+	/// <value>
+	/// The track.
+	/// </value>
+	public int track
+	{
+		get { return _track; }
+		set { _track = value; }
+	}
 
-    /// <summary>
-    /// Reference to IAvatarBehaviour
-    /// </summary>
-    private IAvatarBehaviour _avatarBehaviour;
-
-    /// <summary>
-    /// The speed (an integer in the range [1, 10])
-    /// </summary>
-    private int _moveSpeed = 4;
-
-    /// <summary>
-    /// Gets or sets the move speed. The move speed should be
-    /// specified as an integer in the range [1, 10].
-    /// </summary>
-    /// <value>
-    /// The move speed.
-    /// </value>
-    public int moveSpeed
+	/// <summary>
+    /// Used for initialization. The Start method is called just
+    /// before any of the Update methods is called the first time.
+	/// </summary>
+	public void Start()
     {
-        get { return _moveSpeed; }
-        set
+        try
         {
-            if (_moveSpeed < 1 || _moveSpeed > 10)
-            {
-                throw new ArgumentOutOfRangeException("moveSpeed", "The move speed should be in range [1, 10]");
-            }
-            else
-            {
-                _moveSpeed = value;
-            }
+            KinectManager kinectMgr = new KinectManager();
+            kinectThread = new KinectReaderThread(kinectMgr);
+            kinectThread.Start();
         }
-    }
-
-    /// <summary>
-    /// The track (an integer in range [1, 3])
-    /// </summary>
-    private int _track = 2;
-
-    /// <summary>
-    /// Gets or sets the track. The track should be
-    /// specified as an integer in the range [1, 3].
-    /// </summary>
-    /// <value>
-    /// The track.
-    /// </value>
-    public int track
-    {
-        get { return _track; }
-        set
+        catch (System.Exception)
         {
-            if (_track < 1 || _track > 3)
-            {
-                throw new ArgumentOutOfRangeException("track", "The track should be in range [1, 3]");
-            }
-            else
-            {
-                _track = value;
-            }
+            Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
         }
-    }
-
-
-    /// <summary>
-    /// Initialize avatar. It is dependend on an IAvatarBehaviour. Also
-    /// sets up the Kinect thread and the state manager.
-    /// </summary>
-    public Avatar(IAvatarBehaviour avatarBehaviour)
-    {
-        this._avatarBehaviour = avatarBehaviour;
-
-        /*
-        this.kinectThread = new KinectReaderThread(new KinectManager());
-        this.kinectThread.Start();
-        */
-
-        StateManager.Instance.pauseOrUnpause();
-    }
-
-    /// <summary>
+        finally
+        {
+            StartCoroutine(SideMovement());
+            StateManager.Instance.pauseOrUnpause();
+        }
+	}
+	
+	/// <summary>
     /// Update is called once per frame. It moves the avatar
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
-    /// </summary>
-    public void Update()
+	/// </summary>
+	void Update ()
     {
+		// _moveSpeed += Time.smoothDeltaTime/5;
         if (!StateManager.Instance.isPausing())
         {
             this._avatarBehaviour.Forward(this.moveSpeed);
         }
     }
-
+	
+	
+    void OnDestroy()
+    {
+        if(kinectThread != null)
+            kinectThread.Stop();
+    }
+	
     /// <summary>
     /// Move player to the left track.
     /// </summary>
-    /// <remarks>
-    /// Shouldn't we just throw a custom exception, such as
-    /// AvatarOutOfLaneException, if the avatar tries to move out of lane?
-    /// </remarks>
     public void Left()
     {
         if (StateManager.Instance.isPlaying() && track > 1)
@@ -125,10 +105,6 @@ public class Avatar
     /// the player is allowed to move right (e.g. not already on the
     /// rightmost lane)
     /// </summary>
-    /// <remarks>
-    /// Shouldn't we just throw a custom exception, such as
-    /// AvatarOutOfLaneException, if the avatar tries to move out of lane?
-    /// </remarks>
     public void Right()
     {
         if (StateManager.Instance.isPlaying() && track < 3)
@@ -143,7 +119,7 @@ public class Avatar
     /// WaitForSeconds to pause execution and prevent moving
     /// over multiple tracks at a time.
     /// </summary>
-    IEnumerator SideMovement()
+	IEnumerator SideMovement()
     {
         //while (true) {
         //    if (Input.GetKey(KeyCode.A)) {
@@ -157,11 +133,13 @@ public class Avatar
         //    }
         //}
 
-        while (true)
+
+		 while (true)
         {
             /*
             switch (kinectThread.CurrentMovement)
             {
+<<<<<<< HEAD
                 case KinectReaderThread.Movement.LEFT:
                     Left();
                     yield return new WaitForSeconds(0.2f);
@@ -171,6 +149,26 @@ public class Avatar
                     yield return new WaitForSeconds(0.2f);
                     break;
                 default:
+=======
+                if (kinectThread != null)
+                {
+                    switch (kinectThread.CurrentMovement)
+                    {
+                        case KinectReaderThread.Movement.LEFT:
+                            Left();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                        case KinectReaderThread.Movement.RIGHT:
+                            Right();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                        default:
+                            yield return 0;
+                            break;
+                    }
+                }
+                else
+>>>>>>> 7194fa428583eb652c5d60cfcec0e7f39fc35121
                     yield return 0;
                     break;
             }
@@ -186,4 +184,15 @@ public class Avatar
     {
         //kinectThread.Stop();
     }
+	
+	
+	IEnumerator MoveAnimation(Vector3 targetlocation)
+	{
+		for(int i=0; i<20; i++) 
+		{
+			transform.Translate(targetlocation/20);
+			yield return new WaitForSeconds(0.008f);
+		}
+		yield return 0;
+	}
 }
