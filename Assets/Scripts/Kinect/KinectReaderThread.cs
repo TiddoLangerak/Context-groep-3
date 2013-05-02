@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using OpenNI;
+using UnityEngine;
 
 namespace Kinect
 {
@@ -16,11 +17,22 @@ namespace Kinect
     {
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
+        /// This ratio is used together with the TRESHOLD_LEANING_HEAD ratio
+        /// The leaning ratio is calculated as followed:
+        ///     -a = The horizontal distance between right shoulder and torso joints
+        ///     -b = The horizontal distance between left shoulder and torso joins
+        ///     Leaning ratio left: b/a
+        ///     Leaning ratio right: a/b
         /// </summary>
         private const double TRESHOLD_LEANING = 1.5;
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
+        /// This ratio is used together with the TRESHOL_LEANING ratio.
+        /// The leaning head ratio is calculated as followed:
+        ///     -a = horizontal distance between head and torso joints
+        ///     -b = horizontal distance between shoulders
+        ///     Leaning head ratio = a/b
         /// </summary>
         private const double TRESHOLD_LEANING_HEAD = 0.5;
 
@@ -50,6 +62,11 @@ namespace Kinect
         private Thread theThread;
 
         /// <summary>
+        /// 
+        /// </summary>
+        private bool shouldRun;
+
+        /// <summary>
         /// Constructor: initialize the kinectManager.
         /// </summary>
         /// <param name="kinectManager">KinectManager used to communicate with</param>
@@ -66,7 +83,16 @@ namespace Kinect
         public void Start()
         {
             this.theThread = new Thread(new ThreadStart(this.RunThread));
+            this.shouldRun = true;
             theThread.Start();
+        }
+
+        /// <summary>
+        /// Stop the thread. After the thread is stopped, it will die.
+        /// </summary>
+        public void Stop()
+        {
+            this.shouldRun = false;
         }
 
         /// <summary>
@@ -80,7 +106,7 @@ namespace Kinect
         /// </summary>
         private unsafe void RunThread()
         {
-            while (true)
+            while (this.shouldRun)
             {
                 try
                 {
@@ -88,7 +114,7 @@ namespace Kinect
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Debug.Log(ex.ToString());
                 }
 
                 lock (this)
@@ -103,14 +129,14 @@ namespace Kinect
                         SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
 
                         CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                        PrintCurrentMovement();
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Calculates the users current direction based on the position of his shoulders, head and torso.
+        /// Calculates the users current movement.
+        /// It needs some joints as input, and then tries to calculate it's movement
         /// </summary>
         /// <param name="torsoPos">The position of the users torso</param>
         /// <param name="headPos">The position of the users head</param>
@@ -125,8 +151,10 @@ namespace Kinect
             float shoulderDistance = Math.Abs(leftShoulderPos.Position.X - rightShoulderPos.Position.X);
             float normalizedHeadDistance = headDistance / shoulderDistance;
 
+            /// If the head is far of center, the user will most likely be leaning to one way or the other
             if (normalizedHeadDistance > TRESHOLD_LEANING_HEAD)
             {
+                //Now we can check if the player was indeed leaning one way or the other
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
                     return Movement.LEFT;
@@ -158,13 +186,13 @@ namespace Kinect
             switch (CurrentMovement)
             {
                 case Movement.LEFT:
-                    Console.WriteLine("Going to the left");
+                    Debug.Log("Going to the left");
                     break;
                 case Movement.RIGHT:
-                    Console.WriteLine("Going to the right");
+                    Debug.Log("Going to the right");
                     break;
                 case Movement.STRAIGHT:
-                    Console.WriteLine("Going straight ahead");
+                    Debug.Log("Going straight ahead");
                     break;
             }
         }

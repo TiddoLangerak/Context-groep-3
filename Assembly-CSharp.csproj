@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E217A821-FB23-29BD-016D-716F95B3956D}</ProjectGuid>
+	<ProjectGuid>{CCC87C7A-8037-0DEC-3C55-E303328E59BF}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,13 +44,23 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Standard Assets\Editor\UUnit\UUnitTestRunner.cs" />
+     <Compile Include="Assets\Scripts\Avatar.cs" />
+     <Compile Include="Assets\Scripts\ILevelBehavior.cs" />
+     <Compile Include="Assets\Scripts\Kinect\KinectManager.cs" />
+     <Compile Include="Assets\Scripts\Kinect\KinectReaderThread.cs" />
+     <Compile Include="Assets\Scripts\Level.cs" />
+     <Compile Include="Assets\Scripts\LevelBehavior.cs" />
+     <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\Obstacle.cs" />
+     <Compile Include="Assets\Scripts\StartGame.cs" />
+     <Compile Include="Assets\Scripts\StateManager.cs" />
+     <Compile Include="Assets\Scripts\Tests\LevelTest.cs" />
+     <Compile Include="Assets\Scripts\Tests\MockedLevelBehavior.cs" />
+     <Compile Include="Assets\Scripts\WorldBehaviour.cs" />
+     <Compile Include="Assets\Tests\AvatarTest.cs" />
      <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">
  <HintPath>Assets\Dependencies\OpenNI.Net.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.Graphs">
- <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

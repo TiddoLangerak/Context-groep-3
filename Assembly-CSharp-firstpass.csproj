@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E217A821-FB23-29BD-016D-716F95B3956D}</ProjectGuid>
+	<ProjectGuid>{5C0860C6-BC9F-2937-EC1B-EFBF95108C57}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
+	<AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,18 +44,20 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Standard Assets\Editor\UUnit\UUnitTestRunner.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitAssert.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitAssertException.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitSelfTest\TestCaseDummy.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitSelfTest\TestCaseRunner.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitSelfTest\TestCaseTest.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitTestAttribute.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitTestCase.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitTestResult.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitTestRunner.cs" />
+     <Compile Include="Assets\Standard Assets\UUnit\UUnitTestSuite.cs" />
      <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">
  <HintPath>Assets\Dependencies\OpenNI.Net.dll</HintPath>
  </Reference>
- <Reference Include="UnityEditor.Graphs">
- <HintPath>C:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
- </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5C0860C6-BC9F-2937-EC1B-EFBF95108C57}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
