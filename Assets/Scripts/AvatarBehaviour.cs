@@ -21,7 +21,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
-        this.avatar = new Avatar(this);
+        this.avatar = new Avatar(this, new KeyboardUserInput());
 
         StartCoroutine(SideMovement());
     }
@@ -80,6 +80,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
+        yield return 0;
+
+        /*
         while (true) {
             if (Input.GetKey(KeyCode.A)) {
                 avatar.Left();
@@ -93,6 +96,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                 yield return 0;
             }
         }
+        */
 
 		/*
         while (true)
