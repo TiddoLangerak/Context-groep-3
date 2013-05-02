@@ -29,7 +29,7 @@ namespace Kinect
         /// <summary>
         /// Holds the depth node that has to be present in the OpenNI configuration file.
         /// </summary>
-        public DepthGenerator depth;
+        private DepthGenerator depth;
 
         /// <summary>
         /// This object handles user calibration and tracking.
@@ -41,9 +41,7 @@ namespace Kinect
         /// </summary>
         public KinectManager()
         {
-            Debug.Log("Before initialization...");
             this.Initialize();
-            Debug.Log("After initialization...");
         }
 
         /// <summary>
@@ -52,8 +50,7 @@ namespace Kinect
         /// </summary>
         private void Initialize()
         {
-            //First we need to initialize the openni context      
-            Debug.Log(OPENNI_XML_FILE);
+            //First we need to initialize the openni context
             ScriptNode scriptNode;
             Context = Context.CreateFromXmlFile(OPENNI_XML_FILE, out scriptNode);
             this.depth = Context.FindExistingNode(NodeType.Depth) as DepthGenerator;
@@ -120,7 +117,7 @@ namespace Kinect
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
-                Debug.Log("Calibration failed on user: }"+ e.ID);
+                Debug.Log("Calibration failed on user: "+ e.ID);
                 Debug.Log("Retrying calibration on user: "+ e.ID);
                 SkeletonCapability.RequestCalibration(e.ID, true);
             }

@@ -17,11 +17,22 @@ namespace Kinect
     {
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
+        /// This ratio is used together with the TRESHOLD_LEANING_HEAD ratio
+        /// The leaning ratio is calculated as followed:
+        ///     -a = The horizontal distance between right shoulder and torso joints
+        ///     -b = The horizontal distance between left shoulder and torso joins
+        ///     Leaning ratio left: b/a
+        ///     Leaning ratio right: a/b
         /// </summary>
         private const double TRESHOLD_LEANING = 1.5;
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
+        /// This ratio is used together with the TRESHOL_LEANING ratio.
+        /// The leaning head ratio is calculated as followed:
+        ///     -a = horizontal distance between head and torso joints
+        ///     -b = horizontal distance between shoulders
+        ///     Leaning head ratio = a/b
         /// </summary>
         private const double TRESHOLD_LEANING_HEAD = 0.5;
 
@@ -77,7 +88,7 @@ namespace Kinect
         }
 
         /// <summary>
-        /// 
+        /// Stop the thread. After the thread is stopped, it will die.
         /// </summary>
         public void Stop()
         {
@@ -124,7 +135,8 @@ namespace Kinect
         }
 
         /// <summary>
-        /// Calculates the users current direction based on the position of his shoulders, head and torso.
+        /// Calculates the users current movement.
+        /// It needs some joints as input, and then tries to calculate it's movement
         /// </summary>
         /// <param name="torsoPos">The position of the users torso</param>
         /// <param name="headPos">The position of the users head</param>
@@ -139,8 +151,10 @@ namespace Kinect
             float shoulderDistance = Math.Abs(leftShoulderPos.Position.X - rightShoulderPos.Position.X);
             float normalizedHeadDistance = headDistance / shoulderDistance;
 
+            /// If the head is far of center, the user will most likely be leaning to one way or the other
             if (normalizedHeadDistance > TRESHOLD_LEANING_HEAD)
             {
+                //Now we can check if the player was indeed leaning one way or the other
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
                     return Movement.LEFT;
