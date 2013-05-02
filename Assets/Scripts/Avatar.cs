@@ -74,9 +74,10 @@ public class Avatar : MonoBehaviour
 	void Update ()
     {
 		// _moveSpeed += Time.smoothDeltaTime/5;
-        if (!StateManager.Instance.isPausing())
+        if (!StateManager.Instance.isPausing()) {	
 		    transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
-
+			moveSpeed+=Time.smoothDeltaTime/2;
+		}
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
     }
@@ -95,7 +96,7 @@ public class Avatar : MonoBehaviour
 	{
 		if (StateManager.Instance.isPlaying() && _track > 1) {
 			track--;
-			StartCoroutine(MoveAnimation(Vector3.left * -5));
+			StartCoroutine(MoveAnimation(Vector3.left * -6));
 		}
 	}
 
@@ -107,7 +108,7 @@ public class Avatar : MonoBehaviour
 	{
 		if (StateManager.Instance.isPlaying() && _track < 3) {
 			track++;
-			StartCoroutine(MoveAnimation(Vector3.left * 5));
+			StartCoroutine(MoveAnimation(Vector3.left * 6));
 		}
 	}
 
@@ -161,7 +162,7 @@ public class Avatar : MonoBehaviour
 		for(int i=0; i<20; i++) 
 		{
 			transform.Translate(targetlocation/20);
-			yield return new WaitForSeconds(0.008f);
+			yield return new WaitForSeconds(0.005f);
 		}
 		yield return 0;
 	}
