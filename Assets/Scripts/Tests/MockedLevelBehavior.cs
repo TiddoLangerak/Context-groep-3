@@ -1,3 +1,8 @@
+/// <summary>
+/// Mocked level behavior.
+/// 
+/// Counts the amount of blocks currently in the game and counts the amount of times the create function is called.
+/// </summary>
 class MockedLevelBehavior : ILevelBehavior
 {
 	private int amountOfLevelBlocks = 0;

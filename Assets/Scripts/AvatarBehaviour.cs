@@ -44,13 +44,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         this.avatar.Update();
 
-        /*
-        if (!StateManager.Instance.isPausing())
-            transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
-
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
-        */
     }
 
     /// <summary>
@@ -85,21 +80,17 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-        // Hm.. the code below is used as an input for the avatar. Is it possible to refactor
-        // this piece as a dependency such that we can use different input sources? (e.g.
-        // keyboard for development, kinect for production?)
-
-        //while (true) {
-        //    if (Input.GetKey(KeyCode.A)) {
-        //        Left();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else if (Input.GetKey(KeyCode.D)) {
-        //        Right();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else {
-        //        yield return 0;
-        //    }
-        //}
+        while (true) {
+            if (Input.GetKey(KeyCode.A)) {
+                avatar.Right();
+                yield return new WaitForSeconds(0.2f);
+            } else if (Input.GetKey(KeyCode.D)) {
+                avatar.Left();
+                yield return new WaitForSeconds(0.2f);
+            } else {
+                yield return 0;
+            }
+        }
 
 		/*
         while (true)
@@ -107,11 +98,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             switch (kinectThread.CurrentMovement)
             {
                 case KinectReaderThread.Movement.LEFT:
-                    Left();
+                    avatar.Left();
                     yield return new WaitForSeconds(0.2f);
                     break;
                 case KinectReaderThread.Movement.RIGHT:
-                    Right();
+                    avatar.Right();
                     yield return new WaitForSeconds(0.2f);
                     break;
                 default:
@@ -119,7 +110,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                     break;
             }
         }
-        */
-		yield return 0;
+		*/
     }
 }

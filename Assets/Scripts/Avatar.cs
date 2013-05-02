@@ -139,46 +139,6 @@ public class Avatar
     }
 
     /// <summary>
-    /// A coroutine responsible for moving the avatar. Yields a
-    /// WaitForSeconds to pause execution and prevent moving
-    /// over multiple tracks at a time.
-    /// </summary>
-    IEnumerator SideMovement()
-    {
-        //while (true) {
-        //    if (Input.GetKey(KeyCode.A)) {
-        //        Left();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else if (Input.GetKey(KeyCode.D)) {
-        //        Right();
-        //        yield return new WaitForSeconds(0.2f);
-        //    } else {
-        //        yield return 0;
-        //    }
-        //}
-
-        while (true)
-        {
-            /*
-            switch (kinectThread.CurrentMovement)
-            {
-                case KinectReaderThread.Movement.LEFT:
-                    Left();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                case KinectReaderThread.Movement.RIGHT:
-                    Right();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                default:
-                    yield return 0;
-                    break;
-            }
-            */
-        }
-	}
-
-    /// <summary>
     /// This destructor is responsible for cleaning up resources, such
     /// as the kinect thread.
     /// </summary>

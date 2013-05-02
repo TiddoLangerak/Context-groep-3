@@ -1,7 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using NUnit.Framework;
 
-public class LevelTest : UUnitTestCase
+/// <summary>
+/// Tests the level.
+/// </summary>
+[TestFixture]
+public class LevelTest
 {
 	MockedLevelBehavior levelBehavior;
 	Level level;
@@ -9,54 +14,56 @@ public class LevelTest : UUnitTestCase
 	const int blockAmount = 5;
 	const float blockLength = 1.0f;
 	
-	protected override void SetUp()
+	[SetUp]
+	public void SetUp()
 	{
 		levelBehavior = new MockedLevelBehavior();
 	}
 	
+	
 	/// <summary>
 	/// Tests if the right amount of blocks are created at startup.
 	/// </summary>
-	[UUnitTest]
+	[Test]
 	public void blockAmountStartTest()
 	{
 		level = new Level(blockAmount, blockLength, levelBehavior);
 		
-		UUnitAssert.Equals(blockAmount,levelBehavior.getAmountOfLevelBlocks());
+		Assert.AreEqual(blockAmount,levelBehavior.getAmountOfLevelBlocks());
 	}
 	
 	/// <summary>
 	/// Tests if the right amount of blocks stay in the game.
 	/// Every time a new block is created an old block must be destroyed.
 	/// </summary>
-	[UUnitTest]
+	[Test]
 	public void blockAmountUpdateTest()
 	{
 		level = new Level(blockAmount, blockLength, levelBehavior);
 		
 		level.update((int)blockLength);
 		
-		UUnitAssert.Equals(blockAmount,levelBehavior.getAmountOfLevelBlocks());
+		Assert.AreEqual(blockAmount,levelBehavior.getAmountOfLevelBlocks());
 		
 		level.update((int)(50*blockLength));
 		
-		UUnitAssert.Equals(blockAmount,levelBehavior.getAmountOfLevelBlocks());
+		Assert.AreEqual(blockAmount,levelBehavior.getAmountOfLevelBlocks());
 	}
 	
 	/// <summary>
 	/// Tests if the right amount of blocks get created by counting the times the create function is called.
 	/// </summary>
-	[UUnitTest]
+	[Test]
 	public void timesCalledTest()
 	{
 		level = new Level(blockAmount, blockLength, levelBehavior);
 		
 		level.update((int)(blockLength));
 		
-		UUnitAssert.Equals(blockAmount,levelBehavior.getTimesCalled());
+		Assert.AreEqual(blockAmount,levelBehavior.getTimesCalled());
 		
 		level.update((int)(50*blockLength));
 		
-		UUnitAssert.Equals(blockAmount+49,levelBehavior.getTimesCalled());
+		Assert.AreEqual(blockAmount+49,levelBehavior.getTimesCalled());
 	}
 }
