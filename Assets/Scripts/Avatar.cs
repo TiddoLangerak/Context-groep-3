@@ -1,18 +1,19 @@
-using UnityEngine;
 using Kinect;
+using System;
 using System.Collections;
 
 /// <summary>
-/// This class is responsible for keeping track of the
-/// avatar movement.
+/// This class represents the avatar as domain object. Therefore, it
+/// is a plain old C# object.
 /// </summary>
-public class Avatar : MonoBehaviour
+public class Avatar
 {
 	private KinectReaderThread kinectThread;
+	
 	/// <summary>
 	/// The move speed.
 	/// </summary>
-	private float _moveSpeed = 10;
+	private int _moveSpeed = 10;
 	
 	/// <summary>
 	/// Gets or sets the move speed.
@@ -20,7 +21,7 @@ public class Avatar : MonoBehaviour
 	/// <value>
 	/// The move speed.
 	/// </value>
-	public float moveSpeed
+	public int moveSpeed
 	{
 		get { return _moveSpeed; }
 		set { _moveSpeed = value; }
@@ -42,26 +43,28 @@ public class Avatar : MonoBehaviour
 		get { return _track; }
 		set { _track = value; }
 	}
+	
+	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
 	/// <summary>
     /// Used for initialization. The Start method is called just
     /// before any of the Update methods is called the first time.
 	/// </summary>
-	public void Start()
+	public Avatar(IAvatarBehaviour avatarBehaviour)
     {
         try
         {
-            KinectManager kinectMgr = new KinectManager();
-            kinectThread = new KinectReaderThread(kinectMgr);
-            kinectThread.Start();
+            //KinectManager kinectMgr = new KinectManager();
+            //kinectThread = new KinectReaderThread(kinectMgr);
+            //kinectThread.Start();
         }
         catch (System.Exception)
         {
-            Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
+            //Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
         }
         finally
         {
-            StartCoroutine(SideMovement());
+			this._avatarBehaviour = avatarBehaviour;
             StateManager.Instance.pauseOrUnpause();
         }
 	}
@@ -71,16 +74,15 @@ public class Avatar : MonoBehaviour
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
 	/// </summary>
-	void Update ()
+	public void Update ()
     {
-		// _moveSpeed += Time.smoothDeltaTime/5;
         if (!StateManager.Instance.isPausing())
-		    transform.Translate(Vector3.forward * this.moveSpeed * Time.smoothDeltaTime);
-
-        if (Input.GetKey(KeyCode.S))
-            transform.Translate(Vector3.forward * -2);
+        {
+			//moveSpeed += Time.smoothDeltaTime/5;
+			
+            this._avatarBehaviour.Forward(this.moveSpeed);
+        }
     }
-	
 	
     void OnDestroy()
     {
@@ -89,80 +91,37 @@ public class Avatar : MonoBehaviour
     }
 	
     /// <summary>
-    /// Move player to the right track.
-    /// </summary>
-	public void Right()
-	{
-		if (StateManager.Instance.isPlaying() && _track > 1) {
-			track--;
-			StartCoroutine(MoveAnimation(Vector3.left * -5));
-		}
-	}
-
-    /// <summary>
     /// Move player to the left track.
     /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
-	public void Left()
-	{
-		if (StateManager.Instance.isPlaying() && _track < 3) {
-			track++;
-			StartCoroutine(MoveAnimation(Vector3.left * 5));
-		}
+    public void Left()
+    {
+        if (StateManager.Instance.isPlaying() && track > 1)
+        {
+            this.track--;
+            this._avatarBehaviour.Left();
+        }
+    }
+
+    /// <summary>
+    /// Move avatar one track to the right. As precondition we assume that
+    /// the player is allowed to move right (e.g. not already on the
+    /// rightmost lane)
+    /// </summary>
+    public void Right()
+    {
+        if (StateManager.Instance.isPlaying() && track < 3)
+        {
+            this.track++;
+            this._avatarBehaviour.Right();
+        }
 	}
 
     /// <summary>
-    /// A coroutine responsible for moving the avatar. Yields a
-    /// WaitForSeconds to pause execution and prevent moving
-    /// over multiple tracks at a time.
+    /// This destructor is responsible for cleaning up resources, such
+    /// as the kinect thread.
     /// </summary>
-	IEnumerator SideMovement()
+    ~Avatar()
     {
-		 while (true)
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                Left();
-                yield return new WaitForSeconds(0.2f);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                Right();
-                yield return new WaitForSeconds(0.2f);
-            }
-            else
-            {
-                if (kinectThread != null)
-                {
-                    switch (kinectThread.CurrentMovement)
-                    {
-                        case KinectReaderThread.Movement.LEFT:
-                            Left();
-                            yield return new WaitForSeconds(0.2f);
-                            break;
-                        case KinectReaderThread.Movement.RIGHT:
-                            Right();
-                            yield return new WaitForSeconds(0.2f);
-                            break;
-                        default:
-                            yield return 0;
-                            break;
-                    }
-                }
-                else
-                    yield return 0;
-            }
-        }
+        //kinectThread.Stop();
     }
-	
-	
-	IEnumerator MoveAnimation(Vector3 targetlocation)
-	{
-		for(int i=0; i<20; i++) 
-		{
-			transform.Translate(targetlocation/20);
-			yield return new WaitForSeconds(0.008f);
-		}
-		yield return 0;
-	}
 }

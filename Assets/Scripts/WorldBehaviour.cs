@@ -56,6 +56,7 @@ public class WorldBehaviour : MonoBehaviour
 			} else if (Input.GetKey(KeyCode.Escape)) {
 				// Close the application
 				// Using Application.Quit will result in "Not Responding"
+				yield return 0;
 			} else {
 				yield return 0;
 			}

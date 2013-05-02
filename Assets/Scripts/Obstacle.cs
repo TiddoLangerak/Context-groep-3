@@ -1,34 +1,30 @@
-using UnityEngine;
-using System.Collections;
+using System;
 
-public class Obstacle : MonoBehaviour 
+/// <summary>
+/// This class represents the avatar as domain object. Therefore, it
+/// is a plain old C# object.
+/// </summary>
+public class Obstacle
 {
-	
-	// Use this for initialization
-	void Start() 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update() 
-	{
-		
-	}
-	
-	void OnCollisionEnter(Collision collision)
-	{
-		if(collision.gameObject.name == "ShoppingCart")
-		{
-			StartCoroutine(Wait(0.5f));
-			
-		}
-	}
-	
-	
-    private IEnumerator Wait(float seconds)
+    /// <summary>
+    /// Reference to IObstacleBehaviour
+    /// </summary>
+    private IObstacleBehaviour _obstacleBehaviour;
+
+    /// <summary>
+    /// Initialize obstacle. It is dependend on an IObstacleBehaviour.
+    /// </summary>
+    /// <param name="obstacleBehaviour">The obstacle behaviour</param>
+    public Obstacle(IObstacleBehaviour obstacleBehaviour)
     {
-        yield return new WaitForSeconds(seconds);
-		StateManager.Instance.die();
+        this._obstacleBehaviour = obstacleBehaviour;
+    }
+
+    /// <summary>
+    /// This method handles a collision with the avatar.
+    /// </summary>
+    public void Collision()
+    {
+        StateManager.Instance.die();
     }
 }
