@@ -54,18 +54,11 @@
      <Compile Include="Assets\Scripts\Obstacle.cs" />
      <Compile Include="Assets\Scripts\StartGame.cs" />
      <Compile Include="Assets\Scripts\StateManager.cs" />
-     <Compile Include="Assets\Scripts\Tests\LevelTest.cs" />
-     <Compile Include="Assets\Scripts\Tests\MockedLevelBehavior.cs" />
      <Compile Include="Assets\Scripts\WorldBehaviour.cs" />
-     <Compile Include="Assets\Tests\AvatarTest.cs" />
      <None Include="Assets\Scripts\Kinect\OpenNIConfig.xml" />
  <Reference Include="OpenNI.Net">
  <HintPath>Assets\Dependencies\OpenNI.Net.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5C0860C6-BC9F-2937-EC1B-EFBF95108C57}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

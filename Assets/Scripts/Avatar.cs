@@ -1,4 +1,5 @@
 using UnityEngine;
+using Kinect;
 using System.Collections;
 
 /// <summary>
@@ -7,6 +8,7 @@ using System.Collections;
 /// </summary>
 public class Avatar : MonoBehaviour
 {
+	private KinectReaderThread kinectThread;
 	/// <summary>
 	/// The move speed.
 	/// </summary>
@@ -47,8 +49,21 @@ public class Avatar : MonoBehaviour
 	/// </summary>
 	public void Start()
     {
-		StartCoroutine(SideMovement());
-		StateManager.Instance.pauseOrUnpause();
+        try
+        {
+            KinectManager kinectMgr = new KinectManager();
+            kinectThread = new KinectReaderThread(kinectMgr);
+            kinectThread.Start();
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
+        }
+        finally
+        {
+            StartCoroutine(SideMovement());
+            StateManager.Instance.pauseOrUnpause();
+        }
 	}
 	
 	/// <summary>
@@ -64,6 +79,13 @@ public class Avatar : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
+    }
+	
+	
+    void OnDestroy()
+    {
+        if(kinectThread != null)
+            kinectThread.Stop();
     }
 	
     /// <summary>
@@ -96,18 +118,42 @@ public class Avatar : MonoBehaviour
     /// </summary>
 	IEnumerator SideMovement()
     {
-		while (true) {
-			if (Input.GetKey(KeyCode.A)) {
-				Left();
-				yield return new WaitForSeconds(0.3f);
-			} else if (Input.GetKey(KeyCode.D)) {
-				Right();
-				yield return new WaitForSeconds(0.3f);
-			} else {
-				yield return 0;
-			}
-		}
-	}
+		 while (true)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                Left();
+                yield return new WaitForSeconds(0.2f);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                Right();
+                yield return new WaitForSeconds(0.2f);
+            }
+            else
+            {
+                if (kinectThread != null)
+                {
+                    switch (kinectThread.CurrentMovement)
+                    {
+                        case KinectReaderThread.Movement.LEFT:
+                            Left();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                        case KinectReaderThread.Movement.RIGHT:
+                            Right();
+                            yield return new WaitForSeconds(0.2f);
+                            break;
+                        default:
+                            yield return 0;
+                            break;
+                    }
+                }
+                else
+                    yield return 0;
+            }
+        }
+    }
 	
 	
 	IEnumerator MoveAnimation(Vector3 targetlocation)
