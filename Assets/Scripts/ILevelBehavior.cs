@@ -16,5 +16,7 @@ public interface ILevelBehavior
 	/// <param name='levelBlock'>
 	/// The level block to be destroyed.
 	/// </param>
-	void destroyLevelBlock(object levelBlock);
+	void destroyObject(object gameObject);
+	
+	object makeObstacle(int line, float position);
 }

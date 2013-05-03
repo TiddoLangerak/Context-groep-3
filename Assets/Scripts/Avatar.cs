@@ -41,7 +41,7 @@ public class Avatar
 	public Avatar(IAvatarBehaviour avatarBehaviour)
     {
 		this.track = 2;
-		this.moveSpeed = 4;
+		this.moveSpeed = 10;
 		
         try
         {
