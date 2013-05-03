@@ -6,6 +6,8 @@ obj/
 *.sln
 *.suo
 *.csproj
+*.pidb
+*.unityproj
 
 
 !Library/*.asset
@@ -24,12 +26,6 @@ obj/
  
  
 *.userprefs
-Assembly-CSharp.pidb
-Assembly-CSharp-Editor.pidb
-Assembly-CSharp-firstpass.pidb
-Assembly-UnityScript-firstpass.pidb
-Assembly-UnityScript-firstpass.unityproj
-Assembly-UnityScript-firstpass-vs.unityproj
 Project.suo
 test-results/
 doc/
