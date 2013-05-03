@@ -6,6 +6,7 @@ using UnityEngine;
 #if INPUT_KINECT
 using Kinect;
 #endif
+
 using System.Collections;
 using UnityEditor;
 
