@@ -1,36 +1,39 @@
 ﻿using System;
-using Kinect;
 
-public class KinectUserInput : IUserInput
+namespace Kinect
 {
-    private KinectReaderThread kinectThread;
-	
-    public KinectUserInput()
-    {
-    }
 
-    public void Initialize()
+    public class KinectUserInput : IUserInput
     {
-        KinectManager kinectMgr = new KinectManager();
-        kinectThread = new KinectReaderThread(kinectMgr);
-        kinectThread.Start();
-    }
+        private KinectReaderThread kinectThread;
 
-    public int CurrentMovement()
-    {
-        switch (kinectThread.CurrentMovement)
+        public KinectUserInput()
         {
-            case KinectReaderThread.Movement.LEFT:
-                return 1;
-            case KinectReaderThread.Movement.RIGHT:
-                return 2;
-            default:
-                return 0;
         }
-    }
 
-    public void Destroy()
-    {
-        this.kinectThread.Stop();
+        public void Initialize()
+        {
+            KinectManager kinectMgr = new KinectManager();
+            kinectThread = new KinectReaderThread(kinectMgr);
+            kinectThread.Start();
+        }
+
+        public int CurrentMovement()
+        {
+            switch (kinectThread.CurrentMovement)
+            {
+                case KinectReaderThread.Movement.Left:
+                    return Movement.Left;
+                case KinectReaderThread.Movement.Right:
+                    return Movement.Right;
+                default:
+                    return 0;
+            }
+        }
+
+        public void Destroy()
+        {
+            this.kinectThread.Stop();
+        }
     }
 }

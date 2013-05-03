@@ -11,15 +11,15 @@ class KeyboardUserInput : IUserInput
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            return 1;
+            return Movement.Left;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            return 2;
+            return Movement.Right;
         }
         else
         {
-            return 0;
+            return Movement.None;
         }
     }
 

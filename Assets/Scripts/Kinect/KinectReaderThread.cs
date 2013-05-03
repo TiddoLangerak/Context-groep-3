@@ -38,12 +38,15 @@ namespace Kinect
 
         /// <summary>
         /// Used to indicate the direction of a user.
+        /// Note: We can't use the Movement enum from IUserInput, since the Kinect might send other movements to the game
+        ///     than the movements the avatar will make. We're planning to combine inputs from multiple players
+        ///     to one avatar movement.
         /// </summary>
         public enum Movement
         {
-            STRAIGHT,
-            LEFT,
-            RIGHT
+            None,
+            Left,
+            Right
         };
 
         /// <summary>
@@ -157,14 +160,14 @@ namespace Kinect
                 //Now we can check if the player was indeed leaning one way or the other
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.LEFT;
+                    return Movement.Left;
                 }
                 else if (rightDistance / leftDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.RIGHT;
+                    return Movement.Right;
                 }
             }
-            return Movement.STRAIGHT;
+            return Movement.None;
         }
 
         /// <summary>
@@ -185,13 +188,13 @@ namespace Kinect
         {
             switch (CurrentMovement)
             {
-                case Movement.LEFT:
+                case Movement.Left:
                     Debug.Log("Going to the left");
                     break;
-                case Movement.RIGHT:
+                case Movement.Right:
                     Debug.Log("Going to the right");
                     break;
-                case Movement.STRAIGHT:
+                case Movement.None:
                     Debug.Log("Going straight ahead");
                     break;
             }

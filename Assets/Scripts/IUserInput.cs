@@ -5,7 +5,13 @@ using System.Text;
 
 public interface IUserInput
 {
+    public enum Movement
+    {
+        None,
+        Left,
+        Right,
+    };
     void Initialize();
-    int CurrentMovement();
+    Movement CurrentMovement();
     void Destroy();
 }

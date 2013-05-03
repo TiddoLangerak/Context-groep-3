@@ -52,19 +52,16 @@ public class Avatar
         try
         {
             userInput.Initialize();
-        }
-        catch (System.Exception)
-        {
-            //Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
-        }
-        finally
-        {
-			this._avatarBehaviour = avatarBehaviour;
+	        this._avatarBehaviour = avatarBehaviour;
             this._userInput = userInput;
 
             StateManager.Instance.pauseOrUnpause();
         }
-	}
+        catch (System.Exception)
+        {
+            Debug.Log("Input initialization failed! Please check if your controller is connected properly.");
+        }
+    }
 	
 	/// <summary>
     /// Update is called once per frame. It moves the avatar
@@ -81,10 +78,10 @@ public class Avatar
 
             switch (this._userInput.CurrentMovement())
             {
-                case 1:
+                case IUserInput.Movement.Left:
                     this.Left();
                     break;
-                case 2:
+                case IUserInput.Movement.Right:
                     this.Right();
                     break;
                 default:

@@ -1,5 +1,11 @@
-﻿using UnityEngine;
+﻿#define INPUT_KINECT
+//#define INPUT_KEYBOARD
+
+using UnityEngine;
+
+#if INPUT_KINECT
 using Kinect;
+#endif
 using System.Collections;
 
 /// <summary>
@@ -21,7 +27,13 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
+      #if INPUT_KINECT
+        this.avatar = new Avatar(this, new KinectUserInput());
+      #elif INPUT_KEYBOARD
         this.avatar = new Avatar(this, new KeyboardUserInput());
+      #else
+        throw System.Exception("No input specified");
+      #endif
 
         StartCoroutine(SideMovement());
     }
