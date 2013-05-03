@@ -15,7 +15,9 @@ public class AvatarTest
     public void testAvatarInitialization()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object);
+        var mockUserInput = new Mock<IUserInput>();
+        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
+
         Assert.AreEqual(av.track, 2);
     }
 
@@ -23,7 +25,8 @@ public class AvatarTest
     public void testAvatarSpeed()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object);
+        var mockUserInput = new Mock<IUserInput>();
+        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         Assert.AreEqual(av.moveSpeed, 4);
 
@@ -38,7 +41,8 @@ public class AvatarTest
     public void avatarMovementTest()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object);
+        var mockUserInput = new Mock<IUserInput>();
+        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
         Assert.AreEqual(av.track, 1);
@@ -57,7 +61,8 @@ public class AvatarTest
     public void leftBoundryTest()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object);
+        var mockUserInput = new Mock<IUserInput>();
+        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
         Assert.AreEqual(av.track, 1);
@@ -70,7 +75,8 @@ public class AvatarTest
     public void rightBoundryTest()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object);
+        var mockUserInput = new Mock<IUserInput>();
+        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Right();
         Assert.AreEqual(av.track, 3);
