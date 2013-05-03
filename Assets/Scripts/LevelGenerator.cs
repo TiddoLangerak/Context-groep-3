@@ -32,10 +32,10 @@ public class LevelGenerator : MonoBehaviour {
 	GameObject randomObject() 
 	{
 		blockAdded++;
-		Debug.Log(blockAdded % 10);
+		Logger.Log(blockAdded % 10);
 		if(blockAdded % 10 == 0)
 		{
-			Debug.Log("Bier");
+			Logger.Log("Bier");
 			return obstacles[2];
 		}
 		else 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using OpenNI;
-using UnityEngine;
 
 namespace Kinect
 {
@@ -117,7 +116,7 @@ namespace Kinect
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log(ex.ToString());
+                    Logger.Log(ex.ToString());
                 }
 
                 lock (this)
@@ -189,13 +188,13 @@ namespace Kinect
             switch (CurrentMovement)
             {
                 case Movement.Left:
-                    Debug.Log("Going to the left");
+                    Logger.Log("Going to the left");
                     break;
                 case Movement.Right:
-                    Debug.Log("Going to the right");
+                    Logger.Log("Going to the right");
                     break;
                 case Movement.None:
-                    Debug.Log("Going straight ahead");
+                    Logger.Log("Going straight ahead");
                     break;
             }
         }
