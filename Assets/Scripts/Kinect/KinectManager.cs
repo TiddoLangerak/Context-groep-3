@@ -2,6 +2,7 @@ using OpenNI;
 using System.Collections;
 using System.Threading;
 using System;
+using UnityEngine;
 
 namespace Kinect
 {
