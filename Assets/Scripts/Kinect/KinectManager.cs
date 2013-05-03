@@ -36,18 +36,10 @@ namespace Kinect
         public SkeletonCapability SkeletonCapability { get; private set; }
 
         /// <summary>
-        /// Constructor: initializes all attributes and properties
-        /// </summary>
-        public KinectManager()
-        {
-            this.Initialize();
-        }
-
-        /// <summary>
-        /// Function to initialize this classes attributes and properties. 
+        /// Constructor: initializes all attributes and properties.
         /// It also starts detecting users.
         /// </summary>
-        private void Initialize()
+        public KinectManager()
         {
             //First we need to initialize the openni context
             ScriptNode scriptNode;
