@@ -10,7 +10,7 @@ public class ObstacleTest
     {
         var mockObstacleBehaviour = new Mock<IObstacleBehaviour>();
         Obstacle obstacle = new Obstacle(mockObstacleBehaviour.Object);
-        
+
         obstacle.Collision();
         Assert.AreEqual(StateManager.State.DEAD, StateManager.Instance.getCurrentState());
     }
