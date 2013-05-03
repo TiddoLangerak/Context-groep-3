@@ -10,11 +10,11 @@ public class StateManager
     /// Enumeration of possible states
     /// </summary>
     public enum State
-	{
-		PAUSING,
-		PLAYING,
-		DEAD
-	};
+    {
+        PAUSING,
+        PLAYING,
+        DEAD
+    };
 
     /// <summary>
     /// Current state of the game
@@ -25,119 +25,122 @@ public class StateManager
     /// Singleton StateManager instance
     /// </summary>
     private static StateManager instance;
-	
+
     /// <summary>
     /// Property used to create and return one StateManager instance
     /// </summary>
-	public static StateManager Instance 
-	{
-		get 
-		{
-			if (instance == null) 
-			{
-				instance = new StateManager();
-			} 
-			return instance; 
-		}
-	}
-	
+    public static StateManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new StateManager();
+            }
+            return instance;
+        }
+    }
+
     /// <summary>
     /// Private constructor to prevent creation of multiple StateManager
     /// objects. Instead, refer to the Instance property.
     /// </summary>
-	private StateManager ()
-	{
-		this.currentState = State.PAUSING;
-	}
+    private StateManager()
+    {
+        this.currentState = State.PAUSING;
+    }
 
     /// <summary>
     /// Toggle between the pausing and playing state.
     /// </summary>
-	public void pauseOrUnpause()
-	{
-		if (currentState == State.PLAYING) {
-			this.pause();
-		} else {
-			this.play();
-		}
-	}
+    public void pauseOrUnpause()
+    {
+        if (currentState == State.PLAYING)
+        {
+            this.pause();
+        }
+        else
+        {
+            this.play();
+        }
+    }
 
     /// <summary>
     /// Pause the game
     /// </summary>
-	public void pause()
-	{
-		this.currentState = State.PAUSING;
-	}
+    public void pause()
+    {
+        this.currentState = State.PAUSING;
+    }
 
     /// <summary>
     /// Resume the game
     /// </summary>
-	public void play()
-	{
-		this.currentState = State.PLAYING;
-	}
-	
-	/// <summary>
-	/// The player is dead.
-	/// </summary>/
-	public void die()
-	{
-		this.currentState = State.DEAD;
-	}
-	
-	/// <summary>
+    public void play()
+    {
+        this.currentState = State.PLAYING;
+    }
+
+    /// <summary>
+    /// The player is dead.
+    /// </summary>/
+    public void die()
+    {
+        this.currentState = State.DEAD;
+    }
+
+    /// <summary>
     /// Returns true iff the game is in the PAUSING state.
-	/// </summary>
-	/// <returns></returns>
-	public Boolean isPausing()
-	{
-		return State.PAUSING == this.currentState || State.DEAD == this.currentState;
-	}
-	
-	/// <summary>
-	/// Checks if the game is playing
-	/// </summary>
-	/// <returns>
-	/// True if the game is playing, false otherwise.
-	/// </returns>
-	public Boolean isPlaying()
-	{
-		return State.PLAYING == this.currentState;
-	}
-	
+    /// </summary>
+    /// <returns></returns>
+    public Boolean isPausing()
+    {
+        return State.PAUSING == this.currentState || State.DEAD == this.currentState;
+    }
+
+    /// <summary>
+    /// Checks if the game is playing
+    /// </summary>
+    /// <returns>
+    /// True if the game is playing, false otherwise.
+    /// </returns>
+    public Boolean isPlaying()
+    {
+        return State.PLAYING == this.currentState;
+    }
+
     /// <summary>
     /// Checks if the player is dead
     /// </summary>
     /// <returns>
     /// True if the player is dead, false otherwise.
     /// </returns>
-	public Boolean isDead()
-	{
-		return State.DEAD == this.currentState;
-	}
-	
+    public Boolean isDead()
+    {
+        return State.DEAD == this.currentState;
+    }
+
     /// <summary>
     /// Returns the current state.
     /// </summary>
     /// <returns>Current state</returns>
-	public State getCurrentState()
-	{
-		return this.currentState;
-	}
+    public State getCurrentState()
+    {
+        return this.currentState;
+    }
 
     /// <summary>
     /// String representation of the crurent state.
     /// </summary>
     /// <returns>Current state</returns>
-	public String toString()
-	{
-		switch (currentState)
-		{
-			case State.PAUSING: return "Pausing";
-			case State.PLAYING: return "Playing";
-			case State.DEAD:	return "Dead";
-		}
-		return null;
-	}
+    public String toString()
+    {
+        switch (currentState)
+        {
+            case State.PAUSING: return "Pausing";
+            case State.PLAYING: return "Playing";
+            case State.DEAD: return "Dead";
+        }
+        return null;
+    }
 }

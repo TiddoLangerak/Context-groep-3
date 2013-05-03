@@ -32,13 +32,13 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         try
         {
             //Try to initialize the input
-            #if INPUT_KINECT
+#if INPUT_KINECT
                 this.avatar = new Avatar(this, new KinectUserInput());
-            #elif INPUT_KEYBOARD
-                this.avatar = new Avatar(this, new KeyboardUserInput());
-            #else
+#elif INPUT_KEYBOARD
+            this.avatar = new Avatar(this, new KeyboardUserInput());
+#else
                 throw System.Exception("No input specified");
-            #endif
+#endif
             StartCoroutine(SideMovement());
         }
         catch (System.Exception)
@@ -98,7 +98,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-		StartCoroutine(MoveAnimation(Vector3.left * 5));
+        StartCoroutine(MoveAnimation(Vector3.left * 5));
     }
 
     /// <summary>
@@ -110,15 +110,15 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         yield return 0;
     }
-	IEnumerator MoveAnimation(Vector3 targetlocation)
-	{
-		for(int i=0; i<20; i++) 
-		{
-			transform.Translate(targetlocation/20);
-			
-			yield return new WaitForSeconds(0.008f);
-		}
-		
-		yield return 0;
-	}
+    IEnumerator MoveAnimation(Vector3 targetlocation)
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            transform.Translate(targetlocation / 20);
+
+            yield return new WaitForSeconds(0.008f);
+        }
+
+        yield return 0;
+    }
 }
