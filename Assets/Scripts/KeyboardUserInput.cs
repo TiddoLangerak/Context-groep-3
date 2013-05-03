@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for user input from the keyboard.
+/// </summary>
 class KeyboardUserInput : IUserInput
 {
     public void Initialize()

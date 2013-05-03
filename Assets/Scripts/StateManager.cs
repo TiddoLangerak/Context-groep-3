@@ -96,16 +96,22 @@ public class StateManager
 	}
 	
 	/// <summary>
-	/// Ises the playing.
+	/// Checks if the game is playing
 	/// </summary>
 	/// <returns>
-	/// The playing.
+	/// True if the game is playing, false otherwise.
 	/// </returns>
 	public Boolean isPlaying()
 	{
 		return State.PLAYING == this.currentState;
 	}
 	
+    /// <summary>
+    /// Checks if the player is dead
+    /// </summary>
+    /// <returns>
+    /// True if the player is dead, false otherwise.
+    /// </returns>
 	public Boolean isDead()
 	{
 		return State.DEAD == this.currentState;

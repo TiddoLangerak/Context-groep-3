@@ -2,7 +2,9 @@
 
 namespace Kinect
 {
-
+    /// <summary>
+    /// This class is responsible for user input from the kinect.
+    /// </summary>
     public class KinectUserInput : IUserInput
     {
         private KinectReaderThread kinectThread;
@@ -11,12 +13,16 @@ namespace Kinect
         {
         }
 
+        /// <summary>
+        /// Sets up and starts the kinect thread, such that input can be processed
+        /// </summary>
         public void Initialize()
         {
             KinectManager kinectMgr = new KinectManager();
             kinectThread = new KinectReaderThread(kinectMgr);
             kinectThread.Start();
         }
+
 
         public Movement CurrentMovement()
         {

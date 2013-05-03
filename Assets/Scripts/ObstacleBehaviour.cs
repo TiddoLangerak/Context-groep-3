@@ -18,13 +18,6 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     }
 
     /// <summary>
-    /// Update is called once per frame.
-    /// </summary>
-    void Update()
-    {
-    }
-
-    /// <summary>
     /// OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider.
     /// </summary>
     /// <param name="collision">Collision information</param>

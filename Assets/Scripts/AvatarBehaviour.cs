@@ -31,20 +31,21 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         try
         {
-#if INPUT_KINECT
-            this.avatar = new Avatar(this, new KinectUserInput());
-#elif INPUT_KEYBOARD
-        this.avatar = new Avatar(this, new KeyboardUserInput());
-#else
-        throw System.Exception("No input specified");
-#endif
+            //Try to initialize the input
+            #if INPUT_KINECT
+                this.avatar = new Avatar(this, new KinectUserInput());
+            #elif INPUT_KEYBOARD
+                this.avatar = new Avatar(this, new KeyboardUserInput());
+            #else
+                throw System.Exception("No input specified");
+            #endif
             StartCoroutine(SideMovement());
         }
         catch (System.Exception)
         {
             Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
             Application.Quit();
-            //In the editor the application doesn't quit using Application.quit, so we just break using the debugger
+            //In the unity editor the application doesn't quit using Application.quit, so we just break using the debugger
             //to prevent further execution of code
 #if UNITY_EDITOR
             Debug.Break();
@@ -108,42 +109,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     IEnumerator SideMovement()
     {
         yield return 0;
-
-        /*
-        while (true) {
-            if (Input.GetKey(KeyCode.A)) {
-                avatar.Left();
-				
-                yield return new WaitForSeconds(0.2f);
-            } else if (Input.GetKey(KeyCode.D)) {
-                avatar.Right();
-				
-                yield return new WaitForSeconds(0.2f);
-            } else {
-                yield return 0;
-            }
-        }
-        */
-
-		/*
-        while (true)
-        {
-            switch (kinectThread.CurrentMovement)
-            {
-                case KinectReaderThread.Movement.LEFT:
-                    avatar.Left();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                case KinectReaderThread.Movement.RIGHT:
-                    avatar.Right();
-                    yield return new WaitForSeconds(0.2f);
-                    break;
-                default:
-                    yield return 0;
-                    break;
-            }
-        }
-		*/
     }
 	IEnumerator MoveAnimation(Vector3 targetlocation)
 	{

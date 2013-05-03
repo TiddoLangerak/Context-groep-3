@@ -113,26 +113,26 @@ namespace Kinect
                 try
                 {
                     kinectManager.Context.WaitAnyUpdateAll();
+                    lock (this)
+                    {
+                        int[] users = kinectManager.UserGenerator.GetUsers();
+                        if (users.Length > 0)
+                        {
+                            int currUser = users[0];
+                            SkeletonJointPosition torsoPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Torso);
+                            SkeletonJointPosition headPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Head);
+                            SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
+                            SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
+
+                            CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     Logger.Log(ex.ToString());
                 }
 
-                lock (this)
-                {
-                    int[] users = kinectManager.UserGenerator.GetUsers();
-                    if (users.Length > 0)
-                    {
-                        int currUser = users[0];
-                        SkeletonJointPosition torsoPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Torso);
-                        SkeletonJointPosition headPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Head);
-                        SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
-                        SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
-
-                        CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                    }
-                }
             }
         }
 
