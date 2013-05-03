@@ -75,8 +75,8 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnNewUser(object sender, NewUserEventArgs e)
         {
-            Logger.Log("New user: "+ e.ID);
-            Logger.Log("Requesting calibration for user: "+ e.ID);
+            Logger.Log("New user: " + e.ID);
+            Logger.Log("Requesting calibration for user: " + e.ID);
             SkeletonCapability.RequestCalibration(e.ID, true);
         }
 
@@ -89,7 +89,7 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnLostUser(object sender, UserLostEventArgs e)
         {
-            Logger.Log("Lost user: "+ e.ID);
+            Logger.Log("Lost user: " + e.ID);
         }
 
         /// <summary>
@@ -103,14 +103,14 @@ namespace Kinect
         {
             if (e.Status == CalibrationStatus.OK)
             {
-                Logger.Log("Calibration succeeded on user: "+ e.ID);
-                Logger.Log("Start tracking user: "+ e.ID);
+                Logger.Log("Calibration succeeded on user: " + e.ID);
+                Logger.Log("Start tracking user: " + e.ID);
                 SkeletonCapability.StartTracking(e.ID);
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
-                Logger.Log("Calibration failed on user: "+ e.ID);
-                Logger.Log("Retrying calibration on user: "+ e.ID);
+                Logger.Log("Calibration failed on user: " + e.ID);
+                Logger.Log("Retrying calibration on user: " + e.ID);
                 SkeletonCapability.RequestCalibration(e.ID, true);
             }
         }
