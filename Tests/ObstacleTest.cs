@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Moq;
 
 [TestFixture]
-class ObstacleTest
+public class ObstacleTest
 {
     [Test]
     public void testObstacleCollision()

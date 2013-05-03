@@ -60,10 +60,10 @@ public class LevelTest
 		
 		level.update((int)(blockLength));
 		
-		Assert.AreEqual(blockAmount,levelBehavior.getTimesCalled());
+		Assert.AreEqual(blockAmount,levelBehavior.getTimesCalledLevelBlock());
 		
 		level.update((int)(50*blockLength));
 		
-		Assert.AreEqual(blockAmount+49,levelBehavior.getTimesCalled());
+		Assert.AreEqual(blockAmount+49,levelBehavior.getTimesCalledLevelBlock());
 	}
 }
