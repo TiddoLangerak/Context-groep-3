@@ -2,7 +2,7 @@
 using UnityEngine;
 public class Logger
 {
-    public static void Log(string message)
+    public static void Log(object message)
     {
         Debug.Log(message);
     }
@@ -13,9 +13,9 @@ public class Logger
 
 using System;
 public class Logger {
-    public static void Log(string message)
+    public static void Log(object message)
     {
-        Console.WriteLine(message);
+        Console.WriteLine((string)message);
     }
 }
 
