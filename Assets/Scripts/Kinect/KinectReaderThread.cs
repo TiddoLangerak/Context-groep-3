@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using OpenNI;
-using UnityEngine;
 
 namespace Kinect
 {
@@ -38,12 +37,15 @@ namespace Kinect
 
         /// <summary>
         /// Used to indicate the direction of a user.
+        /// Note: We can't use the Movement enum from IUserInput, since the Kinect might send other movements to the game
+        ///     than the movements the avatar will make. We're planning to combine inputs from multiple players
+        ///     to one avatar movement.
         /// </summary>
         public enum Movement
         {
-            STRAIGHT,
-            LEFT,
-            RIGHT
+            None,
+            Left,
+            Right
         };
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace Kinect
             : base()
         {
             this.kinectManager = kinectManager;
-            this.CurrentMovement = Movement.STRAIGHT;
+            this.CurrentMovement = Movement.None;
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace Kinect
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log(ex.ToString());
+                    Logger.Log(ex.ToString());
                 }
 
                 lock (this)
@@ -157,14 +159,14 @@ namespace Kinect
                 //Now we can check if the player was indeed leaning one way or the other
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.LEFT;
+                    return Movement.Left;
                 }
                 else if (rightDistance / leftDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.RIGHT;
+                    return Movement.Right;
                 }
             }
-            return Movement.STRAIGHT;
+            return Movement.None;
         }
 
         /// <summary>
@@ -185,14 +187,14 @@ namespace Kinect
         {
             switch (CurrentMovement)
             {
-                case Movement.LEFT:
-                    Debug.Log("Going to the left");
+                case Movement.Left:
+                    Logger.Log("Going to the left");
                     break;
-                case Movement.RIGHT:
-                    Debug.Log("Going to the right");
+                case Movement.Right:
+                    Logger.Log("Going to the right");
                     break;
-                case Movement.STRAIGHT:
-                    Debug.Log("Going straight ahead");
+                case Movement.None:
+                    Logger.Log("Going straight ahead");
                     break;
             }
         }

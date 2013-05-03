@@ -1,6 +1,14 @@
-﻿using UnityEngine;
+﻿//#define INPUT_KINECT
+#define INPUT_KEYBOARD
+
+using UnityEngine;
+
+#if INPUT_KINECT
 using Kinect;
+#endif
+
 using System.Collections;
+using UnityEditor;
 
 /// <summary>
 /// This class represents the avatar in the game environment.
@@ -21,9 +29,28 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
-        this.avatar = new Avatar(this);
+        try
+        {
+#if INPUT_KINECT
+            this.avatar = new Avatar(this, new KinectUserInput());
+#elif INPUT_KEYBOARD
+        this.avatar = new Avatar(this, new KeyboardUserInput());
+#else
+        throw System.Exception("No input specified");
+#endif
+            StartCoroutine(SideMovement());
+        }
+        catch (System.Exception)
+        {
+            Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
+            Application.Quit();
+            //In the editor the application doesn't quit using Application.quit, so we just break using the debugger
+            //to prevent further execution of code
+#if UNITY_EDITOR
+            Debug.Break();
+#endif
+        }
 
-        StartCoroutine(SideMovement());
     }
 
     /// <summary>
@@ -80,6 +107,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
+        yield return 0;
+
+        /*
         while (true) {
             if (Input.GetKey(KeyCode.A)) {
                 avatar.Left();
@@ -93,6 +123,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                 yield return 0;
             }
         }
+        */
 
 		/*
         while (true)

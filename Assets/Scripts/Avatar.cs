@@ -2,14 +2,13 @@ using Kinect;
 using System;
 using System.Collections;
 
+
 /// <summary>
 /// This class represents the avatar as domain object. Therefore, it
 /// is a plain old C# object.
 /// </summary>
 public class Avatar
 {
-	private KinectReaderThread kinectThread;
-	
 	/// <summary>
 	/// Gets or sets the move speed.
 	/// </summary>
@@ -34,31 +33,29 @@ public class Avatar
 	/// </value>
 	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
+    /// <summary>
+    /// Gets or sets the user input
+    /// </summary>
+    /// <value>
+    /// The user input
+    /// </value>
+    private IUserInput _userInput { get; set; }
+
 	/// <summary>
     /// Used for initialization. The Start method is called just
     /// before any of the Update methods is called the first time.
 	/// </summary>
-	public Avatar(IAvatarBehaviour avatarBehaviour)
+	public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
 		this.track = 2;
 		this.moveSpeed = 10;
 		
-        try
-        {
-            //KinectManager kinectMgr = new KinectManager();
-            //kinectThread = new KinectReaderThread(kinectMgr);
-            //kinectThread.Start();
-        }
-        catch (System.Exception)
-        {
-            //Debug.Log("Kinect initiliazation failed! Maybe it's not connected.");
-        }
-        finally
-        {
-			this._avatarBehaviour = avatarBehaviour;
-            StateManager.Instance.pauseOrUnpause();
-        }
-	}
+        userInput.Initialize();
+	    this._avatarBehaviour = avatarBehaviour;
+        this._userInput = userInput;
+
+        StateManager.Instance.pauseOrUnpause();
+    }
 	
 	/// <summary>
     /// Update is called once per frame. It moves the avatar
@@ -72,13 +69,19 @@ public class Avatar
 			//moveSpeed += Time.smoothDeltaTime/5;
 			
             this._avatarBehaviour.Forward(this.moveSpeed);
+
+            switch (this._userInput.CurrentMovement())
+            {
+                case Movement.Left:
+                    this.Left();
+                    break;
+                case Movement.Right:
+                    this.Right();
+                    break;
+                default:
+                    break;
+            }
         }
-    }
-	
-    void OnDestroy()
-    {
-        if(kinectThread != null)
-            kinectThread.Stop();
     }
 	
     /// <summary>
@@ -113,6 +116,7 @@ public class Avatar
     /// </summary>
     ~Avatar()
     {
-        //kinectThread.Stop();
+        if (this._userInput != null)
+            this._userInput.Destroy();
     }
 }
