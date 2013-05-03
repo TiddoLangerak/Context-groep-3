@@ -11,6 +11,7 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject levelBlock;
 	private GameObject[] obstacles;
 	private int lastAdded = 0;
+	private int blockAdded = 0;
 	public Queue levelBlockQueue = new Queue();
 	public Queue obstacleBlockQ = new Queue();
 	
@@ -30,7 +31,17 @@ public class LevelGenerator : MonoBehaviour {
 	
 	GameObject randomObject() 
 	{
-		return obstacles[Random.Range(0,obstacles.Length)];
+		blockAdded++;
+		Debug.Log(blockAdded % 10);
+		if(blockAdded % 10 == 0)
+		{
+			Debug.Log("Bier");
+			return obstacles[2];
+		}
+		else 
+		{
+			return obstacles[Random.Range(0,2)];
+		}
 	}
 	
 	/// <summary>
@@ -61,9 +72,9 @@ public class LevelGenerator : MonoBehaviour {
 	void Start ()
 	{
 		obstacles = new GameObject[3];
-		obstacles[0] = GameObject.Find("Obstacle1");
-		obstacles[1] = GameObject.Find("Obstacle2");
-		obstacles[2] = GameObject.Find("Obstacle3");
+		obstacles[0] = GameObject.Find("PagePapier");
+		obstacles[1] = GameObject.Find("CupASoup");
+		obstacles[2] = GameObject.Find("BeerStack");
 		for(int i=0; i<blockAmount; i++)
 		{
 			AddLevelblock();
