@@ -8,6 +8,8 @@ public class Obstacle
 {
     /// <summary>
     /// Reference to IObstacleBehaviour
+    /// 
+    /// TODO: This reference is currently not used, but will be used in the future.
     /// </summary>
     private IObstacleBehaviour _obstacleBehaviour;
 
