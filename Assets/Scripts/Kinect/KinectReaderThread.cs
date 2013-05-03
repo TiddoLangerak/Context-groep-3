@@ -77,7 +77,7 @@ namespace Kinect
             : base()
         {
             this.kinectManager = kinectManager;
-            this.CurrentMovement = Movement.STRAIGHT;
+            this.CurrentMovement = Movement.None;
         }
 
         /// <summary>

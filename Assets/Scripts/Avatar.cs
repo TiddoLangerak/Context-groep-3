@@ -2,6 +2,7 @@ using Kinect;
 using System;
 using System.Collections;
 
+
 /// <summary>
 /// This class represents the avatar as domain object. Therefore, it
 /// is a plain old C# object.
@@ -49,18 +50,11 @@ public class Avatar
 		this.track = 2;
 		this.moveSpeed = 4;
 		
-        try
-        {
-            userInput.Initialize();
-	        this._avatarBehaviour = avatarBehaviour;
-            this._userInput = userInput;
+        userInput.Initialize();
+	    this._avatarBehaviour = avatarBehaviour;
+        this._userInput = userInput;
 
-            StateManager.Instance.pauseOrUnpause();
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("Input initialization failed! Please check if your controller is connected properly.");
-        }
+        StateManager.Instance.pauseOrUnpause();
     }
 	
 	/// <summary>

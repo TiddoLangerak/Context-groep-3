@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{CCC87C7A-8037-0DEC-3C55-E303328E59BF}</ProjectGuid>
+	<ProjectGuid>{485E5CF5-F60B-E8E1-A0A6-5FA60B51080E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -18,7 +18,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_0_1;UNITY_4_0;UNITY_STANDALONE_WIN;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_0;UNITY_4_1;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -49,11 +49,16 @@
      <Compile Include="Assets\Scripts\IAvatarBehaviour.cs" />
      <Compile Include="Assets\Scripts\ILevelBehavior.cs" />
      <Compile Include="Assets\Scripts\IObstacleBehaviour.cs" />
+     <Compile Include="Assets\Scripts\IUserInput.cs" />
+     <Compile Include="Assets\Scripts\KeyboardUserInput.cs" />
      <Compile Include="Assets\Scripts\Kinect\KinectManager.cs" />
      <Compile Include="Assets\Scripts\Kinect\KinectReaderThread.cs" />
+     <Compile Include="Assets\Scripts\KinectUserInput.cs" />
      <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\LevelBehavior.cs" />
      <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\Log.cs" />
+     <Compile Include="Assets\Scripts\MovementEnum.cs" />
      <Compile Include="Assets\Scripts\Obstacle.cs" />
      <Compile Include="Assets\Scripts\ObstacleBehaviour.cs" />
      <Compile Include="Assets\Scripts\StartGame.cs" />

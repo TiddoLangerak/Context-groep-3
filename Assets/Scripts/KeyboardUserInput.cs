@@ -7,7 +7,7 @@ class KeyboardUserInput : IUserInput
     {
     }
 
-    public int CurrentMovement()
+    public Movement CurrentMovement()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {

@@ -18,7 +18,7 @@ namespace Kinect
             kinectThread.Start();
         }
 
-        public int CurrentMovement()
+        public Movement CurrentMovement()
         {
             switch (kinectThread.CurrentMovement)
             {
