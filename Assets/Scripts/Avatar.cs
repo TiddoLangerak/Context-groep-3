@@ -78,10 +78,10 @@ public class Avatar
 
             switch (this._userInput.CurrentMovement())
             {
-                case IUserInput.Movement.Left:
+                case Movement.Left:
                     this.Left();
                     break;
-                case IUserInput.Movement.Right:
+                case Movement.Right:
                     this.Right();
                     break;
                 default:
