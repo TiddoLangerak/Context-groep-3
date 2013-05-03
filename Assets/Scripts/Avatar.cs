@@ -11,26 +11,12 @@ public class Avatar
 	private KinectReaderThread kinectThread;
 	
 	/// <summary>
-	/// The move speed.
-	/// </summary>
-	private int _moveSpeed = 10;
-	
-	/// <summary>
 	/// Gets or sets the move speed.
 	/// </summary>
 	/// <value>
 	/// The move speed.
 	/// </value>
-	public int moveSpeed
-	{
-		get { return _moveSpeed; }
-		set { _moveSpeed = value; }
-	}
-	
-	/// <summary>
-	/// The track.
-	/// </summary>
-	private int _track = 2;
+	public int moveSpeed { get; set; }
 	
 	/// <summary>
 	/// Gets or sets the track.
@@ -38,12 +24,14 @@ public class Avatar
 	/// <value>
 	/// The track.
 	/// </value>
-	public int track
-	{
-		get { return _track; }
-		set { _track = value; }
-	}
+	public int track { get; set; }
 	
+	/// <summary>
+	/// Gets or sets the _avatar behaviour.
+	/// </summary>
+	/// <value>
+	/// The _avatar behaviour.
+	/// </value>
 	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
 	/// <summary>
@@ -52,6 +40,9 @@ public class Avatar
 	/// </summary>
 	public Avatar(IAvatarBehaviour avatarBehaviour)
     {
+		this.track = 2;
+		this.moveSpeed = 4;
+		
         try
         {
             //KinectManager kinectMgr = new KinectManager();
