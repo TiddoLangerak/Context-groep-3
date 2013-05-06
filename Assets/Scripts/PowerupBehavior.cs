@@ -11,8 +11,7 @@ public class PowerupBehavior : MonoBehaviour, IPowerupBehavior
         STAR
     };
 	
-	public Type powerType;
-	
+	public PowerType powerType;
 
 	// Use this for initialization
 	void Start ()
