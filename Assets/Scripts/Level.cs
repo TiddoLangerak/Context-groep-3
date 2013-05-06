@@ -11,6 +11,7 @@ public class Level{
 	private int lastAdded = 0;
 	public Queue levelBlockQueue = new Queue();
 	public Queue obstacleBlockQ = new Queue();
+	public Queue powerUpQueue = new Queue();
 	ILevelBehavior behavior;
 	
 	/// <summary>
@@ -34,6 +35,7 @@ public class Level{
 		{
 			addBlock();
 			addObstacles();
+			AddPowerUp();
 		}
 		levelBlockQueue.TrimToSize();
 	}
@@ -47,8 +49,10 @@ public class Level{
 			behavior.destroyObject(levelBlockQueue.Dequeue());
 			behavior.destroyObject(obstacleBlockQ.Dequeue());
 			behavior.destroyObject(obstacleBlockQ.Dequeue());
+			behavior.destroyObject(powerUpQueue.Dequeue());
 			addBlock();
 			addObstacles();
+			AddPowerUp();
 		}
 	}
 	
@@ -60,15 +64,21 @@ public class Level{
 	
 	private void addObstacles()
 	{
-		int[] lines = randomLine();
-		obstacleBlockQ.Enqueue(behavior.makeObstacle(lines[0], blockLength*lastAdded - blockLength));
-		obstacleBlockQ.Enqueue(behavior.makeObstacle(lines[1], blockLength*lastAdded - blockLength));
+		int line1 = randomLine();
+		int line2 = (line1 + 2) % 3 - 1;
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(line1, blockLength*lastAdded - blockLength));
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(line2, blockLength*lastAdded - blockLength));
 	}
 	
-	private int[] randomLine()
+	private void AddPowerUp()
+	{
+		powerUpQueue.Enqueue(behavior.makePowerUp(randomLine(), blockLength* lastAdded - blockLength/2));
+	}
+	
+	private int randomLine()
 	{
 		Random r = new Random();
-		int obj1 = r.Next(-1, 2);
-		return new int[2]{obj1, ((obj1 + 2) % 3 - 1)};
+		int output = r.Next(-1, 2);
+		return output;
 	}
 }
