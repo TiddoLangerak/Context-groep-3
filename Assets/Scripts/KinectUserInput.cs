@@ -9,15 +9,15 @@ namespace Kinect
     /// </summary>
     public class KinectUserInput : IUserInput
     {
-        private KinectReaderThread kinectThread;
+        private KinectManager kinectMgr;
 
         /// <summary>
         /// Sets up and starts the kinect thread, such that input can be processed
         /// </summary>
         public void Initialize()
         {
-            KinectManager kinectMgr = new KinectManager();
-            kinectThread = new KinectReaderThread(kinectMgr);
+            kinectMgr = new KinectManager();
+            KinectReaderThread kinectThread = new KinectReaderThread(kinectMgr);
             kinectThread.Start();
         }
 
@@ -27,11 +27,11 @@ namespace Kinect
         /// <returns>The current movement of the avatar</returns>
         public AvatarMovement CurrentMovement()
         {
-            Dictionary<KinectReaderThread.KinectMovement, int> movementFreqencies = new Dictionary<KinectReaderThread.KinectMovement, int>();
-            List<KinectReaderThread.KinectMovement> kinectMovements;
-            lock (kinectThread)
+            Dictionary<UserMovement, int> movementFreqencies = new Dictionary<UserMovement, int>();
+            Dictionary<int, User> trackedUsers;
+            lock (kinectMgr)
             {
-                kinectMovements = new List<KinectReaderThread.KinectMovement>(kinectThread.UserMovements);
+                trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
             }
 
             foreach (KinectReaderThread.KinectMovement movement in kinectMovements)

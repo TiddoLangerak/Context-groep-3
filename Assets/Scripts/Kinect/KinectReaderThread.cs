@@ -15,44 +15,6 @@ namespace Kinect
     /// </summary>
     class KinectReaderThread
     {
-        /// <summary>
-        /// Constant indicating the minimal ratio necessary to detect leaning of the user.
-        /// This ratio is used together with the TRESHOLD_LEANING_HEAD ratio
-        /// The leaning ratio is calculated as followed:
-        ///     -a = The horizontal distance between right shoulder and torso joints
-        ///     -b = The horizontal distance between left shoulder and torso joins
-        ///     Leaning ratio left: b/a
-        ///     Leaning ratio right: a/b
-        /// </summary>
-        private const double TRESHOLD_LEANING = 1.5;
-
-        /// <summary>
-        /// Constant indicating the minimal ratio necessary to detect leaning of the user.
-        /// This ratio is used together with the TRESHOL_LEANING ratio.
-        /// The leaning head ratio is calculated as followed:
-        ///     -a = horizontal distance between head and torso joints
-        ///     -b = horizontal distance between shoulders
-        ///     Leaning head ratio = a/b
-        /// </summary>
-        private const double TRESHOLD_LEANING_HEAD = 0.5;
-
-        /// <summary>
-        /// Used to indicate the direction of a user.
-        /// Note: We can't use the Movement enum from IUserInput, since the Kinect might send other movements to the game
-        ///     than the movements the avatar will make. We're planning to combine inputs from multiple players
-        ///     to one avatar movement.
-        /// </summary>
-        public enum KinectMovement
-        {
-            None,
-            Left,
-            Right
-        };
-
-        /// <summary>
-        /// Contains the current movements of all tracked users.
-        /// </summary>
-        public List<KinectMovement> UserMovements { get; private set; }
 
         /// <summary>
         /// Object needed to communicate with the Kinect.
@@ -77,7 +39,6 @@ namespace Kinect
             : base()
         {
             this.kinectManager = kinectManager;
-            this.UserMovements = new List<KinectMovement>();
         }
 
         /// <summary>
@@ -114,18 +75,17 @@ namespace Kinect
                 try
                 {
                     kinectManager.Context.WaitAnyUpdateAll();
-                    lock (this)
+                    foreach (User user in kinectManager.TrackedUsers.Values)
                     {
-                        UserMovements.Clear();
-                        foreach(int user in kinectManager.TrackedUsers)
+                        UserState currState;
+                        currState.torsoPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.Torso);
+                        currState.headPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.Head);
+                        currState.leftShoulderPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.LeftShoulder);
+                        currState.rightShoulderPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.RightShoulder);
+                        currState.timestamp = DateTime.Now.Ticks;
+                        lock (user)
                         {
-                            SkeletonJointPosition torsoPos = GetSkeletonJointPosition(user, SkeletonJoint.Torso);
-                            SkeletonJointPosition headPos = GetSkeletonJointPosition(user, SkeletonJoint.Head);
-                            SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(user, SkeletonJoint.LeftShoulder);
-                            SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(user, SkeletonJoint.RightShoulder);
-
-                            KinectMovement userMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
-                            UserMovements.Add(userMovement);
+                            user.AddToHistory(currState);
                         }
                     }
                 }
@@ -135,39 +95,6 @@ namespace Kinect
                 }
 
             }
-        }
-
-        /// <summary>
-        /// Calculates the users current movement.
-        /// It needs some joints as input, and then tries to calculate it's movement
-        /// </summary>
-        /// <param name="torsoPos">The position of the users torso</param>
-        /// <param name="headPos">The position of the users head</param>
-        /// <param name="leftShoulderPos">The position of the users left shoulder</param>
-        /// <param name="rightShoulderPos">The position of the users right shoulder</param>
-        /// <returns>The users current direction</returns>
-        private KinectMovement CalculateCurrentMovement(SkeletonJointPosition torsoPos, SkeletonJointPosition headPos, SkeletonJointPosition leftShoulderPos, SkeletonJointPosition rightShoulderPos)
-        {
-            float leftDistance = Math.Abs(leftShoulderPos.Position.X - torsoPos.Position.X);
-            float rightDistance = Math.Abs(rightShoulderPos.Position.X - torsoPos.Position.X);
-            float headDistance = Math.Abs(headPos.Position.X - torsoPos.Position.X);
-            float shoulderDistance = Math.Abs(leftShoulderPos.Position.X - rightShoulderPos.Position.X);
-            float normalizedHeadDistance = headDistance / shoulderDistance;
-
-            /// If the head is far of center, the user will most likely be leaning to one way or the other
-            if (normalizedHeadDistance > TRESHOLD_LEANING_HEAD)
-            {
-                //Now we can check if the player was indeed leaning one way or the other
-                if (leftDistance / rightDistance > TRESHOLD_LEANING)
-                {
-                    return KinectMovement.Left;
-                }
-                else if (rightDistance / leftDistance > TRESHOLD_LEANING)
-                {
-                    return KinectMovement.Right;
-                }
-            }
-            return KinectMovement.None;
         }
 
         /// <summary>
