@@ -25,6 +25,17 @@ public class StateManager
     /// Singleton StateManager instance
     /// </summary>
     private static StateManager instance;
+	
+	/// <summary>
+	/// The score. (INV: score >= 0)
+	/// </summary>
+	private int score { get;
+		set
+		{
+			Debug.Assert(value >= 0);
+			score = value;
+		}
+	}
 
     /// <summary>
     /// Property used to create and return one StateManager instance
@@ -48,6 +59,7 @@ public class StateManager
     private StateManager()
     {
         this.currentState = State.PAUSING;
+		score = 0;
     }
 
     /// <summary>
