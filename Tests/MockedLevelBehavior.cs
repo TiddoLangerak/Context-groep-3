@@ -47,4 +47,8 @@ class MockedLevelBehavior : ILevelBehavior
     {
         return timesCalledObstacle;
     }
+    public object makePowerUp(int line, float position)
+    {
+        return null;
+    }
 }
