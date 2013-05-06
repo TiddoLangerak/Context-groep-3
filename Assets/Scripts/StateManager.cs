@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 /// <summary>
 /// The StateManager class is used to keep track of the game
@@ -26,14 +27,20 @@ public class StateManager
     /// </summary>
     private static StateManager instance;
 	
+	private int _score;
+	
 	/// <summary>
 	/// The score. (INV: score >= 0)
 	/// </summary>
-	private int score { get;
+	public int score {
+		get
+		{
+			return _score;
+		}
 		set
 		{
 			Debug.Assert(value >= 0);
-			score = value;
+			_score = value;
 		}
 	}
 

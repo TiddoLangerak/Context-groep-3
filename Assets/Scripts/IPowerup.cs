@@ -1,5 +1,5 @@
 
-interface IPowerup
+public interface IPowerup
 {
 	void Collision();
 }

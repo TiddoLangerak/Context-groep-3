@@ -1,7 +1,7 @@
 class PointsPowerup : IPowerup
 {
-	void Collision()
+	public void Collision()
 	{
-		
+		StateManager.Instance.score += 500;
 	}
 }
