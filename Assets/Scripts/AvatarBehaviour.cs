@@ -1,5 +1,5 @@
-﻿//#define INPUT_KINECT
-#define INPUT_KEYBOARD
+﻿#define INPUT_KINECT
+//#define INPUT_KEYBOARD
 
 using UnityEngine;
 
@@ -21,6 +21,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     private Avatar avatar;
 
     /// <summary>
+    /// Flag indicating if the avatar is currenly moving
+    /// </summary>
+    public bool IsMoving { get; private set; }
+
+    /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
     /// 
@@ -29,6 +34,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
+        this.IsMoving = false;
         try
         {
             //Try to initialize the input
@@ -38,8 +44,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             this.avatar = new Avatar(this, new KeyboardUserInput());
 #else
                 throw System.Exception("No input specified");
-#endif
-            StartCoroutine(SideMovement());
+#endif            
         }
         catch (System.Exception)
         {
@@ -54,13 +59,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     }
 
-    /// <summary>
-    /// The Destroy method is called when the MonoBehaviour will be destroyed.
-    /// OnDestroy will only be called on game objects that have previously
-    /// been active.
-    /// </summary>
-    void OnDestroy()
+    void OnGUI()
     {
+        GUI.TextArea(new Rect(10, 40, 200, 220), avatar.ToString());
     }
 
     /// <summary>
@@ -95,30 +96,22 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <summary>
     /// Move player to the left track.
     /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
         StartCoroutine(MoveAnimation(Vector3.left * 5));
     }
 
-    /// <summary>
-    /// A coroutine responsible for moving the avatar. Yields a
-    /// WaitForSeconds to pause execution and prevent moving
-    /// over multiple tracks at a time.
-    /// </summary>
-    IEnumerator SideMovement()
-    {
-        yield return 0;
-    }
+    
     IEnumerator MoveAnimation(Vector3 targetlocation)
     {
+        this.IsMoving = true;
         for (int i = 0; i < 20; i++)
         {
             transform.Translate(targetlocation / 20);
-
-            yield return new WaitForSeconds(0.008f);
+            yield return new WaitForSeconds(0.012f);
         }
-
+        yield return new WaitForSeconds(0.2f);
+        this.IsMoving = false;
         yield return 0;
     }
 }

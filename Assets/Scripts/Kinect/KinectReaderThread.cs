@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -41,7 +42,7 @@ namespace Kinect
         ///     than the movements the avatar will make. We're planning to combine inputs from multiple players
         ///     to one avatar movement.
         /// </summary>
-        public enum Movement
+        public enum KinectMovement
         {
             None,
             Left,
@@ -49,9 +50,9 @@ namespace Kinect
         };
 
         /// <summary>
-        /// The current direction of the user that is being tracked.
+        /// Contains the current movements of all tracked users.
         /// </summary>
-        public Movement CurrentMovement { get; private set; }
+        public List<KinectMovement> UserMovements { get; private set; }
 
         /// <summary>
         /// Object needed to communicate with the Kinect.
@@ -76,7 +77,7 @@ namespace Kinect
             : base()
         {
             this.kinectManager = kinectManager;
-            this.CurrentMovement = Movement.None;
+            this.UserMovements = new List<KinectMovement>();
         }
 
         /// <summary>
@@ -115,16 +116,16 @@ namespace Kinect
                     kinectManager.Context.WaitAnyUpdateAll();
                     lock (this)
                     {
-                        int[] users = kinectManager.UserGenerator.GetUsers();
-                        if (users.Length > 0)
+                        UserMovements.Clear();
+                        foreach(int user in kinectManager.TrackedUsers)
                         {
-                            int currUser = users[0];
-                            SkeletonJointPosition torsoPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Torso);
-                            SkeletonJointPosition headPos = GetSkeletonJointPosition(currUser, SkeletonJoint.Head);
-                            SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.LeftShoulder);
-                            SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(currUser, SkeletonJoint.RightShoulder);
+                            SkeletonJointPosition torsoPos = GetSkeletonJointPosition(user, SkeletonJoint.Torso);
+                            SkeletonJointPosition headPos = GetSkeletonJointPosition(user, SkeletonJoint.Head);
+                            SkeletonJointPosition leftShoulderPos = GetSkeletonJointPosition(user, SkeletonJoint.LeftShoulder);
+                            SkeletonJointPosition rightShoulderPos = GetSkeletonJointPosition(user, SkeletonJoint.RightShoulder);
 
-                            CurrentMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
+                            KinectMovement userMovement = CalculateCurrentMovement(torsoPos, headPos, leftShoulderPos, rightShoulderPos);
+                            UserMovements.Add(userMovement);
                         }
                     }
                 }
@@ -145,7 +146,7 @@ namespace Kinect
         /// <param name="leftShoulderPos">The position of the users left shoulder</param>
         /// <param name="rightShoulderPos">The position of the users right shoulder</param>
         /// <returns>The users current direction</returns>
-        private Movement CalculateCurrentMovement(SkeletonJointPosition torsoPos, SkeletonJointPosition headPos, SkeletonJointPosition leftShoulderPos, SkeletonJointPosition rightShoulderPos)
+        private KinectMovement CalculateCurrentMovement(SkeletonJointPosition torsoPos, SkeletonJointPosition headPos, SkeletonJointPosition leftShoulderPos, SkeletonJointPosition rightShoulderPos)
         {
             float leftDistance = Math.Abs(leftShoulderPos.Position.X - torsoPos.Position.X);
             float rightDistance = Math.Abs(rightShoulderPos.Position.X - torsoPos.Position.X);
@@ -159,14 +160,14 @@ namespace Kinect
                 //Now we can check if the player was indeed leaning one way or the other
                 if (leftDistance / rightDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.Left;
+                    return KinectMovement.Left;
                 }
                 else if (rightDistance / leftDistance > TRESHOLD_LEANING)
                 {
-                    return Movement.Right;
+                    return KinectMovement.Right;
                 }
             }
-            return Movement.None;
+            return KinectMovement.None;
         }
 
         /// <summary>
@@ -178,25 +179,6 @@ namespace Kinect
         private SkeletonJointPosition GetSkeletonJointPosition(int user, SkeletonJoint skelJoint)
         {
             return kinectManager.SkeletonCapability.GetSkeletonJointPosition(user, skelJoint);
-        }
-
-        /// <summary>
-        /// Prints the current direction of the user for debugging purposes
-        /// </summary>
-        private void PrintCurrentMovement()
-        {
-            switch (CurrentMovement)
-            {
-                case Movement.Left:
-                    Logger.Log("Going to the left");
-                    break;
-                case Movement.Right:
-                    Logger.Log("Going to the right");
-                    break;
-                case Movement.None:
-                    Logger.Log("Going straight ahead");
-                    break;
-            }
         }
     }
 }
