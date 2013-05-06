@@ -15,7 +15,7 @@ public class Avatar
     /// <value>
     /// The move speed.
     /// </value>
-    public int moveSpeed { get; set; }
+    public float moveSpeed { get; set; }
 
     /// <summary>
     /// Gets or sets the track.
