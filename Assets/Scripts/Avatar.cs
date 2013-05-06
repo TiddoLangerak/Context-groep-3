@@ -9,29 +9,29 @@ using System.Collections;
 /// </summary>
 public class Avatar
 {
-	/// <summary>
-	/// Gets or sets the move speed.
-	/// </summary>
-	/// <value>
-	/// The move speed.
-	/// </value>
-	public int moveSpeed { get; set; }
-	
-	/// <summary>
-	/// Gets or sets the track.
-	/// </summary>
-	/// <value>
-	/// The track.
-	/// </value>
-	public int track { get; set; }
-	
-	/// <summary>
-	/// Gets or sets the _avatar behaviour.
-	/// </summary>
-	/// <value>
-	/// The _avatar behaviour.
-	/// </value>
-	private IAvatarBehaviour _avatarBehaviour { get; set; }
+    /// <summary>
+    /// Gets or sets the move speed.
+    /// </summary>
+    /// <value>
+    /// The move speed.
+    /// </value>
+    public int moveSpeed { get; set; }
+
+    /// <summary>
+    /// Gets or sets the track.
+    /// </summary>
+    /// <value>
+    /// The track.
+    /// </value>
+    public int track { get; set; }
+
+    /// <summary>
+    /// Gets or sets the _avatar behaviour.
+    /// </summary>
+    /// <value>
+    /// The _avatar behaviour.
+    /// </value>
+    private IAvatarBehaviour _avatarBehaviour { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
@@ -41,33 +41,33 @@ public class Avatar
     /// </value>
     private IUserInput _userInput { get; set; }
 
-	/// <summary>
+    /// <summary>
     /// Used for initialization. The Start method is called just
     /// before any of the Update methods is called the first time.
-	/// </summary>
-	public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
+    /// </summary>
+    public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
-		this.track = 2;
-		this.moveSpeed = 10;
-		
+        this.track = 2;
+        this.moveSpeed = 4;
+
         userInput.Initialize();
-	    this._avatarBehaviour = avatarBehaviour;
+        this._avatarBehaviour = avatarBehaviour;
         this._userInput = userInput;
 
         StateManager.Instance.pauseOrUnpause();
     }
-	
-	/// <summary>
+
+    /// <summary>
     /// Update is called once per frame. It moves the avatar
     /// forward by a constant value. If the 'S' key is pressed,
     /// the avatar is moved backwards.
-	/// </summary>
-	public void Update ()
+    /// </summary>
+    public void Update()
     {
         if (!StateManager.Instance.isPausing())
         {
-			//moveSpeed += Time.smoothDeltaTime/5;
-			
+            //moveSpeed += Time.smoothDeltaTime/5;
+
             this._avatarBehaviour.Forward(this.moveSpeed);
 
             switch (this._userInput.CurrentMovement())
@@ -83,7 +83,7 @@ public class Avatar
             }
         }
     }
-	
+
     /// <summary>
     /// Move player to the left track.
     /// </summary>
@@ -108,7 +108,7 @@ public class Avatar
             this.track++;
             this._avatarBehaviour.Right();
         }
-	}
+    }
 
     /// <summary>
     /// This destructor is responsible for cleaning up resources, such

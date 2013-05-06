@@ -17,10 +17,10 @@ public class Logger
     /// </param>
     public static void Log(object message)
     {
-        #if UNITY_EDITOR
-            Debug.Log(message);
-        #else
+#if UNITY_EDITOR
+        Debug.Log(message);
+#else
             Console.WriteLine((string)message);
-        #endif
+#endif
     }
 }
