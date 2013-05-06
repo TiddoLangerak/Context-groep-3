@@ -13,11 +13,11 @@ public class StartGame : MonoBehaviour
     /// Shows a GUI button named "PLAY" and loads the real level
     /// when clicked.
     /// </summary>
-	void OnGUI()
-	{
-		if (GUI.Button(new Rect(10,10,150,100), "PLAY"))
-		{
-        	Application.LoadLevel("level");
-		}
-	}
+    void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 150, 100), "PLAY"))
+        {
+            Application.LoadLevel("level");
+        }
+    }
 }
