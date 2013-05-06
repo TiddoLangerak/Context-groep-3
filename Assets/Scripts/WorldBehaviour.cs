@@ -32,11 +32,10 @@ public class WorldBehaviour : MonoBehaviour
     /// events. It draws the score and draws a textarea
     /// if the game is paused.
     /// </summary>
-    void OnGUI()
+	void OnGUI()
     {
         int width = 65 + 10 * ((int)Mathf.Round(score)).ToString().Length;
         GUI.TextArea(new Rect(10, 10, width, 22), "POINTS: " + Mathf.Round(score));
-
         if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
             GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 60, 22), "PAUSED");
         if (StateManager.Instance.isDead())

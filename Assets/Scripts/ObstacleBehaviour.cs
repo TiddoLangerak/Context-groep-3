@@ -23,7 +23,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// <param name="collision">Collision information</param>
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Avatar")
+        if (collision.gameObject.name == "ShoppingCart")
         {
             this.obstacle.Collision();
         }

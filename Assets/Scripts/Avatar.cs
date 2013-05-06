@@ -9,29 +9,29 @@ using System.Collections;
 /// </summary>
 public class Avatar
 {
-    /// <summary>
-    /// Gets or sets the move speed.
-    /// </summary>
-    /// <value>
-    /// The move speed.
-    /// </value>
-    public int moveSpeed { get; set; }
-
-    /// <summary>
-    /// Gets or sets the track.
-    /// </summary>
-    /// <value>
-    /// The track.
-    /// </value>
-    public int track { get; set; }
-
-    /// <summary>
-    /// Gets or sets the _avatar behaviour.
-    /// </summary>
-    /// <value>
-    /// The _avatar behaviour.
-    /// </value>
-    private IAvatarBehaviour _avatarBehaviour { get; set; }
+	/// <summary>
+	/// Gets or sets the move speed.
+	/// </summary>
+	/// <value>
+	/// The move speed.
+	/// </value>
+	public float moveSpeed { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the track.
+	/// </summary>
+	/// <value>
+	/// The track.
+	/// </value>
+	public int track { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the _avatar behaviour.
+	/// </summary>
+	/// <value>
+	/// The _avatar behaviour.
+	/// </value>
+	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
@@ -47,8 +47,8 @@ public class Avatar
     /// </summary>
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
-        this.track = 2;
-        this.moveSpeed = 4;
+		this.track = 2;
+		this.moveSpeed = 20;
 
         userInput.Initialize();
         this._avatarBehaviour = avatarBehaviour;
@@ -67,7 +67,6 @@ public class Avatar
         if (!StateManager.Instance.isPausing())
         {
             //moveSpeed += Time.smoothDeltaTime/5;
-
             this._avatarBehaviour.Forward(this.moveSpeed);
 
             switch (this._userInput.CurrentMovement())
