@@ -31,7 +31,7 @@ public class Avatar
     /// <value>
     /// The _avatar behaviour.
     /// </value>
-    private IAvatarBehaviour _avatarBehaviour { get; set; }
+    private IAvatarBehaviour AvatarBehaviour { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
@@ -39,7 +39,7 @@ public class Avatar
     /// <value>
     /// The user input
     /// </value>
-    private IUserInput _userInput { get; set; }
+    private IUserInput UserInput { get; set; }
 
     /// <summary>
     /// Used for initialization. The Start method is called just
@@ -48,11 +48,11 @@ public class Avatar
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
         this.track = 2;
-        this.moveSpeed = 4;
+        this.moveSpeed = 10;
 
         userInput.Initialize();
-        this._avatarBehaviour = avatarBehaviour;
-        this._userInput = userInput;
+        this.AvatarBehaviour = avatarBehaviour;
+        this.UserInput = userInput;
 
         StateManager.Instance.pauseOrUnpause();
     }
@@ -66,20 +66,21 @@ public class Avatar
     {
         if (!StateManager.Instance.isPausing())
         {
-            //moveSpeed += Time.smoothDeltaTime/5;
+            this.AvatarBehaviour.Forward(this.moveSpeed);
 
-            this._avatarBehaviour.Forward(this.moveSpeed);
-
-            switch (this._userInput.CurrentMovement())
+            if (!AvatarBehaviour.IsMoving)
             {
-                case AvatarMovement.Left:
-                    this.Left();
-                    break;
-                case AvatarMovement.Right:
-                    this.Right();
-                    break;
-                default:
-                    break;
+                switch (this.UserInput.CurrentMovement())
+                {
+                    case AvatarMovement.Left:
+                        this.Left();
+                        break;
+                    case AvatarMovement.Right:
+                        this.Right();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -92,7 +93,7 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track > 1)
         {
             this.track--;
-            this._avatarBehaviour.Left();
+            this.AvatarBehaviour.Left();
         }
     }
 
@@ -106,7 +107,7 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track < 3)
         {
             this.track++;
-            this._avatarBehaviour.Right();
+            this.AvatarBehaviour.Right();
         }
     }
 
@@ -116,7 +117,12 @@ public class Avatar
     /// </summary>
     ~Avatar()
     {
-        if (this._userInput != null)
-            this._userInput.Destroy();
+        if (this.UserInput != null)
+            this.UserInput.Destroy();
+    }
+
+    public override String ToString()
+    {
+        return UserInput.ToString();
     }
 }

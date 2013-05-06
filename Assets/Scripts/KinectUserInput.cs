@@ -28,7 +28,13 @@ namespace Kinect
         public AvatarMovement CurrentMovement()
         {
             Dictionary<KinectReaderThread.KinectMovement, int> movementFreqencies = new Dictionary<KinectReaderThread.KinectMovement, int>();
-            foreach (KinectReaderThread.KinectMovement movement in kinectThread.UserMovements)
+            List<KinectReaderThread.KinectMovement> kinectMovements;
+            lock (kinectThread)
+            {
+                kinectMovements = new List<KinectReaderThread.KinectMovement>(kinectThread.UserMovements);
+            }
+
+            foreach (KinectReaderThread.KinectMovement movement in kinectMovements)
             {
                 if (movementFreqencies.ContainsKey(movement))
                 {
@@ -63,6 +69,29 @@ namespace Kinect
         public void Destroy()
         {
             this.kinectThread.Stop();
+        }
+
+        public override String ToString()
+        {
+            String res = "Nr. of players: " + kinectThread.UserMovements.Count + "\n\n";
+            for (int idx = 0; idx < kinectThread.UserMovements.Count; idx++)
+            {
+                res += idx + ": ";
+                switch(kinectThread.UserMovements[idx])
+                {
+                    case KinectReaderThread.KinectMovement.Left:
+                        res += "Left";
+                        break;
+                    case KinectReaderThread.KinectMovement.Right:
+                        res += "Right";
+                        break;
+                    default:
+                        res+= "None";
+                        break;
+                }
+                res += "\n";
+            }
+            return res;
         }
     }
 }
