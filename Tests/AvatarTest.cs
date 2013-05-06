@@ -28,13 +28,13 @@ public class AvatarTest
         var mockUserInput = new Mock<IUserInput>();
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
-        Assert.AreEqual(av.moveSpeed, 4);
+        Assert.AreEqual(av.moveSpeed, 10);
 
         av.moveSpeed++;
-        Assert.AreEqual(av.moveSpeed, 5);
+        Assert.AreEqual(av.moveSpeed, 11);
 
-        av.moveSpeed = 10;
-        Assert.AreEqual(av.moveSpeed, 10);
+        av.moveSpeed = 15;
+        Assert.AreEqual(av.moveSpeed, 15);
     }
 
     [Test]
