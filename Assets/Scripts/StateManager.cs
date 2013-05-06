@@ -27,12 +27,12 @@ public class StateManager
     /// </summary>
     private static StateManager instance;
 	
-	private int _score;
+	private float _score;
 	
 	/// <summary>
 	/// The score. (INV: score >= 0)
 	/// </summary>
-	public int score {
+	public float score {
 		get
 		{
 			return _score;

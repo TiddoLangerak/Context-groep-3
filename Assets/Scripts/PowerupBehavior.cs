@@ -18,12 +18,10 @@ public class PowerupBehavior : MonoBehaviour, IPowerupBehavior
 	
 	void OnCollisionEnter(Collision collision)
     {
-		Logger.Log ("ABC");
-        if (collision.gameObject.name == "Avatar")
+        if (collision.gameObject.name == "ShoppingCart")
         {
             powerup.Collision();
-			Destroy(this);
-			Logger.Log ("DEF");
+			Destroy(this.gameObject);
         }
     }
 }
