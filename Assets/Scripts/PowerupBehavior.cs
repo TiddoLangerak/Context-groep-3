@@ -3,12 +3,33 @@ using System.Collections;
 
 public class PowerupBehavior : MonoBehaviour, IPowerupBehavior
 {
-	public IPowerup powerup;
+	protected IPowerup powerup;
+	
+	public enum PowerType
+    {
+        MONEY,
+        STAR
+    };
+	
+	public Type powerType;
+	
 
 	// Use this for initialization
 	void Start ()
 	{
-		powerup = new PointsPowerup();
+		switch (powerType)
+		{
+			case PowerType.MONEY:
+			{
+				powerup = new PointsPowerup();
+				break;
+			}
+			case PowerType.STAR:
+			{
+				powerup = null;
+				break;
+			}
+		}
 	}
 	
 	// Update is called once per frame

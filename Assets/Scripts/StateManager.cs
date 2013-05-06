@@ -27,10 +27,13 @@ public class StateManager
     /// </summary>
     private static StateManager instance;
 	
+	/// <summary>
+	/// Stores the score.
+	/// </summary>
 	private float _score;
 	
 	/// <summary>
-	/// The score. (INV: score >= 0)
+	/// Get and setters for the score. (INV: score >= 0)
 	/// </summary>
 	public float score {
 		get
@@ -43,6 +46,12 @@ public class StateManager
 			_score = value;
 		}
 	}
+	
+	/// <summary>
+	/// If the player is currently invincible.
+	/// </summary>
+	private bool _invincible;
+	public bool invincible {get; set;}
 
     /// <summary>
     /// Property used to create and return one StateManager instance
@@ -112,7 +121,7 @@ public class StateManager
     /// Returns true iff the game is in the PAUSING state.
     /// </summary>
     /// <returns></returns>
-    public Boolean isPausing()
+    public bool isPausing()
     {
         return State.PAUSING == this.currentState || State.DEAD == this.currentState;
     }
@@ -123,7 +132,7 @@ public class StateManager
     /// <returns>
     /// True if the game is playing, false otherwise.
     /// </returns>
-    public Boolean isPlaying()
+    public bool isPlaying()
     {
         return State.PLAYING == this.currentState;
     }
@@ -134,7 +143,7 @@ public class StateManager
     /// <returns>
     /// True if the player is dead, false otherwise.
     /// </returns>
-    public Boolean isDead()
+    public bool isDead()
     {
         return State.DEAD == this.currentState;
     }
