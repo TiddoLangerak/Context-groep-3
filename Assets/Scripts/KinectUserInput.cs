@@ -73,13 +73,24 @@ namespace Kinect
             this.kinectThread.Stop();
         }
 
+        /// <summary>
+        /// Returns a string representation of the user input, containing the nr. of players and the current movement of
+        /// each player.
+        /// </summary>
+        /// <returns></returns>
         public override String ToString()
         {
-            String res = "Nr. of players: " + kinectThread.UserMovements.Count + "\n\n";
-            for (int idx = 0; idx < kinectThread.UserMovements.Count; idx++)
+            List<KinectReaderThread.KinectMovement> kinectMovements;
+            lock (kinectThread)
+            {
+                kinectMovements = new List<KinectReaderThread.KinectMovement>(kinectThread.UserMovements);
+            }
+
+            String res = "Nr. of players: " + kinectMovements.Count + "\n\n";
+            for (int idx = 0; idx < kinectMovements.Count; idx++)
             {
                 res += idx + ": ";
-                switch(kinectThread.UserMovements[idx])
+                switch(kinectMovements[idx])
                 {
                     case KinectReaderThread.KinectMovement.Left:
                         res += "Left";
