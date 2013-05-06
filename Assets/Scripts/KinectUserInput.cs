@@ -50,14 +50,16 @@ namespace Kinect
             {
                 //retrieve the movement with the maximum frequency
                 KinectReaderThread.KinectMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
-                switch (currMovement)
+
+                if (movementFreqencies[currMovement] > kinectMovements.Count/2)
                 {
-                    case KinectReaderThread.KinectMovement.Left:
-                        return AvatarMovement.Left;
-                    case KinectReaderThread.KinectMovement.Right:
-                        return AvatarMovement.Right;
-                    default:
-                        return AvatarMovement.None;
+                    switch (currMovement)
+                    {
+                        case KinectReaderThread.KinectMovement.Left:
+                            return AvatarMovement.Left;
+                        case KinectReaderThread.KinectMovement.Right:
+                            return AvatarMovement.Right;
+                    }
                 }
             }
             return AvatarMovement.None;
