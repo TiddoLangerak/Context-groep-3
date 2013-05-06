@@ -72,7 +72,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     public void Update()
     {
         this.avatar.Update();
-
+		this.avatar.moveSpeed += Time.smoothDeltaTime/5;
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
     }
@@ -80,7 +80,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <summary>
     /// Move the avatar forward by the given move speed.
     /// </summary>
-    public void Forward(int moveSpeed)
+    public void Forward(float moveSpeed)
     {
         transform.Translate(Vector3.forward * moveSpeed * Time.smoothDeltaTime);
     }

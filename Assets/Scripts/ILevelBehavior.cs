@@ -19,4 +19,5 @@ public interface ILevelBehavior
     void destroyObject(object gameObject);
 
     object makeObstacle(int line, float position);
+	object makePowerUp(int line, float position);
 }

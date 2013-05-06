@@ -3,7 +3,7 @@
 public interface IAvatarBehaviour
 {
     bool IsMoving { get; }
-    void Forward(int moveSpeed);
+    void Forward(float moveSpeed);
     void Left();
     void Right();
 }
