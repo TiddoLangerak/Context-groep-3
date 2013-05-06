@@ -33,7 +33,7 @@ public class WorldBehaviour : MonoBehaviour
     /// if the game is paused.
     /// </summary>
 	void OnGUI()
-	{
+	{	
 		int width = 65 + 10*((int) Mathf.Round(score)).ToString().Length;
 		GUI.TextArea(new Rect(10,10, width ,22), "POINTS: " + Mathf.Round(score));
 		

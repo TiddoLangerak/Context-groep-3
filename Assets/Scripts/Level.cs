@@ -60,14 +60,15 @@ public class Level{
 	
 	private void addObstacles()
 	{
-		obstacleBlockQ.Enqueue(behavior.makeObstacle(randomLine(), blockLength*lastAdded - blockLength));
-		obstacleBlockQ.Enqueue(behavior.makeObstacle(randomLine(), blockLength*lastAdded - blockLength));
+		int[] lines = randomLine();
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(lines[0], blockLength*lastAdded - blockLength));
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(lines[1], blockLength*lastAdded - blockLength));
 	}
 	
-	private int randomLine()
+	private int[] randomLine()
 	{
 		Random r = new Random();
-		
-		return r.Next(-1, 2);
+		int obj1 = r.Next(-1, 2);
+		return new int[2]{obj1, ((obj1 + 2) % 3 - 1)};
 	}
 }

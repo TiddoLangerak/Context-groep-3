@@ -15,7 +15,7 @@ public class Avatar
 	/// <value>
 	/// The move speed.
 	/// </value>
-	public int moveSpeed { get; set; }
+	public float moveSpeed { get; set; }
 	
 	/// <summary>
 	/// Gets or sets the track.
@@ -48,7 +48,7 @@ public class Avatar
 	public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
 		this.track = 2;
-		this.moveSpeed = 10;
+		this.moveSpeed = 20;
 		
         userInput.Initialize();
 	    this._avatarBehaviour = avatarBehaviour;
@@ -66,8 +66,7 @@ public class Avatar
     {
         if (!StateManager.Instance.isPausing())
         {
-			//moveSpeed += Time.smoothDeltaTime/5;
-			
+		
             this._avatarBehaviour.Forward(this.moveSpeed);
 
             switch (this._userInput.CurrentMovement())
