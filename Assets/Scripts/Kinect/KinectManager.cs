@@ -1,5 +1,6 @@
 using OpenNI;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System;
 using UnityEngine;
@@ -37,6 +38,11 @@ namespace Kinect
         public SkeletonCapability SkeletonCapability { get; private set; }
 
         /// <summary>
+        /// Keeps tracks of the users that are currently being tracked.
+        /// </summary>
+        public List<int> TrackedUsers { get; private set; }
+
+        /// <summary>
         /// Constructor: initializes all attributes and properties.
         /// It also starts detecting users.
         /// </summary>
@@ -65,6 +71,8 @@ namespace Kinect
             UserGenerator.NewUser += OnNewUser;
             UserGenerator.LostUser += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
+
+            this.TrackedUsers = new List<int>();
         }
 
         /// <summary>
@@ -89,6 +97,7 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnLostUser(object sender, UserLostEventArgs e)
         {
+            TrackedUsers.Remove(e.ID);
             Logger.Log("Lost user: " + e.ID);
         }
 
@@ -106,6 +115,7 @@ namespace Kinect
                 Logger.Log("Calibration succeeded on user: " + e.ID);
                 Logger.Log("Start tracking user: " + e.ID);
                 SkeletonCapability.StartTracking(e.ID);
+                TrackedUsers.Add(e.ID);
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {

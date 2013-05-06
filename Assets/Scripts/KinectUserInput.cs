@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Kinect
 {
@@ -8,10 +10,6 @@ namespace Kinect
     public class KinectUserInput : IUserInput
     {
         private KinectReaderThread kinectThread;
-
-        public KinectUserInput()
-        {
-        }
 
         /// <summary>
         /// Sets up and starts the kinect thread, such that input can be processed
@@ -23,20 +21,45 @@ namespace Kinect
             kinectThread.Start();
         }
 
-
-        public Movement CurrentMovement()
+        /// <summary>
+        /// Calculate the current movement of the avatar, based on the user movements.
+        /// </summary>
+        /// <returns>The current movement of the avatar</returns>
+        public AvatarMovement CurrentMovement()
         {
-            switch (kinectThread.CurrentMovement)
+            Dictionary<KinectReaderThread.KinectMovement, int> movementFreqencies = new Dictionary<KinectReaderThread.KinectMovement, int>();
+            foreach (KinectReaderThread.KinectMovement movement in kinectThread.UserMovements)
             {
-                case KinectReaderThread.Movement.Left:
-                    return Movement.Left;
-                case KinectReaderThread.Movement.Right:
-                    return Movement.Right;
-                default:
-                    return 0;
+                if (movementFreqencies.ContainsKey(movement))
+                {
+                    movementFreqencies[movement]++;
+                }
+                else
+                {
+                    movementFreqencies.Add(movement, 1);
+                }
             }
+
+            if (movementFreqencies.Count > 0)
+            {
+                //retrieve the movement with the maximum frequency
+                KinectReaderThread.KinectMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+                switch (currMovement)
+                {
+                    case KinectReaderThread.KinectMovement.Left:
+                        return AvatarMovement.Left;
+                    case KinectReaderThread.KinectMovement.Right:
+                        return AvatarMovement.Right;
+                    default:
+                        return AvatarMovement.None;
+                }
+            }
+            return AvatarMovement.None;
         }
 
+        /// <summary>
+        /// Stop the kinect thread.
+        /// </summary>
         public void Destroy()
         {
             this.kinectThread.Stop();

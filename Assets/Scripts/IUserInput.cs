@@ -18,7 +18,7 @@ public interface IUserInput
     /// <returns>
     /// The current movement
     /// </returns>
-    Movement CurrentMovement();
+    AvatarMovement CurrentMovement();
     /// <summary>
     /// Stops processing input.
     /// </summary>
