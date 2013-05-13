@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kinect
 {
-    public struct UserState : IComparable<UserState>
+    public struct UserState
     {
         public SkeletonJointPosition torsoPos, headPos, leftShoulderPos, rightShoulderPos;
         public long timestamp;
@@ -44,13 +44,18 @@ namespace Kinect
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
-        /// This ratio is used together with the TRESHOL_LEANING ratio.
+        /// This ratio is used together with the TRESHOLD_LEANING ratio.
         /// The leaning head ratio is calculated as followed:
         ///     -a = horizontal distance between head and torso joints
         ///     -b = horizontal distance between shoulders
         ///     Leaning head ratio = a/b
         /// </summary>
         private const double TRESHOLD_LEANING_HEAD = 0.5;
+
+        private const double TRESHOLD_JUMPING = 0.8;
+
+        private long lastJumpTime = 0;
+        private const int JUMP_TIMEOUT = 250;
 
         public UserMovement currentMovement
         {
@@ -128,17 +133,24 @@ namespace Kinect
         }
 
         /// <summary>
-        /// Returns true iff the user is jumping.
+        /// Returns true iff the user is jumping. Jumping is detected based on the last torso position.
         /// </summary>
         /// <returns>True iff the user is jumping.</returns>
         private bool IsJumping()
-        {
+        {            
             UserState minTorsoPosition = movementHistory.Aggregate((l, r) => l.torsoPos.Position.Y < r.torsoPos.Position.Y ? l : r);
-            UserState currPosition = movementHistory.Last.Value;
-            float heightDifference = currPosition.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
-            float shoulderDistance = Math.Abs(currPosition.leftShoulderPos.Position.X - currPosition.rightShoulderPos.Position.X);
-            float normalizedDifference = (shoulderDistance != 0) ? (heightDifferencegit  / shoulderDistance) : 0;
-            return false;
+            UserState currState = movementHistory.Last.Value;
+            float heightDifference = currState.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
+            float shoulderDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.rightShoulderPos.Position.X);
+            float normalizedDifference = (shoulderDistance != 0) ? (heightDifference  / shoulderDistance) : 0;
+
+            if (normalizedDifference > TRESHOLD_JUMPING)
+            {
+                lastJumpTime = currState.timestamp;
+                return true;
+            }
+
+            return (currState.timestamp - lastJumpTime) < JUMP_TIMEOUT * 10000;
         }
     }
 }
