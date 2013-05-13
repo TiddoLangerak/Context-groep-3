@@ -8,6 +8,7 @@ class KeyboardUserInput : IUserInput
 {
     public void Initialize()
     {
+        StateManager.Instance.NumberOfPlayers = 1;
     }
 
     public AvatarMovement CurrentMovement()
@@ -28,5 +29,6 @@ class KeyboardUserInput : IUserInput
 
     public void Destroy()
     {
+        StateManager.Instance.NumberOfPlayers = 0;
     }
 }

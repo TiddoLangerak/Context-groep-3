@@ -98,6 +98,7 @@ namespace Kinect
         private void OnLostUser(object sender, UserLostEventArgs e)
         {
             TrackedUsers.Remove(e.ID);
+            StateManager.Instance.NumberOfPlayers--;
             Logger.Log("Lost user: " + e.ID);
         }
 
@@ -116,6 +117,7 @@ namespace Kinect
                 Logger.Log("Start tracking user: " + e.ID);
                 SkeletonCapability.StartTracking(e.ID);
                 TrackedUsers.Add(e.ID,new User(e.ID));
+                StateManager.Instance.NumberOfPlayers++;
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {

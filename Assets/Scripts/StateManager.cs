@@ -28,6 +28,7 @@ public class StateManager
     private static StateManager instance;
 	
 	private float _score;
+    public int NumberOfPlayers { get; set; }
 	
 	/// <summary>
 	/// The score. (INV: score >= 0)
