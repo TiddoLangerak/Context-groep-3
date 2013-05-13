@@ -1,9 +1,10 @@
 ﻿/// <summary>
 /// Defines the possible movements of the avatar
 /// </summary>
-public enum AvatarMovement
+public enum Movement
 {
     None,
     Left,
     Right,
+	Up
 };
