@@ -63,7 +63,7 @@ namespace Kinect
 
         public User(int id)
         {
-            this.id = id;
+            this.ID = id;
         }
 
         /// <summary>

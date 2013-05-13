@@ -10,6 +10,7 @@ namespace Kinect
     public class KinectUserInput : IUserInput
     {
         private KinectManager kinectMgr;
+        private KinectReaderThread kinectThread;
 
         /// <summary>
         /// Sets up and starts the kinect thread, such that input can be processed
@@ -17,7 +18,7 @@ namespace Kinect
         public void Initialize()
         {
             kinectMgr = new KinectManager();
-            KinectReaderThread kinectThread = new KinectReaderThread(kinectMgr);
+            kinectThread = new KinectReaderThread(kinectMgr);
             kinectThread.Start();
         }
 
@@ -34,8 +35,9 @@ namespace Kinect
                 trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
             }
 
-            foreach (KinectReaderThread.KinectMovement movement in kinectMovements)
+            foreach (User user in trackedUsers.Values)
             {
+                UserMovement movement = user.currentMovement;
                 if (movementFreqencies.ContainsKey(movement))
                 {
                     movementFreqencies[movement]++;
@@ -49,16 +51,18 @@ namespace Kinect
             if (movementFreqencies.Count > 0)
             {
                 //retrieve the movement with the maximum frequency
-                KinectReaderThread.KinectMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+                UserMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 
-                if (movementFreqencies[currMovement] > kinectMovements.Count/2)
+                if (movementFreqencies[currMovement] > trackedUsers.Count/2)
                 {
                     switch (currMovement)
                     {
-                        case KinectReaderThread.KinectMovement.Left:
+                        case UserMovement.Left:
                             return AvatarMovement.Left;
-                        case KinectReaderThread.KinectMovement.Right:
+                        case UserMovement.Right:
                             return AvatarMovement.Right;
+                        case UserMovement.Jump:
+                            return AvatarMovement.Jump;
                     }
                 }
             }
@@ -80,23 +84,26 @@ namespace Kinect
         /// <returns></returns>
         public override String ToString()
         {
-            List<KinectReaderThread.KinectMovement> kinectMovements;
-            lock (kinectThread)
+            Dictionary<int, User> trackedUsers;
+            lock (kinectMgr)
             {
-                kinectMovements = new List<KinectReaderThread.KinectMovement>(kinectThread.UserMovements);
+                trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
             }
 
-            String res = "Nr. of players: " + kinectMovements.Count + "\n\n";
-            for (int idx = 0; idx < kinectMovements.Count; idx++)
+            String res = "Nr. of players: " + trackedUsers.Count + "\n\n";
+            foreach (User user in trackedUsers.Values )
             {
-                res += idx + ": ";
-                switch(kinectMovements[idx])
+                res += user.ID + ": ";
+                switch(user.currentMovement)
                 {
-                    case KinectReaderThread.KinectMovement.Left:
+                    case UserMovement.Left:
                         res += "Left";
                         break;
-                    case KinectReaderThread.KinectMovement.Right:
+                    case UserMovement.Right:
                         res += "Right";
+                        break;
+                    case UserMovement.Jump:
+                        res += "Jump";
                         break;
                     default:
                         res+= "None";
