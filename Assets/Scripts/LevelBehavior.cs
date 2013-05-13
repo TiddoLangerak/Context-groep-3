@@ -9,6 +9,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 
     public int blockAmount = 4;
     public float blockLength = 50.0f;
+	public int powerupOffset = 2;
     public GameObject levelBlock;
     public GameObject[] obstacles;
 	public GameObject[] powerups;
@@ -22,7 +23,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
     /// </summary>
     void Start()
     {
-        level = new Level(blockAmount, blockLength, this);
+        level = new Level(blockAmount, powerupOffset, blockLength, this);
     }
 
     /// <summary>

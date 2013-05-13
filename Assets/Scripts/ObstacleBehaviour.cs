@@ -12,7 +12,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
     /// </summary>
-    void Start()
+    void Awake()
     {
         this.obstacle = new Obstacle(this);
     }
@@ -25,7 +25,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     {
         if (collision.gameObject.name == "ShoppingCart")
         {
-            this.obstacle.Collision();
+			this.obstacle.Collision();
         }
     }
 }
