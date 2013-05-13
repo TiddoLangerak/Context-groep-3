@@ -22,7 +22,7 @@ class KeyboardUserInput : IUserInput
         }
 		else if(Input.GetKeyDown(KeyCode.W))
 		{
-			return Movement.Up;	
+			return AvatarMovement.Jump;	
 		}
         else
         {
