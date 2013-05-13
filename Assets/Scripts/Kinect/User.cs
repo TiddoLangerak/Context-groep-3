@@ -26,7 +26,7 @@ namespace Kinect
         Jump
     };
 
-    class User
+    public class User
     {
         public int ID { get; private set; }
         private LinkedList<UserState> movementHistory;        
@@ -58,12 +58,15 @@ namespace Kinect
             {
                 return CalculateCurrentMovement();
             }
-            private set;
+            private set
+            {
+            }
         }
 
         public User(int id)
         {
             this.ID = id;
+            this.movementHistory = new LinkedList<UserState>();
         }
 
         /// <summary>
@@ -94,6 +97,11 @@ namespace Kinect
             {
                 if (movementHistory.Count > 0)
                 {
+                    if (IsJumping())
+                    {
+                        return UserMovement.Jump;
+                    }
+
                     UserState currState = movementHistory.Last.Value;
                     float leftDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.torsoPos.Position.X);
                     float rightDistance = Math.Abs(currState.rightShoulderPos.Position.X - currState.torsoPos.Position.X);
@@ -117,6 +125,11 @@ namespace Kinect
                 }
             }
             return UserMovement.None;
+        }
+
+        private bool IsJumping()
+        {
+            return false;
         }
     }
 }
