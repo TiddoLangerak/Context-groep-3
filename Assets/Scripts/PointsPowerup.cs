@@ -1,4 +1,4 @@
-class PointsPowerup : IPowerup
+public class PointsPowerup : IPowerup
 {
 	public void Collision()
 	{
