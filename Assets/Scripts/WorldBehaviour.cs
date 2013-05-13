@@ -4,17 +4,11 @@ using System.Collections;
 public class WorldBehaviour : MonoBehaviour
 {
     /// <summary>
-    /// Variable keeping track of current score
-    /// </summary>
-    private float score;
-
-    /// <summary>
     /// Used for initialization
     /// </summary>
     void Start()
     {
         StartCoroutine(onKey());
-        score = 0f;
     }
 
     /// <summary>
@@ -24,7 +18,7 @@ public class WorldBehaviour : MonoBehaviour
     void Update()
     {
         if (!StateManager.Instance.isPausing())
-            score += Time.deltaTime * 10;
+            StateManager.Instance.score += (Time.deltaTime * 10);
     }
 
     /// <summary>
@@ -34,8 +28,8 @@ public class WorldBehaviour : MonoBehaviour
     /// </summary>
 	void OnGUI()
     {
-        int width = 65 + 10 * ((int)Mathf.Round(score)).ToString().Length;
-        GUI.TextArea(new Rect(10, 10, width, 22), "POINTS: " + Mathf.Round(score));
+        int width = 65 + 10 * ((int)Mathf.Round(StateManager.Instance.score)).ToString().Length;
+        GUI.TextArea(new Rect(10, 10, width, 22), "POINTS: " + Mathf.Round(StateManager.Instance.score));
         if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
             GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 60, 22), "PAUSED");
         if (StateManager.Instance.isDead())
