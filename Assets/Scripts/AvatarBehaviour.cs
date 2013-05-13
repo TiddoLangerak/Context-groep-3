@@ -8,7 +8,6 @@ using Kinect;
 #endif
 
 using System.Collections;
-using UnityEditor;
 
 /// <summary>
 /// This class represents the avatar in the game environment.

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 /// <summary>
 /// The StateManager class is used to keep track of the game
@@ -25,6 +26,23 @@ public class StateManager
     /// Singleton StateManager instance
     /// </summary>
     private static StateManager instance;
+	
+	private float _score;
+	
+	/// <summary>
+	/// The score. (INV: score >= 0)
+	/// </summary>
+	public float score {
+		get
+		{
+			return _score;
+		}
+		set
+		{
+			Debug.Assert(value >= 0);
+			_score = value;
+		}
+	}
 
     /// <summary>
     /// Property used to create and return one StateManager instance
@@ -48,6 +66,7 @@ public class StateManager
     private StateManager()
     {
         this.currentState = State.PAUSING;
+		score = 0;
     }
 
     /// <summary>
