@@ -12,6 +12,7 @@ public class Level{
 	public Queue levelBlockQueue = new Queue();
 	public Queue obstacleBlockQ = new Queue();
 	public Queue powerUpQueue = new Queue();
+	public Queue decorationQueue = new Queue();
 	ILevelBehavior behavior;
 	
 	/// <summary>
@@ -36,6 +37,7 @@ public class Level{
 			addBlock();
 			addObstacles();
 			AddPowerUp();
+			AddDecoration();
 		}
 		levelBlockQueue.TrimToSize();
 	}
@@ -50,9 +52,11 @@ public class Level{
 			behavior.destroyObject(obstacleBlockQ.Dequeue());
 			behavior.destroyObject(obstacleBlockQ.Dequeue());
 			behavior.destroyObject(powerUpQueue.Dequeue());
+			DestroyDecoration();
 			addBlock();
 			addObstacles();
 			AddPowerUp();
+			AddDecoration();
 		}
 	}
 	
@@ -73,6 +77,22 @@ public class Level{
 	private void AddPowerUp()
 	{
 		powerUpQueue.Enqueue(behavior.makePowerUp(randomLine(), blockLength* lastAdded - blockLength/2));
+	}
+	
+	private void AddDecoration()
+	{
+		for(int i=0; i<50; i++)
+		{
+			decorationQueue.Enqueue(behavior.makeDecoration(i%2==0, blockLength*lastAdded - i*3, randomLine()));
+		}
+	}
+	
+	private void DestroyDecoration()
+	{
+		for(int i=0; i<50; i++)
+		{
+			behavior.destroyObject(decorationQueue.Dequeue());
+		}
 	}
 	
 	private int randomLine()

@@ -77,6 +77,9 @@ public class Avatar
                 case Movement.Right:
                     this.Right();
                     break;
+				case Movement.Up:
+					this.Up();
+					break;
                 default:
                     break;
             }
@@ -108,6 +111,19 @@ public class Avatar
             this._avatarBehaviour.Right();
         }
     }
+	
+	/// <summary>
+	/// Up this instance.
+	/// </summary>
+	public void Up()
+	{
+		if(StateManager.Instance.isPlaying())
+		{
+			this._avatarBehaviour.Up();	
+		}
+	}
+	
+	
 
     /// <summary>
     /// This destructor is responsible for cleaning up resources, such

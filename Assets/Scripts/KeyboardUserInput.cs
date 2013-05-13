@@ -20,6 +20,10 @@ class KeyboardUserInput : IUserInput
         {
             return Movement.Right;
         }
+		else if(Input.GetKeyDown(KeyCode.W))
+		{
+			return Movement.Up;	
+		}
         else
         {
             return Movement.None;

@@ -13,7 +13,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// before any of the Update methods is called the first time.
     /// </summary>
     void Start()
-    {
+    {	
         this.obstacle = new Obstacle(this);
     }
 
@@ -24,7 +24,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "ShoppingCart")
-        {
+		{
             this.obstacle.Collision();
         }
     }

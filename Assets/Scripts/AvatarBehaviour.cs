@@ -19,7 +19,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
-
+	bool jumping = false;
+	
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
@@ -100,7 +101,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         StartCoroutine(MoveAnimation(Vector3.left * 5));
     }
-
+	
+	public void Up()
+	{
+		StartCoroutine(UpAndDownAnimation());
+	}
+	
     /// <summary>
     /// A coroutine responsible for moving the avatar. Yields a
     /// WaitForSeconds to pause execution and prevent moving
@@ -110,15 +116,23 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         yield return 0;
     }
+
+	IEnumerator UpAndDownAnimation() {
+		if(!jumping) {
+			jumping = true;
+			yield return StartCoroutine(MoveAnimation(Vector3.up * 8));
+			yield return StartCoroutine(MoveAnimation(Vector3.down * 8));
+			jumping = false;
+		}
+	}
+	
     IEnumerator MoveAnimation(Vector3 targetlocation)
     {
         for (int i = 0; i < 20; i++)
         {
             transform.Translate(targetlocation / 20);
-
             yield return new WaitForSeconds(0.008f);
         }
-
         yield return 0;
     }
 }
