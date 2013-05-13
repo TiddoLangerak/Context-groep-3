@@ -10,8 +10,9 @@ public class Level{
 	private float blockLength;
 	private int lastAdded = 0;
 	public Queue levelBlockQueue = new Queue();
-	public Queue obstacleBlockQueue = new Queue();
+	public Queue obstacleBlockQ = new Queue();
 	public Queue powerUpQueue = new Queue();
+	public Queue decorationQueue = new Queue();
 	ILevelBehavior behavior;
 	
 	/// <summary>
@@ -26,7 +27,7 @@ public class Level{
 	/// <param name='blockFactory'>
 	/// Block factory.
 	/// </param>
-	public Level(int blockAmount, int powerupOffset, float blockLength, ILevelBehavior levelBehavior)
+	public Level(int blockAmount, float blockLength, ILevelBehavior levelBehavior)
 	{
 		this.blockAmount = blockAmount;
 		this.blockLength = blockLength;
@@ -34,11 +35,9 @@ public class Level{
 		for(int i=0; i<blockAmount; i++)
 		{
 			addBlock();
-			if (i>=powerupOffset)
-			{
-				addObstacles();
-				AddPowerUp();
-			}
+			addObstacles();
+			AddPowerUp();
+			AddDecoration();
 		}
 		levelBlockQueue.TrimToSize();
 	}
@@ -50,18 +49,14 @@ public class Level{
 		while(position > (lastAdded-(blockAmount-1))*blockLength)
 		{
 			behavior.destroyObject(levelBlockQueue.Dequeue());
-			if(obstacleBlockQueue.Count == blockAmount *2)
-			{
-				behavior.destroyObject(obstacleBlockQueue.Dequeue());
-				behavior.destroyObject(obstacleBlockQueue.Dequeue());
-			}
-			if(powerUpQueue.Count == blockAmount)
-			{
-				behavior.destroyObject(powerUpQueue.Dequeue());
-			}
+			behavior.destroyObject(obstacleBlockQ.Dequeue());
+			behavior.destroyObject(obstacleBlockQ.Dequeue());
+			behavior.destroyObject(powerUpQueue.Dequeue());
+			DestroyDecoration();
 			addBlock();
 			addObstacles();
 			AddPowerUp();
+			AddDecoration();
 		}
 	}
 	
@@ -75,13 +70,29 @@ public class Level{
 	{
 		int line1 = randomLine();
 		int line2 = (line1 + 2) % 3 - 1;
-		obstacleBlockQueue.Enqueue(behavior.makeObstacle(line1, blockLength*lastAdded - blockLength));
-		obstacleBlockQueue.Enqueue(behavior.makeObstacle(line2, blockLength*lastAdded - blockLength));
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(line1, blockLength*lastAdded - blockLength));
+		obstacleBlockQ.Enqueue(behavior.makeObstacle(line2, blockLength*lastAdded - blockLength));
 	}
 	
 	private void AddPowerUp()
 	{
 		powerUpQueue.Enqueue(behavior.makePowerUp(randomLine(), blockLength* lastAdded - blockLength/2));
+	}
+	
+	private void AddDecoration()
+	{
+		for(int i=0; i<50; i++)
+		{
+			decorationQueue.Enqueue(behavior.makeDecoration(i%2==0, blockLength*lastAdded - i*3, randomLine()));
+		}
+	}
+	
+	private void DestroyDecoration()
+	{
+		for(int i=0; i<50; i++)
+		{
+			behavior.destroyObject(decorationQueue.Dequeue());
+		}
 	}
 	
 	private int randomLine()
