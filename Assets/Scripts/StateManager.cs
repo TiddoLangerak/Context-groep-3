@@ -50,8 +50,22 @@ public class StateManager
 	/// <summary>
 	/// If the player is currently invincible.
 	/// </summary>
-	private bool _invincible;
-	public bool invincible {get; set;}
+	private int _invincible;
+	public bool invincible {
+		get
+		{
+			return (_invincible >= 1);
+		}
+	}
+	
+	public void makeInvincible()
+	{
+		_invincible++;
+	}
+	public void undoInvincible()
+	{
+		_invincible--;
+	}
 
     /// <summary>
     /// Property used to create and return one StateManager instance

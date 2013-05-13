@@ -27,6 +27,7 @@ public class Obstacle
     /// </summary>
     public void Collision()
     {
-        StateManager.Instance.die();
+		if(!StateManager.Instance.invincible)
+        	StateManager.Instance.die();
     }
 }
