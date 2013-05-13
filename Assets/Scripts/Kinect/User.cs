@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Kinect
 {
-    public struct UserState
+    public struct UserState : IComparable<UserState>
     {
-        public SkeletonJointPosition torsoPos,headPos,leftShoulderPos,rightShoulderPos;
+        public SkeletonJointPosition torsoPos, headPos, leftShoulderPos, rightShoulderPos;
         public long timestamp;
     }
 
@@ -29,7 +29,7 @@ namespace Kinect
     public class User
     {
         public int ID { get; private set; }
-        private LinkedList<UserState> movementHistory;        
+        private LinkedList<UserState> movementHistory;
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
@@ -107,7 +107,7 @@ namespace Kinect
                     float rightDistance = Math.Abs(currState.rightShoulderPos.Position.X - currState.torsoPos.Position.X);
                     float headDistance = Math.Abs(currState.headPos.Position.X - currState.torsoPos.Position.X);
                     float shoulderDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.rightShoulderPos.Position.X);
-                    float normalizedHeadDistance = headDistance / shoulderDistance;
+                    float normalizedHeadDistance = (shoulderDistance != 0) ? (headDistance / shoulderDistance) : 0;
 
                     /// If the head is far of center, the user will most likely be leaning to one way or the other
                     if (normalizedHeadDistance > TRESHOLD_LEANING_HEAD)
@@ -127,8 +127,17 @@ namespace Kinect
             return UserMovement.None;
         }
 
+        /// <summary>
+        /// Returns true iff the user is jumping.
+        /// </summary>
+        /// <returns>True iff the user is jumping.</returns>
         private bool IsJumping()
         {
+            UserState minTorsoPosition = movementHistory.Aggregate((l, r) => l.torsoPos.Position.Y < r.torsoPos.Position.Y ? l : r);
+            UserState currPosition = movementHistory.Last.Value;
+            float heightDifference = currPosition.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
+            float shoulderDistance = Math.Abs(currPosition.leftShoulderPos.Position.X - currPosition.rightShoulderPos.Position.X);
+            float normalizedDifference = (shoulderDistance != 0) ? (heightDifferencegit  / shoulderDistance) : 0;
             return false;
         }
     }
