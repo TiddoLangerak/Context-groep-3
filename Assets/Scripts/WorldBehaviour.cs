@@ -35,9 +35,9 @@ public class WorldBehaviour : MonoBehaviour
         GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.score),guiStyle);
 
         if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
-            GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 60, 22), "PAUSED");
+            GUI.TextArea(new Rect(Screen.width / 2 - 110, Screen.height / 2 - 41, 350, 60), "Paused",guiStyle);
         if (StateManager.Instance.isDead())
-            GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 80, 22), "Game Over");
+            GUI.TextArea(new Rect(Screen.width / 2 - 170, Screen.height / 2 - 41, 350, 60), "Game Over",guiStyle);
         
         GUI.TextArea(new Rect(10, 70, 350, 60), "Multiplier: " + StateManager.Instance.NumberOfPlayers, guiStyle);
             
