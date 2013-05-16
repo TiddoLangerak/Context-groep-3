@@ -31,6 +31,7 @@ public class StateManager
 	/// Stores the score.
 	/// </summary>
 	private float _score;
+    public int NumberOfPlayers { get; set; }
 	
 	/// <summary>
 	/// Get and setters for the score. (INV: score >= 0)

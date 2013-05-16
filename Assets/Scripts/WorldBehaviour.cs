@@ -18,7 +18,7 @@ public class WorldBehaviour : MonoBehaviour
     void Update()
     {
         if (!StateManager.Instance.isPausing())
-            StateManager.Instance.score += (Time.deltaTime * 10);
+            StateManager.Instance.score += (Time.deltaTime * 10 * StateManager.Instance.NumberOfPlayers);
     }
 
     /// <summary>
@@ -26,14 +26,21 @@ public class WorldBehaviour : MonoBehaviour
     /// events. It draws the score and draws a textarea
     /// if the game is paused.
     /// </summary>
-	void OnGUI()
+    void OnGUI()
     {
-        int width = 65 + 10 * ((int)Mathf.Round(StateManager.Instance.score)).ToString().Length;
-        GUI.TextArea(new Rect(10, 10, width, 22), "POINTS: " + Mathf.Round(StateManager.Instance.score));
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
+        guiStyle.fontSize = 50;
+        GUI.contentColor = Color.white;
+        GUI.backgroundColor = Color.clear;
+        GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.score),guiStyle);
+
         if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
-            GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 60, 22), "PAUSED");
+            GUI.TextArea(new Rect(Screen.width / 2 - 110, Screen.height / 2 - 41, 350, 60), "Paused",guiStyle);
         if (StateManager.Instance.isDead())
-            GUI.TextArea(new Rect(Screen.width / 2 - 30, Screen.height / 2 - 11, 80, 22), "Game Over");
+            GUI.TextArea(new Rect(Screen.width / 2 - 170, Screen.height / 2 - 41, 350, 60), "Game Over",guiStyle);
+        
+        GUI.TextArea(new Rect(10, 70, 350, 60), "Multiplier: " + StateManager.Instance.NumberOfPlayers, guiStyle);
+            
     }
 
     /// <summary>

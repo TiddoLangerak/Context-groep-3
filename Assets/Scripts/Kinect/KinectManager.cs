@@ -40,7 +40,7 @@ namespace Kinect
         /// <summary>
         /// Keeps tracks of the users that are currently being tracked.
         /// </summary>
-        public Dictionary<int,User> TrackedUsers { get; private set; }
+        public Dictionary<int, User> TrackedUsers { get; private set; }
 
         /// <summary>
         /// Constructor: initializes all attributes and properties.
@@ -72,7 +72,7 @@ namespace Kinect
             UserGenerator.LostUser += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
 
-            this.TrackedUsers = new Dictionary<int,User>();
+            this.TrackedUsers = new Dictionary<int, User>();
         }
 
         /// <summary>
@@ -97,6 +97,10 @@ namespace Kinect
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnLostUser(object sender, UserLostEventArgs e)
         {
+            if (TrackedUsers.ContainsKey(e.ID))
+            {
+                StateManager.Instance.NumberOfPlayers--;
+            }
             TrackedUsers.Remove(e.ID);
             Logger.Log("Lost user: " + e.ID);
         }
@@ -115,7 +119,8 @@ namespace Kinect
                 Logger.Log("Calibration succeeded on user: " + e.ID);
                 Logger.Log("Start tracking user: " + e.ID);
                 SkeletonCapability.StartTracking(e.ID);
-                TrackedUsers.Add(e.ID,new User(e.ID));
+                TrackedUsers.Add(e.ID, new User(e.ID));
+                StateManager.Instance.NumberOfPlayers++;
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
