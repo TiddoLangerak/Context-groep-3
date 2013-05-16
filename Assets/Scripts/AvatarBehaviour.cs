@@ -71,8 +71,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Update()
     {
-        this.avatar.Update();
-		this.avatar.moveSpeed += Time.smoothDeltaTime/5;
+		this.avatar.Update();
+		this.avatar.moveSpeed += Time.smoothDeltaTime/20;
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
     }
@@ -114,7 +114,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-        yield return 0;
+		while(true) 
+		{
+			if(this.avatar.MovementHandler())
+			{
+				yield return new WaitForSeconds(0.5f);
+			}
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
     }
 
 	IEnumerator UpAndDownAnimation() {

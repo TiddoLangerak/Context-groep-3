@@ -7,5 +7,6 @@ public enum AvatarMovement
     Left,
     Right,
 	Jump,
-	Increase
+	Increase,
+	Decrease
 };

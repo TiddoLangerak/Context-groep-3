@@ -28,6 +28,10 @@ class KeyboardUserInput : IUserInput
 		{
 			return AvatarMovement.Increase;
 		}
+		else if(Input.GetKeyDown(KeyCode.U))
+		{
+			return AvatarMovement.Decrease;
+		}
         else
         {
             return AvatarMovement.None;
