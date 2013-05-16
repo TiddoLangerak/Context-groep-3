@@ -79,6 +79,10 @@ public class Avatar
 				case AvatarMovement.Jump:
 					this.Up();
 					break;
+				case AvatarMovement.Increase:
+					Logger.Log("increase: " + moveSpeed);
+					moveSpeed+= 2.0f;
+					break;
                 default:
                     break;
             }
