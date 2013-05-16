@@ -2,4 +2,5 @@
 
 public interface IObstacleBehaviour
 {
+	void DestroySelf();
 }
