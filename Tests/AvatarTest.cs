@@ -22,22 +22,6 @@ public class AvatarTest
     }
 
     [Test]
-    public void testAvatarSpeed()
-    {
-        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
-        var mockUserInput = new Mock<IUserInput>();
-        Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
-
-        Assert.AreEqual(av.moveSpeed, 10);
-
-        av.moveSpeed++;
-        Assert.AreEqual(av.moveSpeed, 11);
-
-        av.moveSpeed = 15;
-        Assert.AreEqual(av.moveSpeed, 15);
-    }
-
-    [Test]
     public void avatarMovementTest()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();

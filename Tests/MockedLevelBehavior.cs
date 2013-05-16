@@ -51,4 +51,9 @@ class MockedLevelBehavior : ILevelBehavior
     {
         return null;
     }
+
+    public object makeDecoration(bool left, float position, int height)
+    {
+        return null;
+    }
 }
