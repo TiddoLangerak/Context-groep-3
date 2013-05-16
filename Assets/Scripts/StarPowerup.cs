@@ -3,26 +3,54 @@ using System;
 
 public class StarPowerup : IPowerup
 {
-	Timer timer = new Timer();
-	IStarPowerupBehaviour behaviour;
-	
-	public StarPowerup(IStarPowerupBehaviour behaviour)
+    /// <summary>
+    /// StarPowerup behaviour
+    /// </summary>
+    IStarPowerupBehaviour behaviour;
+
+    /// <summary>
+    /// Timer to keep track of the invincibility time
+    /// </summary>
+    ITimer timer;
+
+    /// <summary>
+    /// Initiates a new StarPowerup. It requiers a reference to
+    /// the behaviour and a timer that it uses to keep track of
+    /// the invincibility.
+    /// </summary>
+    /// <param name="behaviour"></param>
+    /// <param name="timer"></param>
+	public StarPowerup(IStarPowerupBehaviour behaviour, ITimer timer)
 	{
 		this.behaviour = behaviour;
+
+        this.timer = timer;
+        this.timer.Interval = 4000;
+        this.timer.Elapsed += new ElapsedEventHandler(UndoInvincibility);
 	}
 	
-	public void timerElapsed(object sender, EventArgs e)
-	{
-		timer.Stop();
-		StateManager.Instance.undoInvincible();
-	}
-	
+    /// <summary>
+    /// Called when the avatar and this StarPowerup collide. It
+    /// changes state to invicible, adds particles (through the
+    /// behaviour).
+    /// </summary>
 	public void Collision()
 	{
 		StateManager.Instance.makeInvincible();
-		timer.Interval = 4000;
-		timer.Elapsed += new ElapsedEventHandler(timerElapsed);
+
 		timer.Start();
+
 		behaviour.addParticles();
 	}
+
+    /// <summary>
+    /// Undo the invincibility. Normally called upon elapse event
+    /// of the timer.
+    /// </summary>
+    public void UndoInvincibility(object sender, EventArgs e)
+    {
+        StateManager.Instance.undoInvincible();
+
+        timer.Stop();
+    }
 }

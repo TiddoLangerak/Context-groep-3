@@ -68,6 +68,15 @@ public class StateManager
 	}
 
     /// <summary>
+    /// Reset invincibility to 0. This is used mainly by the unit
+    /// tests to force the StateManager into a specific state.
+    /// </summary>
+    public void ResetInvincibility()
+    {
+        _invincible = 0;
+    }
+
+    /// <summary>
     /// Property used to create and return one StateManager instance
     /// </summary>
     public static StateManager Instance
