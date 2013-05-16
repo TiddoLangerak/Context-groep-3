@@ -44,6 +44,16 @@ public class StateManagerTest
         Assert.IsTrue(true);
     }
 
+    [Test]
+    public void TestDead()
+    {
+        // Act
+        StateManager.Instance.die();
+
+        // Assert
+        Assert.AreEqual(true, StateManager.Instance.isDead());
+    }
+
     /*[Test]
     public void PauseWithMovementTest()
     {

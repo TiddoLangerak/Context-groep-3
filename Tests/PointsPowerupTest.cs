@@ -8,6 +8,7 @@ class PointsPowerupTest
     public void testSetup()
     {
         StateManager.Instance.score = 0;
+        StateManager.Instance.NumberOfPlayers = 1;
     }
 
     [Test]
