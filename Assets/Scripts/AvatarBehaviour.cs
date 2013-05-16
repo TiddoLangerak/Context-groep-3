@@ -18,6 +18,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
+    private bool showStartScreen = true;
 	bool jumping = false;
 	
     /// <summary>
@@ -52,6 +53,15 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #endif
         }
 
+    }
+
+    void OnGUI()
+    {
+        GUI.Window(0, new Rect((Screen.width / 2) - 500, (Screen.height / 2) - 400, 1000, 800), StartWindowHandler, "The Chase");
+    }
+
+    private void StartWindowHandler(int windowID)
+    {
     }
 
     /// <summary>
