@@ -26,7 +26,7 @@ namespace Kinect
         /// Calculate the current movement of the avatar, based on the user movements.
         /// </summary>
         /// <returns>The current movement of the avatar</returns>
-        public AvatarMovement CurrentMovement()
+        public Movement CurrentMovement()
         {
             Dictionary<UserMovement, int> movementFreqencies = new Dictionary<UserMovement, int>();
             Dictionary<int, User> trackedUsers;
@@ -58,15 +58,15 @@ namespace Kinect
                     switch (currMovement)
                     {
                         case UserMovement.Left:
-                            return AvatarMovement.Left;
+                            return Movement.Left;
                         case UserMovement.Right:
-                            return AvatarMovement.Right;
+                            return Movement.Right;
                         case UserMovement.Jump:
-                            return AvatarMovement.Jump;
+                            return Movement.Jump;
                     }
                 }
             }
-            return AvatarMovement.None;
+            return Movement.None;
         }
 
         /// <summary>

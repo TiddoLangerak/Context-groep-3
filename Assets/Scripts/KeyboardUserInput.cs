@@ -10,23 +10,23 @@ class KeyboardUserInput : IUserInput
     {
     }
 
-    public AvatarMovement CurrentMovement()
+    public Movement CurrentMovement()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            return AvatarMovement.Left;
+            return Movement.Left;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            return AvatarMovement.Right;
+            return Movement.Right;
         }
 		else if(Input.GetKeyDown(KeyCode.W))
 		{
-			return Movement.Up;	
+			return Movement.Jump;	
 		}
         else
         {
-            return AvatarMovement.None;
+            return Movement.None;
         }
     }
 

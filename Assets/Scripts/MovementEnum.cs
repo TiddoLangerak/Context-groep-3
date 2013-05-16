@@ -6,5 +6,5 @@ public enum Movement
     None,
     Left,
     Right,
-	Up
+	Jump
 };

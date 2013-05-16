@@ -77,7 +77,7 @@ public class Avatar
                 case Movement.Right:
                     this.Right();
                     break;
-				case Movement.Up:
+				case Movement.Jump:
 					this.Up();
 					break;
                 default:
