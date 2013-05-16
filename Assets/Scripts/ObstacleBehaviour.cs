@@ -26,6 +26,10 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
         if (collision.gameObject.name == "ShoppingCart")
 		{
             this.obstacle.Collision();
+            if (audio)
+            {
+                audio.Play();
+            }
         }
     }
 }
