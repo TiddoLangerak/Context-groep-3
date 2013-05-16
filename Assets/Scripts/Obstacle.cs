@@ -31,9 +31,5 @@ public class Obstacle
 		{
         	StateManager.Instance.die();
 		}
-		else
-		{
-			_obstacleBehaviour.DestroySelf();
-		}
     }
 }
