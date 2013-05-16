@@ -28,6 +28,8 @@ public class Obstacle
     public void Collision()
     {
 		if(!StateManager.Instance.invincible)
+		{
         	StateManager.Instance.die();
+		}
     }
 }
