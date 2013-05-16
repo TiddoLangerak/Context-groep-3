@@ -2,8 +2,9 @@
 
 public interface IAvatarBehaviour
 {
-    bool IsMoving { get; }
+    //bool IsMoving { get; }
     void Forward(float moveSpeed);
     void Left();
     void Right();
+	void Up();
 }

@@ -9,9 +9,11 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 
     public int blockAmount = 4;
     public float blockLength = 50.0f;
+	public int powerupOffset = 2;
     public GameObject levelBlock;
     public GameObject[] obstacles;
 	public GameObject[] powerups;
+	public GameObject[] decoration;
     public Vector3 offset = new Vector3(0.0f, 4.875f, 0);
     private int blockAdded = 0;
 
@@ -22,7 +24,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
     /// </summary>
     void Start()
     {
-        level = new Level(blockAmount, blockLength, this);
+        level = new Level(blockAmount, powerupOffset, blockLength, this);
     }
 
     /// <summary>
@@ -54,6 +56,17 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 		
 		return Instantiate(powerUpGo, new Vector3(0.0f + 5 * line, 2.875f, position), powerUpGo.transform.rotation); // Quaternion.identity);
 	}
+	
+	public object makeDecoration(bool left, float position, int height)
+	{
+		float posX = 10f;
+		if(left)
+		{
+			posX = -10f;	
+		}
+		return Instantiate(randomDecoration(), new Vector3(posX, 6.75f + 2*height, position), Quaternion.identity);
+	}
+		
 
     private GameObject randomObject()
     {
@@ -71,6 +84,11 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 	private GameObject randomPowerUp()
 	{
 		return powerups[Random.Range(0, powerups.Length)];	
+	}
+	
+	private GameObject randomDecoration()
+	{
+		return decoration[Random.Range(0, decoration.Length)];
 	}
 
     private Quaternion randomRotation()

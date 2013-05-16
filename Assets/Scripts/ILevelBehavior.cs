@@ -20,4 +20,5 @@ public interface ILevelBehavior
 
     object makeObstacle(int line, float position);
 	object makePowerUp(int line, float position);
+	object makeDecoration(bool left, float position, int height);
 }

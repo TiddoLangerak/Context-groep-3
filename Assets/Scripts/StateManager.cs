@@ -27,11 +27,14 @@ public class StateManager
     /// </summary>
     private static StateManager instance;
 	
+	/// <summary>
+	/// Stores the score.
+	/// </summary>
 	private float _score;
     public int NumberOfPlayers { get; set; }
 	
 	/// <summary>
-	/// The score. (INV: score >= 0)
+	/// Get and setters for the score. (INV: score >= 0)
 	/// </summary>
 	public float score {
 		get
@@ -43,6 +46,26 @@ public class StateManager
 			Debug.Assert(value >= 0);
 			_score = value;
 		}
+	}
+	
+	/// <summary>
+	/// If the player is currently invincible.
+	/// </summary>
+	private int _invincible;
+	public bool invincible {
+		get
+		{
+			return (_invincible >= 1);
+		}
+	}
+	
+	public void makeInvincible()
+	{
+		_invincible++;
+	}
+	public void undoInvincible()
+	{
+		_invincible--;
 	}
 
     /// <summary>
@@ -113,7 +136,7 @@ public class StateManager
     /// Returns true iff the game is in the PAUSING state.
     /// </summary>
     /// <returns></returns>
-    public Boolean isPausing()
+    public bool isPausing()
     {
         return State.PAUSING == this.currentState || State.DEAD == this.currentState;
     }
@@ -124,7 +147,7 @@ public class StateManager
     /// <returns>
     /// True if the game is playing, false otherwise.
     /// </returns>
-    public Boolean isPlaying()
+    public bool isPlaying()
     {
         return State.PLAYING == this.currentState;
     }
@@ -135,7 +158,7 @@ public class StateManager
     /// <returns>
     /// True if the player is dead, false otherwise.
     /// </returns>
-    public Boolean isDead()
+    public bool isDead()
     {
         return State.DEAD == this.currentState;
     }

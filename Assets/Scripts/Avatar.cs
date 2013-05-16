@@ -9,29 +9,29 @@ using System.Collections;
 /// </summary>
 public class Avatar
 {
-    /// <summary>
-    /// Gets or sets the move speed.
-    /// </summary>
-    /// <value>
-    /// The move speed.
-    /// </value>
-    public float moveSpeed { get; set; }
-
-    /// <summary>
-    /// Gets or sets the track.
-    /// </summary>
-    /// <value>
-    /// The track.
-    /// </value>
-    public int track { get; set; }
-
-    /// <summary>
-    /// Gets or sets the _avatar behaviour.
-    /// </summary>
-    /// <value>
-    /// The _avatar behaviour.
-    /// </value>
-    private IAvatarBehaviour AvatarBehaviour { get; set; }
+	/// <summary>
+	/// Gets or sets the move speed.
+	/// </summary>
+	/// <value>
+	/// The move speed.
+	/// </value>
+	public float moveSpeed { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the track.
+	/// </summary>
+	/// <value>
+	/// The track.
+	/// </value>
+	public int track { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the _avatar behaviour.
+	/// </summary>
+	/// <value>
+	/// The _avatar behaviour.
+	/// </value>
+	private IAvatarBehaviour _avatarBehaviour { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
@@ -39,7 +39,7 @@ public class Avatar
     /// <value>
     /// The user input
     /// </value>
-    private IUserInput UserInput { get; set; }
+    private IUserInput _userInput { get; set; }
 
     /// <summary>
     /// Used for initialization. The Start method is called just
@@ -51,8 +51,8 @@ public class Avatar
         this.moveSpeed = 4;
 
         userInput.Initialize();
-        this.AvatarBehaviour = avatarBehaviour;
-        this.UserInput = userInput;
+        this._avatarBehaviour = avatarBehaviour;
+        this._userInput = userInput;
 
         StateManager.Instance.pauseOrUnpause();
     }
@@ -66,21 +66,21 @@ public class Avatar
     {
         if (!StateManager.Instance.isPausing())
         {
-            this.AvatarBehaviour.Forward(this.moveSpeed);
+            this._avatarBehaviour.Forward(this.moveSpeed);
 
-            if (!AvatarBehaviour.IsMoving)
+            switch (this._userInput.CurrentMovement())
             {
-                switch (this.UserInput.CurrentMovement())
-                {
-                    case AvatarMovement.Left:
-                        this.Left();
-                        break;
-                    case AvatarMovement.Right:
-                        this.Right();
-                        break;
-                    default:
-                        break;
-                }
+                case AvatarMovement.Left:
+                    this.Left();
+                    break;
+                case AvatarMovement.Right:
+                    this.Right();
+                    break;
+				case AvatarMovement.Jump:
+					this.Up();
+					break;
+                default:
+                    break;
             }
         }
     }
@@ -93,7 +93,7 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track > 1)
         {
             this.track--;
-            this.AvatarBehaviour.Left();
+            this._avatarBehaviour.Left();
         }
     }
 
@@ -107,9 +107,22 @@ public class Avatar
         if (StateManager.Instance.isPlaying() && track < 3)
         {
             this.track++;
-            this.AvatarBehaviour.Right();
+            this._avatarBehaviour.Right();
         }
     }
+	
+	/// <summary>
+	/// Up this instance.
+	/// </summary>
+	public void Up()
+	{
+		if(StateManager.Instance.isPlaying())
+		{
+			this._avatarBehaviour.Up();	
+		}
+	}
+	
+	
 
     /// <summary>
     /// This destructor is responsible for cleaning up resources, such
@@ -117,12 +130,7 @@ public class Avatar
     /// </summary>
     ~Avatar()
     {
-        if (this.UserInput != null)
-            this.UserInput.Destroy();
-    }
-
-    public override String ToString()
-    {
-        return UserInput.ToString();
+        if (this._userInput != null)
+            this._userInput.Destroy();
     }
 }

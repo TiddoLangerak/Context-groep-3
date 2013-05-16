@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class PowerupBehavior : MonoBehaviour, IPowerupBehavior
+public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
 {
-	public IPowerup powerup;
+	protected PointsPowerup powerup;
 
 	// Use this for initialization
 	void Start ()

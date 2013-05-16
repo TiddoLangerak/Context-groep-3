@@ -21,6 +21,10 @@ class KeyboardUserInput : IUserInput
         {
             return AvatarMovement.Right;
         }
+		else if(Input.GetKeyDown(KeyCode.W))
+		{
+			return AvatarMovement.Jump;	
+		}
         else
         {
             return AvatarMovement.None;
