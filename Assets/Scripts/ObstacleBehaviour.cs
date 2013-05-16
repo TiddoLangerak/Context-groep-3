@@ -29,7 +29,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
 			Instantiate(destroyEffect, this.transform.position, destroyEffect.transform.localRotation);
             DestroySelf();
         } 
-        if (collision.gameObject.name != "LevelPart(Clone)" && audio && !audio.isPlaying)
+        if (collision.gameObject.name != "LevelPart(Clone)" && audio.enabled && !audio.isPlaying)
         {
             audio.Play();
         }

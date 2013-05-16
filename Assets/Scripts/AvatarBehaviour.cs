@@ -144,18 +144,19 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         if (this.audio.isPlaying && !this.audioIsStopping)
         {
             this.audioIsStopping = true;
-            float startVolume = this.audio.volume;
-            StartCoroutine(this._stopAudio(this.audio, 1500, startVolume));
+            StartCoroutine(this._stopAudio(this.audio, 1500));
         }
     }
-    private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime, float startVolume)
+    private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime)
     {
+        float startVolume = audio.volume;
         float timeout = 1000 / 30.0f;
-        float volumeDiff = startVolume * timeout / fadeoutTime;
+        float volumeDiff = audio.volume * timeout / fadeoutTime;
+        float pitchDiff = audio.pitch * timeout / fadeoutTime;
         while(audio.volume > 0.01)
         {
             audio.volume -= volumeDiff;
-            audio.pitch -= volumeDiff;
+            audio.pitch -= pitchDiff;
             yield return new WaitForSeconds(timeout / 1000);
         }
         audio.Stop();
