@@ -64,6 +64,10 @@ public class Avatar
     /// </summary>
     public void Update()
     {
+        if (StateManager.Instance.isDead())
+        {
+            this._avatarBehaviour.stopAudio();
+        }
         if (!StateManager.Instance.isPausing())
         {
             this._avatarBehaviour.Forward(this.moveSpeed);

@@ -26,10 +26,11 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
         if (collision.gameObject.name == "ShoppingCart")
 		{
             this.obstacle.Collision();
-            if (audio)
-            {
-                audio.Play();
-            }
+        } 
+        if (collision.gameObject.name != "LevelPart(Clone)" && audio && !audio.isPlaying)
+        {
+            Logger.Log("Collision: " + this.name + " with " + collision.gameObject.name);
+            audio.Play();
         }
     }
 }
