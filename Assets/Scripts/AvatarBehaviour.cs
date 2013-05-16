@@ -19,6 +19,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     private Avatar avatar;
 	bool jumping = false;
+    bool audioIsStopping = false;
 	
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -143,5 +144,33 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             yield return new WaitForSeconds(0.025f);
         }
         yield return 0;
+    }
+
+    public void stopAudio()
+    {
+        if (this.audio.isPlaying && !this.audioIsStopping)
+        {
+            this.audioIsStopping = true;
+            StartCoroutine(this._stopAudio(this.audio, 1500));
+        }
+    }
+    private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime)
+    {
+        float startVolume = audio.volume;
+        float timeout = 1000 / 30.0f;
+        float volumeDiff = audio.volume * timeout / fadeoutTime;
+        float pitchDiff = audio.pitch * timeout / fadeoutTime;
+        while(audio.volume > 0.01)
+        {
+            audio.volume -= volumeDiff;
+            audio.pitch -= pitchDiff;
+            yield return new WaitForSeconds(timeout / 1000);
+        }
+        audio.Stop();
+        audio.volume = startVolume;
+        audio.pitch = 1;
+        this.audioIsStopping = false;
+        yield return 0;
+
     }
 }

@@ -11,11 +11,13 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
     public float blockLength = 50.0f;
 	public int powerupOffset = 2;
     public GameObject levelBlock;
+	public GameObject endLevelBlockPrefab;
     public GameObject[] obstacles;
 	public GameObject[] powerups;
 	public GameObject[] decoration;
     public Vector3 offset = new Vector3(0.0f, 4.875f, 0);
     private int blockAdded = 0;
+	private GameObject endLevelBlock;
 
     Level level;
 
@@ -24,6 +26,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
     /// </summary>
     void Start()
     {
+		endLevelBlock = (GameObject)Instantiate(endLevelBlockPrefab, offset, endLevelBlockPrefab.transform.localRotation);
         level = new Level(blockAmount, powerupOffset, blockLength, this);
     }
 
@@ -37,7 +40,9 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 
     public object makeLevelBlock(float position)
     {
-        return Instantiate(levelBlock, offset + new Vector3(0, 0, position), Quaternion.identity);
+		Vector3 pos = offset + new Vector3(0, 0, position);
+		endLevelBlock.transform.position = pos + new Vector3(0, 0, blockLength);
+        return Instantiate(levelBlock, pos, Quaternion.identity);
     }
 
     public void destroyObject(object gameObject)
