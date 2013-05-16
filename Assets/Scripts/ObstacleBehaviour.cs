@@ -7,7 +7,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// The domain-specific obstacle instance.
     /// </summary>
     private Obstacle obstacle;
-	public GameObject destroyEffect;
+	public GameObject destroyEffect = null;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -27,12 +27,13 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
         if (collision.gameObject.name == "ShoppingCart")
 		{
 			Instantiate(destroyEffect, this.transform.position, destroyEffect.transform.localRotation);
-            this.obstacle.Collision();
+            DestroySelf();
         }
     }
 	
 	public void DestroySelf()
 	{
+		this.obstacle.Collision();
 		Destroy(this.gameObject);
 	}
 }
