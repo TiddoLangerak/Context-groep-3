@@ -76,7 +76,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             GUI.Label(new Rect(270, 650, 600, 100), "The game needs at least one player to start", guiStyle);
         }
-        if (jumping) DOES NOT WORK!
+        if (Input.anyKey)/*if (jumping) DOES NOT WORK!*/
         {
             showStartScreen = false;
             StateManager.Instance.pauseOrUnpause();
