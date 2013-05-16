@@ -62,6 +62,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void OnDestroy()
     {
+        //GUI.TextArea(new Rect(10, 40, 200, 220), avatar.ToString());
     }
 
     /// <summary>

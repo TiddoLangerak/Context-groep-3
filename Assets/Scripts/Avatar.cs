@@ -47,8 +47,8 @@ public class Avatar
     /// </summary>
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
-		this.track = 2;
-		this.moveSpeed = 20;
+        this.track = 2;
+        this.moveSpeed = 4;
 
         userInput.Initialize();
         this._avatarBehaviour = avatarBehaviour;
@@ -66,7 +66,6 @@ public class Avatar
     {
         if (!StateManager.Instance.isPausing())
         {
-            //moveSpeed += Time.smoothDeltaTime/5;
             this._avatarBehaviour.Forward(this.moveSpeed);
 
             switch (this._userInput.CurrentMovement())
