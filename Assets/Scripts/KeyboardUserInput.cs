@@ -24,6 +24,9 @@ class KeyboardUserInput : IUserInput
 		else if(Input.GetKeyDown(KeyCode.W))
 		{
 			return AvatarMovement.Jump;	
+		} else if(Input.GetKeyDown(KeyCode.I))
+		{
+			return AvatarMovement.Increase;
 		}
         else
         {

@@ -8,7 +8,6 @@ using Kinect;
 #endif
 
 using System.Collections;
-using UnityEditor;
 
 /// <summary>
 /// This class represents the avatar in the game environment.
@@ -91,7 +90,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Right()
     {
-        StartCoroutine(MoveAnimation(Vector3.right * 5));
+        StartCoroutine(MoveAnimation(Vector3.right * 5, 100));
     }
 
     /// <summary>
@@ -100,7 +99,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-        StartCoroutine(MoveAnimation(Vector3.left * 5));
+        StartCoroutine(MoveAnimation(Vector3.left * 5, 100));
     }
 	
 	public void Up()
@@ -121,18 +120,20 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 	IEnumerator UpAndDownAnimation() {
 		if(!jumping) {
 			jumping = true;
-			yield return StartCoroutine(MoveAnimation(Vector3.up * 8));
-			yield return StartCoroutine(MoveAnimation(Vector3.down * 8));
+			yield return StartCoroutine(MoveAnimation(Vector3.up * 8, 400));
+			yield return StartCoroutine(MoveAnimation(Vector3.down * 8, 400));
 			jumping = false;
 		}
 	}
 	
-    IEnumerator MoveAnimation(Vector3 targetlocation)
+    IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
-        for (int i = 0; i < 20; i++)
+		int x = (int) Mathf.Round(quick / avatar.moveSpeed) + 1;
+		Debug.Log("wait time: " + (x));
+        for (int i = 0; i < x; i++)
         {
-            transform.Translate(targetlocation / 20);
-            yield return new WaitForSeconds(0.008f);
+            transform.Translate(targetlocation / x);
+            yield return new WaitForSeconds(0.025f);
         }
         yield return 0;
     }

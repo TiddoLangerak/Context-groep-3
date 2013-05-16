@@ -12,8 +12,9 @@ public class LevelTest
     Level level;
 
     const int blockAmount = 5;
+    const int powerupOffset = 0;
     const float blockLength = 1.0f;
-
+    
     [SetUp]
     public void SetUp()
     {
@@ -27,7 +28,7 @@ public class LevelTest
     [Test]
     public void blockAmountStartTest()
     {
-        level = new Level(blockAmount, blockLength, levelBehavior);
+        level = new Level(blockAmount, powerupOffset, blockLength, levelBehavior);
 
         Assert.AreEqual(blockAmount, levelBehavior.getAmountOfLevelBlocks());
     }
@@ -39,7 +40,7 @@ public class LevelTest
     [Test]
     public void blockAmountUpdateTest()
     {
-        level = new Level(blockAmount, blockLength, levelBehavior);
+        level = new Level(blockAmount, powerupOffset, blockLength, levelBehavior);
 
         level.update((int)blockLength);
 
@@ -56,7 +57,7 @@ public class LevelTest
     [Test]
     public void timesCalledTest()
     {
-        level = new Level(blockAmount, blockLength, levelBehavior);
+        level = new Level(blockAmount, powerupOffset, blockLength, levelBehavior);
 
         level.update((int)(blockLength));
 
