@@ -10,7 +10,7 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		powerup = new StarPowerup(this);
+		powerup = new StarPowerup(this, new TimerAdapter());
 	}
 	
 	// Update is called once per frame
