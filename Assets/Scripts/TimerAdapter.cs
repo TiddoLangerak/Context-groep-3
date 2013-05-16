@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
 
-public class TimerAdapter : Timer, ITimer {
+public class TimerAdapter : Timer, ITimer
+{
 }
