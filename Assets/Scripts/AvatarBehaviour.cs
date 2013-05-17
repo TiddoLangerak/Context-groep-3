@@ -1,5 +1,5 @@
-﻿#define INPUT_KINECT
-//#define INPUT_KEYBOARD
+﻿//#define INPUT_KINECT
+#define INPUT_KEYBOARD
 
 using UnityEngine;
 
