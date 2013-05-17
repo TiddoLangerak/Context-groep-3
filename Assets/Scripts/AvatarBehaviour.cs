@@ -18,9 +18,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
-    private StartScreenBehaviour GUI_textures;
 
-    private bool showStartScreen = true;
     bool jumping = false;
     bool audioIsStopping = false;
 
@@ -33,8 +31,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
-        GUI_textures = new StartScreenBehaviour();
-        StateManager.Instance.pauseOrUnpause();
         try
         {
             //Try to initialize the input
@@ -59,58 +55,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #endif
         }
 
-    }
-
-    void OnGUI()
-    {
-        if (showStartScreen)
-        {
-            GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), StartWindowHandler, "The Chase");
-        }
-    }
-
-    private void StartWindowHandler(int windowID)
-    {
-        CheckIfStartScreenShouldBeShown();
-        ShowTitle();
-        ShowObstacleImages();
-        ShowStatusFooter();
-    }
-
-    private void CheckIfStartScreenShouldBeShown()
-    {
-        if (Input.GetKey(KeyCode.Q))/*if (jumping) DOES NOT WORK!*/
-        {
-            showStartScreen = false;
-            StateManager.Instance.pauseOrUnpause();
-        }
-    }
-
-    private void ShowTitle()
-    {
-        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-        guiStyle.fontSize = 45;
-        GUI.Label(new Rect(300, 20, 600, 100), "Welcome to \'The Chase\'!", guiStyle);
-    }
-
-    private void ShowObstacleImages()
-    {
-        GUI.DrawTexture(new Rect(50, 300, 200, 200), GUI_textures.cupASoup);
-    }
-
-    private void ShowStatusFooter()
-    {
-        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-        guiStyle.fontSize = 30;
-        if (StateManager.Instance.NumberOfPlayers > 0)
-        {
-            GUI.Label(new Rect(400, 750, 600, 100), "Jump to start the game", guiStyle);
-        }
-        else
-        {
-            GUI.Label(new Rect(270, 750, 600, 100), "The game needs at least one player to start", guiStyle);
-        }
-    }
+    }   
 
     /// <summary>
     /// The Destroy method is called when the MonoBehaviour will be destroyed.
