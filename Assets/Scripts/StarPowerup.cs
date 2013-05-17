@@ -20,12 +20,12 @@ public class StarPowerup : IPowerup
     /// </summary>
     /// <param name="behaviour"></param>
     /// <param name="timer"></param>
-	public StarPowerup(IStarPowerupBehaviour behaviour, ITimer timer)
+	public StarPowerup(IStarPowerupBehaviour behaviour, ITimer timer, float duration)
 	{
 		this.behaviour = behaviour;
 
         this.timer = timer;
-        this.timer.Interval = 4000;
+        this.timer.Interval = (int)(duration*1000);
         this.timer.Elapsed += new ElapsedEventHandler(UndoInvincibility);
 	}
 	

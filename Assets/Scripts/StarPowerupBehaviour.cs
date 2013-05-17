@@ -6,11 +6,12 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 	protected StarPowerup powerup;
 	private GameObject particles;
 	public GameObject particlePrefab;
+	public float duration = 5;
 
 	// Use this for initialization
 	void Start ()
 	{
-		powerup = new StarPowerup(this, new TimerAdapter());
+		powerup = new StarPowerup(this, new TimerAdapter(), duration);
 	}
 	
 	// Update is called once per frame
