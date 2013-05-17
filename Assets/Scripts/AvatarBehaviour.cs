@@ -122,7 +122,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Right()
     {
-        StartCoroutine(MoveAnimation(Vector3.right * 5, 100));
+        StartCoroutine(MoveAnimation(Vector3.right * 6, 100));
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-        StartCoroutine(MoveAnimation(Vector3.left * 5, 100));
+        StartCoroutine(MoveAnimation(Vector3.left * 6, 100));
     }
 
     public void Up()
