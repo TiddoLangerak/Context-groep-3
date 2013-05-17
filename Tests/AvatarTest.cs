@@ -18,7 +18,7 @@ public class AvatarTest
         var mockUserInput = new Mock<IUserInput>();
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
-        Assert.AreEqual(av.track, 2);
+        Assert.AreEqual(2, av.track);
     }
 
     [Test]
@@ -29,16 +29,16 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
-        Assert.AreEqual(av.track, 1);
+        Assert.AreEqual(1, av.track);
 
         av.Right();
-        Assert.AreEqual(av.track, 2);
+        Assert.AreEqual(2, av.track);
 
         av.Right();
-        Assert.AreEqual(av.track, 3);
+        Assert.AreEqual(3, av.track);
 
         av.Left();
-        Assert.AreEqual(av.track, 2);
+        Assert.AreEqual(2, av.track);
     }
 
     [Test]
@@ -49,10 +49,10 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
-        Assert.AreEqual(av.track, 1);
+        Assert.AreEqual(1, av.track);
 
         av.Left();
-        Assert.AreEqual(av.track, 1);
+        Assert.AreEqual(1, av.track);
     }
 
     [Test]
@@ -63,9 +63,30 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Right();
-        Assert.AreEqual(av.track, 3);
+        Assert.AreEqual(3, av.track);
 
         av.Right();
-        Assert.AreEqual(av.track, 3);
+        Assert.AreEqual(3, av.track);
+    }
+
+    [Test]
+    public void moveDeadAvatar()
+    {
+        // Arrange
+        var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
+        var mockUserInput = new Mock<IUserInput>();
+        
+        Avatar av = new Avatar(
+            mockAvatarBehaviour.Object,
+            mockUserInput.Object
+        );
+
+        StateManager.Instance.die();
+
+        // Act
+        av.Right();
+
+        // Assert
+        Assert.AreEqual(av.track, 2, "A dead avatar should be able to move");
     }
 }

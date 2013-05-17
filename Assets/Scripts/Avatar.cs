@@ -48,7 +48,7 @@ public class Avatar
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
         this.track = 2;
-        this.moveSpeed = 4;
+        this.moveSpeed = 10;
 
         userInput.Initialize();
         this._avatarBehaviour = avatarBehaviour;
@@ -63,42 +63,54 @@ public class Avatar
     /// the avatar is moved backwards.
     /// </summary>
     public void Update()
+	{
+		if(!StateManager.Instance.isPausing())
+		{
+			_avatarBehaviour.Forward(this.moveSpeed);	
+		}
+	}
+	
+    public bool MovementHandler()
     {
+        if (StateManager.Instance.isDead())
+        {
+            this._avatarBehaviour.stopAudio();
+        }
         if (!StateManager.Instance.isPausing())
         {
-            this._avatarBehaviour.Forward(this.moveSpeed);
-
             switch (this._userInput.CurrentMovement())
             {
                 case AvatarMovement.Left:
-                    this.Left();
-                    break;
+                    return this.Left();
                 case AvatarMovement.Right:
-                    this.Right();
-                    break;
+                    return this.Right();
 				case AvatarMovement.Jump:
-					this.Up();
-					break;
+					return this.Up();
 				case AvatarMovement.Increase:
-					Logger.Log("increase: " + moveSpeed);
 					moveSpeed+= 2.0f;
+					break;
+				case AvatarMovement.Decrease:
+					moveSpeed-= 1.0f;
 					break;
                 default:
                     break;
             }
         }
+		return false;
     }
 
     /// <summary>
     /// Move player to the left track.
     /// </summary>
-    public void Left()
+    public bool Left()
     {
         if (StateManager.Instance.isPlaying() && track > 1)
         {
             this.track--;
             this._avatarBehaviour.Left();
+			return true;
         }
+		return false;		
     }
 
     /// <summary>
@@ -106,24 +118,28 @@ public class Avatar
     /// the player is allowed to move right (e.g. not already on the
     /// rightmost lane)
     /// </summary>
-    public void Right()
+    public bool Right()
     {
         if (StateManager.Instance.isPlaying() && track < 3)
         {
             this.track++;
             this._avatarBehaviour.Right();
+			return true;
         }
+		return false;
     }
 	
 	/// <summary>
 	/// Up this instance.
 	/// </summary>
-	public void Up()
+	public bool Up()
 	{
 		if(StateManager.Instance.isPlaying())
 		{
-			this._avatarBehaviour.Up();	
+			this._avatarBehaviour.Up();
+			return true;
 		}
+		return false;
 	}
 	
 	

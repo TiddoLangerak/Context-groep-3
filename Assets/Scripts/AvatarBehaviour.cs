@@ -18,9 +18,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
+
     private bool showStartScreen = true;
     bool jumping = false;
-
+    bool audioIsStopping = false;
+	
+>>>>>>> master
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
@@ -100,8 +103,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Update()
     {
-        this.avatar.Update();
-        this.avatar.moveSpeed += Time.smoothDeltaTime / 5;
+	this.avatar.Update();
+	this.avatar.moveSpeed += Time.smoothDeltaTime/20;
+
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
     }
@@ -143,7 +147,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-        yield return 0;
+		while(true) 
+		{
+			if(this.avatar.MovementHandler())
+			{
+				yield return new WaitForSeconds(0.5f);
+			}
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
     }
 
     IEnumerator UpAndDownAnimation()
@@ -167,5 +178,33 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             yield return new WaitForSeconds(0.025f);
         }
         yield return 0;
+    }
+
+    public void stopAudio()
+    {
+        if (this.audio.isPlaying && !this.audioIsStopping)
+        {
+            this.audioIsStopping = true;
+            StartCoroutine(this._stopAudio(this.audio, 1500));
+        }
+    }
+    private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime)
+    {
+        float startVolume = audio.volume;
+        float timeout = 1000 / 30.0f;
+        float volumeDiff = audio.volume * timeout / fadeoutTime;
+        float pitchDiff = audio.pitch * timeout / fadeoutTime;
+        while(audio.volume > 0.01)
+        {
+            audio.volume -= volumeDiff;
+            audio.pitch -= pitchDiff;
+            yield return new WaitForSeconds(timeout / 1000);
+        }
+        audio.Stop();
+        audio.volume = startVolume;
+        audio.pitch = 1;
+        this.audioIsStopping = false;
+        yield return 0;
+
     }
 }
