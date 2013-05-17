@@ -18,9 +18,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
-	bool jumping = false;
+
+    private bool showStartScreen = true;
+    bool jumping = false;
     bool audioIsStopping = false;
 	
+>>>>>>> master
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
@@ -30,11 +33,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
+        StateManager.Instance.pauseOrUnpause();
         try
         {
             //Try to initialize the input
 #if INPUT_KINECT
-                this.avatar = new Avatar(this, new KinectUserInput());
+            this.avatar = new Avatar(this, new KinectUserInput());
 #elif INPUT_KEYBOARD
             this.avatar = new Avatar(this, new KeyboardUserInput());
 #else
@@ -55,6 +59,33 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     }
 
+    void OnGUI()
+    {
+        if (showStartScreen)
+        {
+            GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), StartWindowHandler, "The Chase");
+        }
+    }
+
+    private void StartWindowHandler(int windowID)
+    {
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        guiStyle.fontSize = 30;
+        if (StateManager.Instance.NumberOfPlayers > 0)
+        {
+            GUI.Label(new Rect(400, 650, 600, 100), "Jump to start the game", guiStyle);
+        }
+        else
+        {
+            GUI.Label(new Rect(270, 650, 600, 100), "The game needs at least one player to start", guiStyle);
+        }
+        if (Input.anyKey)/*if (jumping) DOES NOT WORK!*/
+        {
+            showStartScreen = false;
+            StateManager.Instance.pauseOrUnpause();
+        }
+    }
+
     /// <summary>
     /// The Destroy method is called when the MonoBehaviour will be destroyed.
     /// OnDestroy will only be called on game objects that have previously
@@ -72,8 +103,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Update()
     {
-		this.avatar.Update();
-		this.avatar.moveSpeed += Time.smoothDeltaTime/20;
+	this.avatar.Update();
+	this.avatar.moveSpeed += Time.smoothDeltaTime/20;
+
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
     }
@@ -102,12 +134,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         StartCoroutine(MoveAnimation(Vector3.left * 5, 100));
     }
-	
-	public void Up()
-	{
-		StartCoroutine(UpAndDownAnimation());
-	}
-	
+
+    public void Up()
+    {
+        StartCoroutine(UpAndDownAnimation());
+    }
+
     /// <summary>
     /// A coroutine responsible for moving the avatar. Yields a
     /// WaitForSeconds to pause execution and prevent moving
@@ -125,19 +157,21 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 		}
     }
 
-	IEnumerator UpAndDownAnimation() {
-		if(!jumping) {
-			jumping = true;
-			yield return StartCoroutine(MoveAnimation(Vector3.up * 8, 400));
-			yield return StartCoroutine(MoveAnimation(Vector3.down * 8, 400));
-			jumping = false;
-		}
-	}
-	
+    IEnumerator UpAndDownAnimation()
+    {
+        if (!jumping)
+        {
+            jumping = true;
+            yield return StartCoroutine(MoveAnimation(Vector3.up * 8, 400));
+            yield return StartCoroutine(MoveAnimation(Vector3.down * 8, 400));
+            jumping = false;
+        }
+    }
+
     IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
-		int x = (int) Mathf.Round(quick / avatar.moveSpeed) + 1;
-		Debug.Log("wait time: " + (x));
+        int x = (int)Mathf.Round(quick / avatar.moveSpeed) + 1;
+        Debug.Log("wait time: " + (x));
         for (int i = 0; i < x; i++)
         {
             transform.Translate(targetlocation / x);
