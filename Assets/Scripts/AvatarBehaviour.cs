@@ -23,7 +23,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     bool jumping = false;
     bool audioIsStopping = false;
 	
->>>>>>> master
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
