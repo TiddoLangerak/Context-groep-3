@@ -22,6 +22,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     private bool showStartScreen = true;
     bool jumping = false;
     bool audioIsStopping = false;
+    AudioSource mainAudio;
+    AudioSource powerupAudio;
 	
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -32,6 +34,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        mainAudio = audioSources[0];
+        powerupAudio = audioSources[1];
         StateManager.Instance.pauseOrUnpause();
         try
         {
@@ -107,6 +112,25 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
+
+        if (StateManager.Instance.isDead())
+        {
+            this.stopAudio();
+        }
+        else if (StateManager.Instance.invincible)
+        {
+            if (!this.powerupAudio.isPlaying)
+            {
+                this.mainAudio.Stop();
+                this.powerupAudio.Play();
+            }
+        }
+        else if (!this.mainAudio.isPlaying)
+        {
+            this.powerupAudio.Stop();
+            this.mainAudio.Play();
+        }
+        
     }
 
     /// <summary>
@@ -179,14 +203,17 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         yield return 0;
     }
 
-    public void stopAudio()
+    private void stopAudio()
     {
-        if (this.audio.isPlaying && !this.audioIsStopping)
+        if (this.mainAudio.isPlaying && !this.audioIsStopping)
         {
             this.audioIsStopping = true;
-            StartCoroutine(this._stopAudio(this.audio, 1500));
+            StartCoroutine(this._stopAudio(this.mainAudio, 1500));
         }
     }
+
+ 
+
     private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime)
     {
         float startVolume = audio.volume;

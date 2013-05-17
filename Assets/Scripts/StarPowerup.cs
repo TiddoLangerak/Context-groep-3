@@ -50,7 +50,6 @@ public class StarPowerup : IPowerup
     public void UndoInvincibility(object sender, EventArgs e)
     {
         StateManager.Instance.undoInvincible();
-
         timer.Stop();
     }
 }

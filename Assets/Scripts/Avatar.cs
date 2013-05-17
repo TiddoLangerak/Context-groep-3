@@ -48,7 +48,7 @@ public class Avatar
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
         this.track = 2;
-        this.moveSpeed = 10;
+        this.moveSpeed = 15;
 
         userInput.Initialize();
         this._avatarBehaviour = avatarBehaviour;
@@ -72,10 +72,7 @@ public class Avatar
 	
     public bool MovementHandler()
     {
-        if (StateManager.Instance.isDead())
-        {
-            this._avatarBehaviour.stopAudio();
-        }
+
         if (!StateManager.Instance.isPausing())
         {
             switch (this._userInput.CurrentMovement())

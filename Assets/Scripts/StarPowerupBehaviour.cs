@@ -17,7 +17,7 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 	void Update ()
 	{
 	}
-	
+
 	void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "ShoppingCart")

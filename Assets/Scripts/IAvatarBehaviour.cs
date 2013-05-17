@@ -7,5 +7,4 @@ public interface IAvatarBehaviour
     void Left();
     void Right();
 	void Up();
-    void stopAudio();
 }
