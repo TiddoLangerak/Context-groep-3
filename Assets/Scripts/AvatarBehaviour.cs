@@ -18,11 +18,12 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// The domain-specific avatar instance.
     /// </summary>
     private Avatar avatar;
+    private StartScreenBehaviour GUI_textures;
 
     private bool showStartScreen = true;
     bool jumping = false;
     bool audioIsStopping = false;
-	
+
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
@@ -32,6 +33,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
+        GUI_textures = new StartScreenBehaviour();
         StateManager.Instance.pauseOrUnpause();
         try
         {
@@ -45,9 +47,10 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #endif
             StartCoroutine(SideMovement());
         }
-        catch (System.Exception)
+        catch (System.Exception e)
         {
             Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
+            Logger.Log("Type: " + e.GetType() + "; Message: " + e.Message.ToString() + "\nStacktrace: " + e.StackTrace.ToString());
             Application.Quit();
             //In the unity editor the application doesn't quit using Application.quit, so we just break using the debugger
             //to prevent further execution of code
@@ -68,20 +71,44 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     private void StartWindowHandler(int windowID)
     {
-        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-        guiStyle.fontSize = 30;
-        if (StateManager.Instance.NumberOfPlayers > 0)
-        {
-            GUI.Label(new Rect(400, 650, 600, 100), "Jump to start the game", guiStyle);
-        }
-        else
-        {
-            GUI.Label(new Rect(270, 650, 600, 100), "The game needs at least one player to start", guiStyle);
-        }
+        CheckIfStartScreenShouldBeShown();
+        ShowTitle();
+        ShowObstacleImages();
+        ShowStatusFooter();
+    }
+
+    private void CheckIfStartScreenShouldBeShown()
+    {
         if (Input.GetKey(KeyCode.Q))/*if (jumping) DOES NOT WORK!*/
         {
             showStartScreen = false;
             StateManager.Instance.pauseOrUnpause();
+        }
+    }
+
+    private void ShowTitle()
+    {
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        guiStyle.fontSize = 45;
+        GUI.Label(new Rect(300, 20, 600, 100), "Welcome to \'The Chase\'!", guiStyle);
+    }
+
+    private void ShowObstacleImages()
+    {
+        GUI.DrawTexture(new Rect(50, 300, 200, 200), GUI_textures.cupASoup);
+    }
+
+    private void ShowStatusFooter()
+    {
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        guiStyle.fontSize = 30;
+        if (StateManager.Instance.NumberOfPlayers > 0)
+        {
+            GUI.Label(new Rect(400, 750, 600, 100), "Jump to start the game", guiStyle);
+        }
+        else
+        {
+            GUI.Label(new Rect(270, 750, 600, 100), "The game needs at least one player to start", guiStyle);
         }
     }
 
@@ -102,8 +129,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Update()
     {
-	this.avatar.Update();
-	this.avatar.moveSpeed += Time.smoothDeltaTime/20;
+        this.avatar.Update();
+        this.avatar.moveSpeed += Time.smoothDeltaTime / 20;
 
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
@@ -146,14 +173,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-		while(true) 
-		{
-			if(this.avatar.MovementHandler())
-			{
-				yield return new WaitForSeconds(0.5f);
-			}
-			yield return new WaitForSeconds(Time.deltaTime);
-		}
+        while (true)
+        {
+            if (this.avatar.MovementHandler())
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
 
     IEnumerator UpAndDownAnimation()
@@ -193,7 +220,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         float timeout = 1000 / 30.0f;
         float volumeDiff = audio.volume * timeout / fadeoutTime;
         float pitchDiff = audio.pitch * timeout / fadeoutTime;
-        while(audio.volume > 0.01)
+        while (audio.volume > 0.01)
         {
             audio.volume -= volumeDiff;
             audio.pitch -= pitchDiff;

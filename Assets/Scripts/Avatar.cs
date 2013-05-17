@@ -48,7 +48,7 @@ public class Avatar
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
         this.track = 2;
-        this.moveSpeed = 10;
+        this.moveSpeed = 15;
 
         userInput.Initialize();
         this._avatarBehaviour = avatarBehaviour;

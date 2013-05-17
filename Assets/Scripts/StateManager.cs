@@ -47,6 +47,11 @@ public class StateManager
 			_score = value;
 		}
 	}
+
+    public static void Reset()
+    {
+        instance = new StateManager();
+    }
 	
 	/// <summary>
 	/// If the player is currently invincible.
