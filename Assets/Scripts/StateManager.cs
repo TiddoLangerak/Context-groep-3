@@ -92,6 +92,12 @@ public class StateManager
         }
     }
 
+    public static void reset()
+    {
+        instance = new StateManager();
+    }
+
+
     /// <summary>
     /// Private constructor to prevent creation of multiple StateManager
     /// objects. Instead, refer to the Instance property.
