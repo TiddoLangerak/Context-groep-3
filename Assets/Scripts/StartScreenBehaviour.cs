@@ -66,44 +66,46 @@ public class StartScreenBehaviour: MonoBehaviour
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
         guiStyle.fontSize = 24;
-        string text = "The purpose of this game is to avoid the obstacles as long as possible. The obstacles can be avoided by leaning your bodies to the "+
-        "left or to the right. Obstacles can also be avoided by jumping over them. The three obstacles used in the game are shown below.";
+        string text = "The purpose of this game is to get the highest possible score. This is done by avoiding the obstacles as long as possible. "+
+        "The obstacles can be avoided by leaning your bodies to the left or to the right. "+
+        "Obstacles can also be avoided by jumping over them. The three obstacles used in the game are:";
         GUI.Label(new Rect(200, 125, 700, 200), text, guiStyle);
     }
 
     private void ShowObstacleImages()
     {
-        GUI.DrawTexture(new Rect(200, 300, 100, 100), cupASoup);
-        GUI.DrawTexture(new Rect(310, 300, 100, 100), page);
-        GUI.DrawTexture(new Rect(420, 300, 100, 100), beer);
+        GUI.DrawTexture(new Rect(200, 280, 100, 100), cupASoup);
+        GUI.DrawTexture(new Rect(310, 280, 100, 100), page);
+        GUI.DrawTexture(new Rect(420, 280, 100, 100), beer);
     }
 
     private void ShowSecondTextArea()
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
         guiStyle.fontSize = 24;
-        string text = "The purpose of this game is to avoid the obstacles as long as possible. The obstacles can be avoided by leaning your bodies to the " +
-        "left or to the right. Obstacles can also be avoided by jumping over them. The three obstacles used in the game are shown below.";
-        GUI.Label(new Rect(200, 125, 700, 200), text, guiStyle);
+        string text = "The group's score can be increased by picking up money and by increasing the multiplier. "+
+            "The multiplier is based on the number of players, so more players means a higher score. "+
+            "The game also has a star powerup which makes you invincible for a while. The money and stars are shown in the following way:";
+        GUI.Label(new Rect(200, 390, 700, 200), text, guiStyle);
     }
     
     private void ShowPowerupImages()
     {
-        GUI.DrawTexture(new Rect(300, 600, 100, 100), money);
-        GUI.DrawTexture(new Rect(410, 600, 100, 100), star);
+        GUI.DrawTexture(new Rect(200, 545, 100, 100), money);
+        GUI.DrawTexture(new Rect(310, 545, 100, 100), star);
     }
 
     private void ShowStatusFooter()
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-        guiStyle.fontSize = 30;
+        guiStyle.fontSize = 40;
         if (StateManager.Instance.NumberOfPlayers > 0)
         {
-            GUI.Label(new Rect(400, 750, 600, 100), "Jump to start the game", guiStyle);
+            GUI.Label(new Rect(360, 680, 600, 100), "Jump to start the game", guiStyle);
         }
         else
         {
-            GUI.Label(new Rect(270, 750, 600, 100), "The game needs at least one player to start", guiStyle);
+            GUI.Label(new Rect(175, 680, 800, 100), "The game needs at least one player to start", guiStyle);
         }
     }
 }
