@@ -17,6 +17,8 @@ public class StateManager
         DEAD
     };
 
+    public bool ShowStartScreen { get; set; } 
+
     /// <summary>
     /// Current state of the game
     /// </summary>
@@ -47,6 +49,11 @@ public class StateManager
 			_score = value;
 		}
 	}
+
+    public static void Reset()
+    {
+        instance = new StateManager();
+    }
 	
 	/// <summary>
 	/// If the player is currently invincible.
