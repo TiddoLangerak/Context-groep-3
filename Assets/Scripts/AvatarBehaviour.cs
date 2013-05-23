@@ -170,7 +170,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
         int x = (int)Mathf.Round(quick / avatar.moveSpeed) + 1;
-        Debug.Log("wait time: " + (x));
         for (int i = 0; i < x; i++)
         {
             transform.Translate(targetlocation / x);
