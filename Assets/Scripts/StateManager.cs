@@ -17,6 +17,8 @@ public class StateManager
         DEAD
     };
 
+    public bool ShowStartScreen { get; set; } 
+
     /// <summary>
     /// Current state of the game
     /// </summary>

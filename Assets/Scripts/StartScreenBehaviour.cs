@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class StartScreenBehaviour: MonoBehaviour
 {
-    public bool ShowStartScreen { get; set; } 
     public Texture cupASoup;
     public Texture beer;
     public Texture page;
@@ -17,12 +16,12 @@ public class StartScreenBehaviour: MonoBehaviour
     void Start()
     {
         StateManager.Instance.pauseOrUnpause();
-        ShowStartScreen = true;
+        StateManager.Instance.ShowStartScreen = true;
     }
 
     void OnGUI()
     {
-        if (ShowStartScreen)
+        if (StateManager.Instance.ShowStartScreen)
         {
             GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), CreateStartScreen, "The Chase");
         }
@@ -30,7 +29,6 @@ public class StartScreenBehaviour: MonoBehaviour
 
     private void CreateStartScreen(int windowID)
     {
-        CheckIfStartScreenShouldBeShown();
         ShowTitle();
         ShowLine();
         ShowFirstTextArea();
@@ -38,15 +36,6 @@ public class StartScreenBehaviour: MonoBehaviour
         ShowSecondTextArea();
         ShowPowerupImages();
         ShowStatusFooter();
-    }
-
-    private void CheckIfStartScreenShouldBeShown()
-    {
-        if (Input.GetKey(KeyCode.Q))/*if (jumping) DOES NOT WORK!*/
-        {
-            ShowStartScreen = false;
-            StateManager.Instance.pauseOrUnpause();
-        }
     }
 
     private void ShowTitle()

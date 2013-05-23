@@ -76,8 +76,8 @@ public class Avatar
         {
             this._avatarBehaviour.stopAudio();
         }
-        if (!StateManager.Instance.isPausing())
-        {
+        //else//if (!StateManager.Instance.isPausing())
+        //{
             switch (this._userInput.CurrentMovement())
             {
                 case AvatarMovement.Left:
@@ -95,7 +95,7 @@ public class Avatar
                 default:
                     break;
             }
-        }
+        //}
 		return false;
     }
 
@@ -134,11 +134,16 @@ public class Avatar
 	/// </summary>
 	public bool Up()
 	{
-		if(StateManager.Instance.isPlaying())
-		{
-			this._avatarBehaviour.Up();
-			return true;
-		}
+        if (StateManager.Instance.isPlaying())
+        {
+            this._avatarBehaviour.Up();
+            return true;
+        }
+        else //dead or pausing => hide startscreen + (re)start game on jump
+        {
+            StateManager.Instance.ShowStartScreen = false;
+            StateManager.Instance.pauseOrUnpause();            
+        }
 		return false;
 	}
 	
