@@ -1,16 +1,22 @@
 ﻿using System.Linq;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Kinect
 {
     /// <summary>
     /// This class is responsible for user input from the kinect.
     /// </summary>
-    public class KinectUserInput : IUserInput
+    public class KinectUserInput : MonoBehaviour, IUserInput
     {
         private KinectManager kinectMgr;
         private KinectReaderThread kinectThread;
+		
+		public void Awake()
+		{
+			DontDestroyOnLoad(this);
+		}
 
         /// <summary>
         /// Sets up and starts the kinect thread, such that input can be processed

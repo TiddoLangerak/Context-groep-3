@@ -34,11 +34,11 @@ public class Level{
 		behavior = levelBehavior;
 		for(int i=0; i<blockAmount; i++)
 		{
-			addBlock();
+			AddBlock();
 			AddDecoration();
 			if (i>=powerupOffset)
 			{
-				addObstacles();
+				AddObstacles();
 				AddPowerUp();
 			}
 		}
@@ -62,20 +62,20 @@ public class Level{
 				behavior.destroyObject(powerUpQueue.Dequeue());
 			}
 			DestroyDecoration();
-			addBlock();
-			addObstacles();
+			AddBlock();
+			AddObstacles();
 			AddPowerUp();
 			AddDecoration();
 		}
 	}
 	
-	private void addBlock() 
+	private void AddBlock() 
 	{
 		levelBlockQueue.Enqueue(behavior.makeLevelBlock(blockLength*lastAdded));
 		lastAdded++;
 	}
 	
-	private void addObstacles()
+	private void AddObstacles()
 	{
 		int line1 = randomLine();
 		int line2 = (line1 + 2) % 3 - 1;

@@ -1,5 +1,5 @@
-﻿#define INPUT_KINECT
-//#define INPUT_KEYBOARD
+﻿// #define INPUT_KINECT
+#define INPUT_KEYBOARD
 
 using UnityEngine;
 
@@ -35,7 +35,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             //Try to initialize the input
 #if INPUT_KINECT
-            this.avatar = new Avatar(this, new KinectUserInput());
+            this.avatar = new Avatar(this, GameObject.Find("Kinect(Clone)").GetComponent<KinectUserInput>());
 #elif INPUT_KEYBOARD
             this.avatar = new Avatar(this, new KeyboardUserInput());
 #else
@@ -142,7 +142,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
         int x = (int)Mathf.Round(quick / avatar.moveSpeed) + 1;
-        Debug.Log("wait time: " + (x));
         for (int i = 0; i < x; i++)
         {
             transform.Translate(targetlocation / x);

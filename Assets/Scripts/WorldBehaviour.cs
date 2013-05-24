@@ -3,12 +3,16 @@ using System.Collections;
 
 public class WorldBehaviour : MonoBehaviour
 {
+	public GameObject inputObject;
+	bool sceneNeedsReloading = false;
     /// <summary>
     /// Used for initialization
     /// </summary>
     void Start()
     {
         StartCoroutine(onKey());
+		if (GameObject.Find("Kinect") == null)
+			Instantiate(inputObject);
     }
 
     /// <summary>
@@ -19,6 +23,8 @@ public class WorldBehaviour : MonoBehaviour
     {
         if (!StateManager.Instance.isPausing())
             StateManager.Instance.score += (Time.deltaTime * 10 * StateManager.Instance.NumberOfPlayers);
+		if (sceneNeedsReloading)
+			Application.LoadLevel("level");
     }
 
     /// <summary>
@@ -71,4 +77,9 @@ public class WorldBehaviour : MonoBehaviour
             }
         }
     }
+	
+	public void ReloadScene()
+	{
+		sceneNeedsReloading = true;
+	}
 }
