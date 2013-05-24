@@ -20,7 +20,7 @@ public class WorldBehaviour : MonoBehaviour
 			Instantiate(inputObject);
 		
 		this.timer.Interval = (int)(reloadDuration*1000);
-        this.timer.Elapsed += new ElapsedEventHandler(ResetGame);
+        this.timer.Elapsed += new ElapsedEventHandler(ReloadSceneTimerElapsed);
     }
 
     /// <summary>
@@ -32,11 +32,7 @@ public class WorldBehaviour : MonoBehaviour
         if (!StateManager.Instance.isPausing())
             StateManager.Instance.score += (Time.deltaTime * 10 * StateManager.Instance.NumberOfPlayers);
         if (sceneNeedsReloading)
-        {
-            Application.LoadLevel("level");
-            StateManager.Instance.ShowStartScreen = true;
-            StateManager.Instance.score = 0;
-        }
+            ResetGame();
     }
 
     /// <summary>
@@ -93,12 +89,17 @@ public class WorldBehaviour : MonoBehaviour
 	public void ReloadScene()
 	{
 		timer.Start();
+	}
+	private void ReloadSceneTimerElapsed(object sender, EventArgs e)
+	{
+		timer.Stop();
 		sceneNeedsReloading = true;
 	}
 	
-	public void ResetGame(object sender, EventArgs e)
+	public void ResetGame()
     {
-		timer.Stop();
-		_obstacleBehaviour.ReloadScene();
+		Application.LoadLevel("level");
+		StateManager.Instance.ShowStartScreen = true;
+        StateManager.Instance.score = 0;
     }
 }
