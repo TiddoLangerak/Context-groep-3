@@ -17,7 +17,8 @@ public class StateManager
         DEAD
     };
 
-    public bool ShowStartScreen { get; set; } 
+    public bool ShowStartScreen { get; set; }
+    public bool NewMoneyPowerup { get; set; } 
 
     /// <summary>
     /// Current state of the game

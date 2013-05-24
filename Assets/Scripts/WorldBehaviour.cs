@@ -46,9 +46,14 @@ public class WorldBehaviour : MonoBehaviour
         GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
         guiStyle.fontSize = 50;
         GUI.contentColor = Color.white;
-        GUI.backgroundColor = Color.clear;
-        GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.score), guiStyle);
+        GUI.backgroundColor = Color.clear;        
         GUI.TextArea(new Rect(10, 70, 350, 60), "Multiplier: " + StateManager.Instance.NumberOfPlayers, guiStyle);
+
+        if (StateManager.Instance.NewMoneyPowerup)
+        {
+            GUI.contentColor = Color.red;
+        }
+        GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.score), guiStyle);
 
         GUI.contentColor = Color.red;
         if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
