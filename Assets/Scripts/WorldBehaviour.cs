@@ -23,8 +23,11 @@ public class WorldBehaviour : MonoBehaviour
     {
         if (!StateManager.Instance.isPausing())
             StateManager.Instance.score += (Time.deltaTime * 10 * StateManager.Instance.NumberOfPlayers);
-		if (sceneNeedsReloading)
-			Application.LoadLevel("level");
+        if (sceneNeedsReloading)
+        {
+            Application.LoadLevel("level");
+            StateManager.Instance.ShowStartScreen = true;
+        }
     }
 
     /// <summary>
