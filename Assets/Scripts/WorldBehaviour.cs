@@ -27,6 +27,7 @@ public class WorldBehaviour : MonoBehaviour
         {
             Application.LoadLevel("level");
             StateManager.Instance.ShowStartScreen = true;
+            StateManager.Instance.score = 0;
         }
     }
 
