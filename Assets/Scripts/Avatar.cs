@@ -139,7 +139,8 @@ public class Avatar
             this._avatarBehaviour.Up();
             return true;
         }
-        else //dead or pausing => hide startscreen + (re)start game on jump
+		//When a new game has started => hide startscreen + (re)start game on jump
+		else if (!StateManager.Instance.isDead())
         {
             StateManager.Instance.ShowStartScreen = false;
             StateManager.Instance.pauseOrUnpause();            
