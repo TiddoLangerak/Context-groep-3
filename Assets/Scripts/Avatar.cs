@@ -72,12 +72,6 @@ public class Avatar
 	
     public bool MovementHandler()
     {
-        if (StateManager.Instance.isDead())
-        {
-            this._avatarBehaviour.stopAudio();
-        }
-        //else//if (!StateManager.Instance.isPausing())
-        //{
             switch (this._userInput.CurrentMovement())
             {
                 case AvatarMovement.Left:
@@ -95,7 +89,6 @@ public class Avatar
                 default:
                     break;
             }
-        //}
 		return false;
     }
 

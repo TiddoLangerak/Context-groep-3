@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Timers;
 
 public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 {
@@ -11,14 +12,17 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		powerup = new StarPowerup(this, new TimerAdapter(), duration);
+        var timer = new TimerAdapter();
+        timer.Interval = (int)(duration * 1000);
+
+		powerup = new StarPowerup(this, timer);
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 	}
-	
+
 	void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "ShoppingCart")

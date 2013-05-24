@@ -5,11 +5,13 @@ using System.Collections;
 public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
 {
 	protected PointsPowerup powerup;
+    private AudioBehaviour audioManager;
 
 	// Use this for initialization
 	void Start ()
 	{
 		powerup = new PointsPowerup();
+        this.audioManager = GameObject.Find("2DAudio").GetComponent<AudioBehaviour>();
 	}
 	
 	void OnCollisionEnter(Collision collision)
@@ -23,6 +25,7 @@ public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
             scoreBetterVisible.Start();
 
             powerup.Collision();
+            this.audioManager.Play("money");
 			Destroy(this.gameObject);
         }
     }
