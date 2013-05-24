@@ -39,7 +39,7 @@ public class StarPowerup : IPowerup
 
 		timer.Start();
 
-		behaviour.addParticles();
+		behaviour.AddParticles();
 	}
 
     /// <summary>

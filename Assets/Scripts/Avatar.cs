@@ -72,9 +72,6 @@ public class Avatar
 	
     public bool MovementHandler()
     {
-
-        if (!StateManager.Instance.isPausing())
-        {
             switch (this._userInput.CurrentMovement())
             {
                 case AvatarMovement.Left:
@@ -92,7 +89,6 @@ public class Avatar
                 default:
                     break;
             }
-        }
 		return false;
     }
 
@@ -131,11 +127,17 @@ public class Avatar
 	/// </summary>
 	public bool Up()
 	{
-		if(StateManager.Instance.isPlaying())
-		{
-			this._avatarBehaviour.Up();
-			return true;
-		}
+        if (StateManager.Instance.isPlaying())
+        {
+            this._avatarBehaviour.Up();
+            return true;
+        }
+		//When a new game has started => hide startscreen + (re)start game on jump
+		else if (!StateManager.Instance.isDead())
+        {
+            StateManager.Instance.ShowStartScreen = false;
+            StateManager.Instance.pauseOrUnpause();            
+        }
 		return false;
 	}
 	

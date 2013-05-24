@@ -8,6 +8,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// </summary>
     private Obstacle obstacle;
 	public GameObject destroyEffect = null;
+	WorldBehaviour world;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -16,6 +17,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     void Start()
     {	
         this.obstacle = new Obstacle(this);
+		world = GameObject.Find("World").GetComponent<WorldBehaviour>();
     }
 
     /// <summary>
@@ -39,5 +41,10 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
 	{
 		this.obstacle.Collision();
 		Destroy(this.gameObject);
+	}
+	
+	public void ReloadScene()
+	{
+		world.ReloadScene();
 	}
 }

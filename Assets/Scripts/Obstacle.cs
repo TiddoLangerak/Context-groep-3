@@ -1,4 +1,5 @@
 using System;
+using System.Timers;
 
 /// <summary>
 /// This class represents the avatar as domain object. Therefore, it
@@ -8,8 +9,6 @@ public class Obstacle
 {
     /// <summary>
     /// Reference to IObstacleBehaviour
-    /// 
-    /// TODO: This reference is currently not used, but will be used in the future.
     /// </summary>
     private IObstacleBehaviour _obstacleBehaviour;
 
@@ -20,6 +19,7 @@ public class Obstacle
     public Obstacle(IObstacleBehaviour obstacleBehaviour)
     {
         this._obstacleBehaviour = obstacleBehaviour;
+        
     }
 
     /// <summary>
@@ -30,6 +30,7 @@ public class Obstacle
 		if(!StateManager.Instance.invincible)
 		{
         	StateManager.Instance.die();
+			_obstacleBehaviour.ReloadScene();
 		}
     }
 }

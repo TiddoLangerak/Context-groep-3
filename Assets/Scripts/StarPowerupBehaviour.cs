@@ -31,7 +31,7 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 			Destroy(this.gameObject);
         }
     }
-	public void addParticles()
+	public void AddParticles()
 	{
 		GameObject avatar = GameObject.Find("Avatar");
 		particles = (GameObject) Instantiate(particlePrefab, avatar.transform.position + particlePrefab.transform.position, Quaternion.identity);

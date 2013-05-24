@@ -1,4 +1,4 @@
 public interface IStarPowerupBehaviour
 {
-	void addParticles();
+	void AddParticles();
 }

@@ -1,4 +1,4 @@
-﻿//#define INPUT_KINECT
+﻿// #define INPUT_KINECT
 #define INPUT_KEYBOARD
 
 using UnityEngine;
@@ -19,10 +19,10 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     private Avatar avatar;
 
-    private bool showStartScreen = true;
     bool jumping = false;
     AudioBehaviour audioManager;
 	
+
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
@@ -38,7 +38,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             //Try to initialize the input
 #if INPUT_KINECT
-            this.avatar = new Avatar(this, new KinectUserInput());
+            this.avatar = new Avatar(this, GameObject.Find("Kinect(Clone)").GetComponent<KinectUserInput>());
 #elif INPUT_KEYBOARD
             this.avatar = new Avatar(this, new KeyboardUserInput());
 #else
@@ -46,9 +46,10 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #endif
             StartCoroutine(SideMovement());
         }
-        catch (System.Exception)
+        catch (System.Exception e)
         {
             Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
+            Logger.Log("Type: " + e.GetType() + "; Message: " + e.Message.ToString() + "\nStacktrace: " + e.StackTrace.ToString());
             Application.Quit();
             //In the unity editor the application doesn't quit using Application.quit, so we just break using the debugger
             //to prevent further execution of code
@@ -57,34 +58,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #endif
         }
 
-    }
-
-    void OnGUI()
-    {
-        if (showStartScreen)
-        {
-            GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), StartWindowHandler, "The Chase");
-        }
-    }
-
-    private void StartWindowHandler(int windowID)
-    {
-        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-        guiStyle.fontSize = 30;
-        if (StateManager.Instance.NumberOfPlayers > 0)
-        {
-            GUI.Label(new Rect(400, 650, 600, 100), "Jump to start the game", guiStyle);
-        }
-        else
-        {
-            GUI.Label(new Rect(270, 650, 600, 100), "The game needs at least one player to start", guiStyle);
-        }
-        if (Input.anyKey)/*if (jumping) DOES NOT WORK!*/
-        {
-            showStartScreen = false;
-            StateManager.Instance.pauseOrUnpause();
-        }
-    }
+    }   
 
     /// <summary>
     /// The Destroy method is called when the MonoBehaviour will be destroyed.
@@ -103,8 +77,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Update()
     {
-	this.avatar.Update();
-	this.avatar.moveSpeed += Time.smoothDeltaTime/20;
+        this.avatar.Update();
+        this.avatar.moveSpeed += Time.smoothDeltaTime / 20;
 
         if (Input.GetKey(KeyCode.S))
             transform.Translate(Vector3.forward * -2);
@@ -142,7 +116,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Right()
     {
-        StartCoroutine(MoveAnimation(Vector3.right * 5, 100));
+        StartCoroutine(MoveAnimation(Vector3.right * 6, 100));
     }
 
     /// <summary>
@@ -151,7 +125,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
-        StartCoroutine(MoveAnimation(Vector3.left * 5, 100));
+        StartCoroutine(MoveAnimation(Vector3.left * 6, 100));
     }
 
     public void Up()
@@ -166,14 +140,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     IEnumerator SideMovement()
     {
-		while(true) 
-		{
-			if(this.avatar.MovementHandler())
-			{
-				yield return new WaitForSeconds(0.5f);
-			}
-			yield return new WaitForSeconds(Time.deltaTime);
-		}
+        while (true)
+        {
+            if (this.avatar.MovementHandler())
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
 
     IEnumerator UpAndDownAnimation()
@@ -190,7 +164,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
         int x = (int)Mathf.Round(quick / avatar.moveSpeed) + 1;
-        Debug.Log("wait time: " + (x));
         for (int i = 0; i < x; i++)
         {
             transform.Translate(targetlocation / x);
@@ -198,4 +171,5 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
         yield return 0;
     }
+
 }
