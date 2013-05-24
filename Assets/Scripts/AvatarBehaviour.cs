@@ -35,7 +35,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             //Try to initialize the input
 #if INPUT_KINECT
-            this.avatar = new Avatar(this, new KinectUserInput());
+            this.avatar = new Avatar(this, GameObject.Find("Kinect(Clone)").GetComponent<KinectUserInput>());
 #elif INPUT_KEYBOARD
             this.avatar = new Avatar(this, new KeyboardUserInput());
 #else

@@ -40,7 +40,7 @@ namespace Kinect
         ///     Leaning ratio left: b/a
         ///     Leaning ratio right: a/b
         /// </summary>
-        private const double TRESHOLD_LEANING = 1.5;
+        private const double TRESHOLD_LEANING = 1.2;
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.

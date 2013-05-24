@@ -28,7 +28,8 @@ class StarPowerupTest
 
         StarPowerup starPowerup = new StarPowerup(
             mockStarPowerupBehaviour.Object,
-            mockTimer.Object
+            mockTimer.Object,
+            0
         );
 
         // Act
@@ -47,7 +48,8 @@ class StarPowerupTest
 
         StarPowerup starPowerup = new StarPowerup(
             mockStarPowerupBehaviour.Object,
-            mockTimer.Object
+            mockTimer.Object,
+            0
         );
 
         // Act

@@ -2,5 +2,5 @@
 
 public interface IObstacleBehaviour
 {
-	void DestroySelf();
+	void ReloadScene();
 }

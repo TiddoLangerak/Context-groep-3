@@ -16,7 +16,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 	public GameObject[] powerups;
 	public GameObject[] decoration;
     public Vector3 offset = new Vector3(0.0f, 4.875f, 0);
-    private int blockAdded = 0;
+    //private int blockAdded = 0;
 	private GameObject endLevelBlock;
 
     Level level;
@@ -75,15 +75,7 @@ public class LevelBehavior : MonoBehaviour, ILevelBehavior
 
     private GameObject randomObject()
     {
-        blockAdded++;
-        if (blockAdded % 10 == 0)
-        {
-            return obstacles[obstacles.Length - 1];
-        }
-        else
-        {
-            return obstacles[Random.Range(0, obstacles.Length-1)];
-        }
+		return obstacles[Random.Range(0, obstacles.Length)];
     }
 	
 	private GameObject randomPowerUp()
