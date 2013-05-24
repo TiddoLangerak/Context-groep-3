@@ -15,7 +15,7 @@ public class StartScreenBehaviour: MonoBehaviour
 
     void Start()
     {
-        StateManager.Instance.pauseOrUnpause();
+        //StateManager.Instance.pauseOrUnpause();
         StateManager.Instance.ShowStartScreen = true;
     }
 
