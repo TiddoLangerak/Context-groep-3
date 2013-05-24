@@ -2,6 +2,7 @@ using OpenNI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Timers;
 using System;
 using UnityEngine;
 
@@ -69,7 +70,7 @@ namespace Kinect
 
             //And initialize event handlers
             UserGenerator.NewUser += OnNewUser;
-            UserGenerator.LostUser += OnLostUser;
+            UserGenerator.UserExit += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
 
             this.TrackedUsers = new Dictionary<int, User>();
@@ -77,15 +78,17 @@ namespace Kinect
 
         /// <summary>
         /// Function that is called whenever a new user enters the range of the Kinect.
-        /// This function requests calibration for the new user.
+        /// This function requests calibration for the new user after 5 seconds.
         /// </summary>
         /// <param name="sender">The object that called this function</param>
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
         private void OnNewUser(object sender, NewUserEventArgs e)
         {
             Logger.Log("New user: " + e.ID);
-            Logger.Log("Requesting calibration for user: " + e.ID);
-            SkeletonCapability.RequestCalibration(e.ID, true);
+            System.Timers.Timer calibrationTimer = new System.Timers.Timer();
+            calibrationTimer.Interval = 3000;
+            calibrationTimer.Elapsed += (src, a) => RequestCalibrationForUser(src, a, e.ID);
+            calibrationTimer.Start();
         }
 
         /// <summary>
@@ -95,13 +98,13 @@ namespace Kinect
         /// </summary>
         /// <param name="sender">The object that called this function</param>
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
-        private void OnLostUser(object sender, UserLostEventArgs e)
+        private void OnLostUser(object sender, UserExitEventArgs e)
         {
             if (TrackedUsers.ContainsKey(e.ID))
             {
                 StateManager.Instance.NumberOfPlayers--;
+                TrackedUsers.Remove(e.ID);
             }
-            TrackedUsers.Remove(e.ID);
             Logger.Log("Lost user: " + e.ID);
         }
 
@@ -126,8 +129,25 @@ namespace Kinect
             {
                 Logger.Log("Calibration failed on user: " + e.ID);
                 Logger.Log("Retrying calibration on user: " + e.ID);
-                SkeletonCapability.RequestCalibration(e.ID, true);
+                SkeletonCapability.RequestCalibration(e.ID, false);
             }
+        }
+
+        /// <summary>
+        /// Stop timer and request calibration for the user with ID == userID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="userID"></param>
+        private void RequestCalibrationForUser(object sender, ElapsedEventArgs e, int userID)
+        {
+            if (sender.GetType() == typeof(System.Timers.Timer))
+            {
+                ((System.Timers.Timer)sender).Dispose();
+            }
+
+            Logger.Log("Requesting calibration for user: " + userID);
+            SkeletonCapability.RequestCalibration(userID, true);
         }
     }
 }
