@@ -16,7 +16,7 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     /// </summary>
     void Start()
     {	
-        this.obstacle = new Obstacle(this, new TimerAdapter());
+        this.obstacle = new Obstacle(this);
 		world = GameObject.Find("World").GetComponent<WorldBehaviour>();
     }
 

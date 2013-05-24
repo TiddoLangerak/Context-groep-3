@@ -1,10 +1,15 @@
 using UnityEngine;
 using System.Collections;
+using System.Timers;
+using System;
 
 public class WorldBehaviour : MonoBehaviour
 {
 	public GameObject inputObject;
+	public float reloadDuration = 3;
+	
 	bool sceneNeedsReloading = false;
+	ITimer timer = new TimerAdapter();
     /// <summary>
     /// Used for initialization
     /// </summary>
@@ -13,6 +18,9 @@ public class WorldBehaviour : MonoBehaviour
         StartCoroutine(onKey());
 		if (GameObject.Find("Kinect") == null)
 			Instantiate(inputObject);
+		
+		this.timer.Interval = (int)(reloadDuration*1000);
+        this.timer.Elapsed += new ElapsedEventHandler(ResetGame);
     }
 
     /// <summary>
@@ -80,6 +88,13 @@ public class WorldBehaviour : MonoBehaviour
 	
 	public void ReloadScene()
 	{
+		timer.Start();
 		sceneNeedsReloading = true;
 	}
+	
+	public void ResetGame(object sender, EventArgs e)
+    {
+		timer.Stop();
+		_obstacleBehaviour.ReloadScene();
+    }
 }

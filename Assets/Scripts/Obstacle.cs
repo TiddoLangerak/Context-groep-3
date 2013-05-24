@@ -9,25 +9,17 @@ public class Obstacle
 {
     /// <summary>
     /// Reference to IObstacleBehaviour
-    /// 
-    /// TODO: This reference is currently not used, but will be used in the future.
     /// </summary>
     private IObstacleBehaviour _obstacleBehaviour;
-	
-	ITimer timer;
 
     /// <summary>
     /// Initialize obstacle. It is dependend on an IObstacleBehaviour.
     /// </summary>
     /// <param name="obstacleBehaviour">The obstacle behaviour</param>
-    public Obstacle(IObstacleBehaviour obstacleBehaviour, ITimer timer)
+    public Obstacle(IObstacleBehaviour obstacleBehaviour)
     {
         this._obstacleBehaviour = obstacleBehaviour;
-		this.timer = timer;
-		
-		this.timer = timer;
-        this.timer.Interval = 3000;
-        this.timer.Elapsed += new ElapsedEventHandler(ResetGame);
+        
     }
 
     /// <summary>
@@ -38,13 +30,7 @@ public class Obstacle
 		if(!StateManager.Instance.invincible)
 		{
         	StateManager.Instance.die();
-			timer.Start();
+			_obstacleBehaviour.ReloadScene();
 		}
-    }
-	
-	public void ResetGame(object sender, EventArgs e)
-    {
-		timer.Stop();
-		_obstacleBehaviour.ReloadScene();
     }
 }
