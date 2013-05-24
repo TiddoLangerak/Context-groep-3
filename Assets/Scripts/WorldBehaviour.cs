@@ -7,6 +7,7 @@ public class WorldBehaviour : MonoBehaviour
 {
 	public GameObject inputObject;
 	public float reloadDuration = 3;
+	public float scoreMultplier = 5;
 	
 	bool sceneNeedsReloading = false;
 	ITimer timer = new TimerAdapter();
@@ -30,7 +31,7 @@ public class WorldBehaviour : MonoBehaviour
     void Update()
     {
         if (!StateManager.Instance.isPausing())
-            StateManager.Instance.score += (Time.deltaTime * 10 * StateManager.Instance.NumberOfPlayers);
+            StateManager.Instance.score += (Time.deltaTime * scoreMultplier * StateManager.Instance.NumberOfPlayers);
         if (sceneNeedsReloading)
             ResetGame();
     }
@@ -95,7 +96,6 @@ public class WorldBehaviour : MonoBehaviour
 		timer.Stop();
 		sceneNeedsReloading = true;
 	}
-	
 	public void ResetGame()
     {
 		Application.LoadLevel("level");
