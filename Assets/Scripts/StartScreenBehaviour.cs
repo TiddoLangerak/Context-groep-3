@@ -23,7 +23,7 @@ public class StartScreenBehaviour: MonoBehaviour
     {
         if (StateManager.Instance.ShowStartScreen)
         {
-            GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), CreateStartScreen, "The Chase");
+            GUI.Window(0, new Rect((Screen.width / 2) - 550, (Screen.height / 2) - 400, 1100, 800), CreateStartScreen, "");
         }
     }
 
