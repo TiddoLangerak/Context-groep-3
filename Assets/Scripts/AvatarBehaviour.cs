@@ -21,9 +21,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     private bool showStartScreen = true;
     bool jumping = false;
-    bool audioIsStopping = false;
-    AudioSource mainAudio;
-    AudioSource powerupAudio;
+    AudioBehaviour audioManager;
 	
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -34,9 +32,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     void Start()
     {
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        mainAudio = audioSources[0];
-        powerupAudio = audioSources[1];
+        this.audioManager = transform.Find("2DAudio").GetComponent<AudioBehaviour>();
         StateManager.Instance.pauseOrUnpause();
         try
         {
@@ -115,20 +111,20 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
         if (StateManager.Instance.isDead())
         {
-            this.stopAudio();
+            this.audioManager.CrashEnding("soundtrack", 2500);
         }
         else if (StateManager.Instance.invincible)
         {
-            if (!this.powerupAudio.isPlaying)
+            if (!this.audioManager.IsPlaying("powerup"))
             {
-                this.mainAudio.Stop();
-                this.powerupAudio.Play();
+                this.audioManager.StopPlaying("soundtrack");
+                this.audioManager.Play("powerup");
             }
         }
-        else if (!this.mainAudio.isPlaying)
+        else if (!StateManager.Instance.invincible && !this.audioManager.IsPlaying("soundtrack"))
         {
-            this.powerupAudio.Stop();
-            this.mainAudio.Play();
+            this.audioManager.StopPlaying("powerup");
+            this.audioManager.Play("soundtrack");
         }
         
     }
@@ -201,36 +197,5 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             yield return new WaitForSeconds(0.025f);
         }
         yield return 0;
-    }
-
-    private void stopAudio()
-    {
-        if (this.mainAudio.isPlaying && !this.audioIsStopping)
-        {
-            this.audioIsStopping = true;
-            StartCoroutine(this._stopAudio(this.mainAudio, 1500));
-        }
-    }
-
- 
-
-    private IEnumerator _stopAudio(AudioSource audio, int fadeoutTime)
-    {
-        float startVolume = audio.volume;
-        float timeout = 1000 / 30.0f;
-        float volumeDiff = audio.volume * timeout / fadeoutTime;
-        float pitchDiff = audio.pitch * timeout / fadeoutTime;
-        while(audio.volume > 0.01)
-        {
-            audio.volume -= volumeDiff;
-            audio.pitch -= pitchDiff;
-            yield return new WaitForSeconds(timeout / 1000);
-        }
-        audio.Stop();
-        audio.volume = startVolume;
-        audio.pitch = 1;
-        this.audioIsStopping = false;
-        yield return 0;
-
     }
 }
