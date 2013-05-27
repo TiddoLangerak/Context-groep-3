@@ -80,11 +80,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     public void Update()
     {
         this.avatar.Update();
-        this.avatar.moveSpeed += Time.smoothDeltaTime / 10;
-
         if (Input.GetKey(KeyCode.S))
+		{
             transform.Translate(Vector3.forward * -2);
-
+		}
+		if(!StateManager.Instance.isPausing())
+		{
+			this.avatar.moveSpeed += Time.smoothDeltaTime / 10;	
+		}
         if (StateManager.Instance.isDead())
         {
             this.audioManager.CrashEnding("soundtrack", 2500);
