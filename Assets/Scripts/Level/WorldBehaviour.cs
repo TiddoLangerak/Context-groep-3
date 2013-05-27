@@ -17,7 +17,7 @@ public class WorldBehaviour : MonoBehaviour
     void Start()
     {
         StartCoroutine(onKey());
-		if (GameObject.Find("Kinect") == null)
+		if (GameObject.Find("Kinect(clone)") == null)
 			Instantiate(inputObject);
 		
 		this.timer.Interval = (int)(reloadDuration*1000);

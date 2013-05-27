@@ -19,8 +19,4 @@ public interface IUserInput
     /// The current movement
     /// </returns>
     AvatarMovement CurrentMovement();
-    /// <summary>
-    /// Stops processing input.
-    /// </summary>
-    void Destroy();
 }

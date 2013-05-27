@@ -78,9 +78,10 @@ namespace Kinect
         /// <summary>
         /// Stop the kinect thread.
         /// </summary>
-        public void Destroy()
+        public void OnDestroy()
         {
             this.kinectThread.Stop();
+            StateManager.Instance.NumberOfPlayers = 0;
         }
 
         /// <summary>
