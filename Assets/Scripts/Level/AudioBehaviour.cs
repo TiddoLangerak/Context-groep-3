@@ -66,14 +66,12 @@ public class AudioBehaviour : MonoBehaviour {
         float timeout = 1000 / 30.0f;
         float volumeDiff = audio.volume * timeout / fadeoutTime;
         float pitchDiff = audio.pitch * timeout / fadeoutTime;
-        Logger.Log("start");
         while (audio.volume > 0.01)
         {
             audio.volume -= volumeDiff;
             audio.pitch -= pitchDiff;
             yield return new WaitForSeconds(timeout / 1000);
         }
-        Logger.Log("End");
         audio.Stop();
         audio.volume = startVolume;
         audio.pitch = 1;

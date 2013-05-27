@@ -1,5 +1,5 @@
 ﻿// #define INPUT_KINECT
-#define INPUT_KEYBOARD
+#define INPUT_KINECT
 
 using UnityEngine;
 
@@ -21,7 +21,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     bool jumping = false;
     AudioBehaviour audioManager;
-	
+
+    bool kinectFailed = false;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -52,6 +53,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
             Logger.Log("Fallback to keyboard input");
             this.avatar = new Avatar(this, new KeyboardUserInput());
+            this.kinectFailed = true;
         }
         finally
         {
@@ -101,6 +103,17 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             this.audioManager.Play("soundtrack");
         }
         
+    }
+
+    public void OnGUI() {
+        if (this.kinectFailed)
+        {
+            GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
+            guiStyle.fontSize = 50;
+            GUI.contentColor = Color.red;
+            GUI.backgroundColor = Color.clear;
+            GUI.TextArea(new Rect(Screen.width / 2 - 350, Screen.height / 2 - 120, 700, 60), "KINECT IS NOT CONNECTED", guiStyle);
+        }
     }
 
     /// <summary>
