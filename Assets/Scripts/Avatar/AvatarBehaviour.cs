@@ -44,18 +44,18 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #else
                 throw System.Exception("No input specified");
 #endif
-            StartCoroutine(SideMovement());
         }
         catch (System.Exception e)
         {
             Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
             Logger.Log("Type: " + e.GetType() + "; Message: " + e.Message.ToString() + "\nStacktrace: " + e.StackTrace.ToString());
-            Application.Quit();
-            //In the unity editor the application doesn't quit using Application.quit, so we just break using the debugger
-            //to prevent further execution of code
-#if UNITY_EDITOR
-            Debug.Break();
-#endif
+
+            Logger.Log("Fallback to keyboard input");
+            this.avatar = new Avatar(this, new KeyboardUserInput());
+        }
+        finally
+        {
+            StartCoroutine(SideMovement());
         }
 
     }   
