@@ -80,7 +80,10 @@ namespace Kinect
         /// </summary>
         public void OnDestroy()
         {
-            this.kinectThread.Stop();
+            if (this.kinectThread != null)
+            {
+                this.kinectThread.Stop();
+            }
             StateManager.Instance.NumberOfPlayers = 0;
         }
 
