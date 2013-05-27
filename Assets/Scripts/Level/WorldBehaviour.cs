@@ -74,7 +74,7 @@ public class WorldBehaviour : MonoBehaviour
     {
         while (true)
         {
-            if (Input.GetKey(KeyCode.P))
+            if (Input.GetKey(KeyCode.P) && !StateManager.Instance.isDead())
             {
                 StateManager.Instance.pauseOrUnpause();
                 yield return new WaitForSeconds(0.2f);
