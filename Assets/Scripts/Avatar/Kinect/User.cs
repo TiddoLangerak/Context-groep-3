@@ -30,6 +30,7 @@ namespace Kinect
     {
         public int ID { get; private set; }
         private LinkedList<UserState> movementHistory;
+        public bool Active { get; set; }
 
         /// <summary>
         /// Constant indicating the minimal ratio necessary to detect leaning of the user.
@@ -72,6 +73,7 @@ namespace Kinect
         {
             this.ID = id;
             this.movementHistory = new LinkedList<UserState>();
+            this.Active = true;
         }
 
         /// <summary>

@@ -38,7 +38,6 @@ namespace Kinect
         public KinectReaderThread(KinectManager kinectManager)
             : base()
         {
-            Logger.Log("krt const");
             this.kinectManager = kinectManager;
         }
 
@@ -47,7 +46,6 @@ namespace Kinect
         /// </summary>
         public void Start()
         {
-            Logger.Log("krt start");
             this.theThread = new Thread(new ThreadStart(this.RunThread));
             this.shouldRun = true;
             theThread.Start();
@@ -59,7 +57,6 @@ namespace Kinect
         public void Stop()
         {
             this.shouldRun = false;
-            Logger.Log("krt stop");
         }
 
         /// <summary>

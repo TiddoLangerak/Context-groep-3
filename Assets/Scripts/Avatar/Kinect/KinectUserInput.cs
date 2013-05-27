@@ -26,7 +26,6 @@ namespace Kinect
         {
             if (!initialized)
             {
-                Logger.Log("kui init");
                 kinectMgr = new KinectManager();
                 kinectThread = new KinectReaderThread(kinectMgr);
                 kinectThread.Start();
@@ -49,14 +48,17 @@ namespace Kinect
 
             foreach (User user in trackedUsers.Values)
             {
-                UserMovement movement = user.currentMovement;
-                if (movementFreqencies.ContainsKey(movement))
+                if (user.Active)
                 {
-                    movementFreqencies[movement]++;
-                }
-                else
-                {
-                    movementFreqencies.Add(movement, 1);
+                    UserMovement movement = user.currentMovement;
+                    if (movementFreqencies.ContainsKey(movement))
+                    {
+                        movementFreqencies[movement]++;
+                    }
+                    else
+                    {
+                        movementFreqencies.Add(movement, 1);
+                    }
                 }
             }
 
@@ -65,7 +67,7 @@ namespace Kinect
                 //retrieve the movement with the maximum frequency
                 UserMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 
-                if (movementFreqencies[currMovement] > trackedUsers.Count/2)
+                if (movementFreqencies[currMovement] > StateManager.Instance.NumberOfPlayers/2)
                 {
                     switch (currMovement)
                     {
