@@ -12,6 +12,7 @@ namespace Kinect
     {
         private KinectManager kinectMgr;
         private KinectReaderThread kinectThread;
+        private bool initialized = false;
 		
 		public void Awake()
 		{
@@ -23,9 +24,14 @@ namespace Kinect
         /// </summary>
         public void Initialize()
         {
-            kinectMgr = new KinectManager();
-            kinectThread = new KinectReaderThread(kinectMgr);
-            kinectThread.Start();
+            if (!initialized)
+            {
+                Logger.Log("kui init");
+                kinectMgr = new KinectManager();
+                kinectThread = new KinectReaderThread(kinectMgr);
+                kinectThread.Start();
+                initialized = true;
+            }
         }
 
         /// <summary>

@@ -17,9 +17,11 @@ public class WorldBehaviour : MonoBehaviour
     void Start()
     {
         StartCoroutine(onKey());
-		if (GameObject.Find("Kinect(clone)") == null)
+		if (GameObject.Find("Kinect(Clone)") == null)
+		{
+		Logger.Log("boe");
 			Instantiate(inputObject);
-		
+		}
 		this.timer.Interval = (int)(reloadDuration*1000);
         this.timer.Elapsed += new ElapsedEventHandler(ReloadSceneTimerElapsed);
     }

@@ -16,7 +16,7 @@ namespace Kinect
         /// <summary>
         /// The file name and location of the OpenNI configuration file used in this class.
         /// </summary>
-        private readonly string OPENNI_XML_FILE = Application.dataPath + @"/Scripts/Kinect/OpenNIConfig.xml";
+        private readonly string OPENNI_XML_FILE = Application.dataPath + @"/OpenNIConfig.xml";
 
         /// <summary>
         /// The context in which OpenNI operates (based on the configuration file)
@@ -72,7 +72,7 @@ namespace Kinect
             UserGenerator.NewUser += OnNewUser;
             UserGenerator.UserExit += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
-
+            Logger.Log("km init");
             this.TrackedUsers = new Dictionary<int, User>();
         }
 
