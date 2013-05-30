@@ -212,7 +212,7 @@ public class StateManager
     /// String representation of the crurent state.
     /// </summary>
     /// <returns>Current state</returns>
-    public String ToString()
+    public override String ToString()
     {
         switch (currentState)
         {
