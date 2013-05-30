@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Util
+﻿namespace Util
 {
     /// <summary>
     /// Defines a generic tuple for two objects (= a pair)

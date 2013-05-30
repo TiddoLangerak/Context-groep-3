@@ -1,5 +1,10 @@
-
+/// <summary>
+/// General interface for all powerups
+/// </summary>
 public interface IPowerup
 {
-	void Collision();
+    /// <summary>
+    /// Function that is called when a collision occurs
+    /// </summary>
+    void Collision();
 }
