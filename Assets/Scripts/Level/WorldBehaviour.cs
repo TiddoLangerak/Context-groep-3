@@ -82,7 +82,7 @@ public class WorldBehaviour : MonoBehaviour
     {
         if (StateManager.Instance.NewMoneyPowerup)
         {
-            GUI.contentColor = Color.red;
+            GUI.contentColor = Color.green;
         }
     }
 

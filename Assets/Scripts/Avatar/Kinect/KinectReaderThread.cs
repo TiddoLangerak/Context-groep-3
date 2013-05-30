@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using OpenNI;
 
@@ -15,7 +11,6 @@ namespace Kinect
     /// </summary>
     class KinectReaderThread
     {
-
         /// <summary>
         /// Object needed to communicate with the Kinect.
         /// </summary>
@@ -27,7 +22,7 @@ namespace Kinect
         private Thread theThread;
 
         /// <summary>
-        /// 
+        /// Indicates if the thread should be run
         /// </summary>
         private bool shouldRun;
 
@@ -61,12 +56,8 @@ namespace Kinect
 
         /// <summary>
         /// The function that is called when the thread is started. 
-        /// This function is therefore responsible for the functionality of the thread.
-        /// 
-        /// The functionality of this thread is detecting player movement using the position of the shoulders, head and torso of the user. 
-        /// We consider a player to be leaning to the left or the right when
-        /// - His head is tilted
-        /// - His shoulders don't have an equal horizontal distance to the torso
+        /// This function is therefore responsible for the functionality of the thread. 
+        /// The functionality of this thread is retrieving the current state of the users.
         /// </summary>
         private unsafe void RunThread()
         {
@@ -77,24 +68,34 @@ namespace Kinect
                     kinectManager.Context.WaitAnyUpdateAll();
                     foreach (User user in kinectManager.TrackedUsers.Values)
                     {
-                        UserState currState;
-                        currState.torsoPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.Torso);
-                        currState.headPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.Head);
-                        currState.leftShoulderPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.LeftShoulder);
-                        currState.rightShoulderPos = GetSkeletonJointPosition(user.ID, SkeletonJoint.RightShoulder);
-                        currState.timestamp = DateTime.Now.Ticks;
+                        UserState currState = GetCurrentStateOfUser(user.ID);
                         lock (user)
                         {
                             user.AddToHistory(currState);
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (OpenNI.GeneralException ex)
                 {
                     Logger.Log(ex.ToString());
                 }
-
             }
+        }
+
+        /// <summary>
+        /// Calculates the users current state
+        /// </summary>
+        /// <param name="userID">The id of the user</param>
+        /// <returns>The current state of the user</returns>
+        private unsafe UserState GetCurrentStateOfUser(int userID)
+        {
+            UserState currState;
+            currState.torsoPos = GetSkeletonJointPosition(userID, SkeletonJoint.Torso);
+            currState.headPos = GetSkeletonJointPosition(userID, SkeletonJoint.Head);
+            currState.leftShoulderPos = GetSkeletonJointPosition(userID, SkeletonJoint.LeftShoulder);
+            currState.rightShoulderPos = GetSkeletonJointPosition(userID, SkeletonJoint.RightShoulder);
+            currState.timestamp = DateTime.Now.Ticks;
+            return currState;
         }
 
         /// <summary>
