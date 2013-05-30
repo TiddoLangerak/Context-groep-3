@@ -38,7 +38,7 @@ class KeyboardUserInput : IUserInput
         }
     }
 
-    public void Destroy()
+    public void OnDestroy()
     {
         StateManager.Instance.NumberOfPlayers = 0;
     }

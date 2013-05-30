@@ -17,9 +17,10 @@ public class WorldBehaviour : MonoBehaviour
     void Start()
     {
         StartCoroutine(onKey());
-		if (GameObject.Find("Kinect") == null)
+		if (GameObject.Find("Kinect(Clone)") == null)
+		{
 			Instantiate(inputObject);
-		
+		}
 		this.timer.Interval = (int)(reloadDuration*1000);
         this.timer.Elapsed += new ElapsedEventHandler(ReloadSceneTimerElapsed);
     }
@@ -74,7 +75,7 @@ public class WorldBehaviour : MonoBehaviour
     {
         while (true)
         {
-            if (Input.GetKey(KeyCode.P))
+            if (Input.GetKey(KeyCode.P) && !StateManager.Instance.isDead())
             {
                 StateManager.Instance.pauseOrUnpause();
                 yield return new WaitForSeconds(0.2f);

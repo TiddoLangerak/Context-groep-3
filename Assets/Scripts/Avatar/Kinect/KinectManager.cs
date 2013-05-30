@@ -1,6 +1,7 @@
 using OpenNI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Timers;
 using System;
@@ -16,7 +17,7 @@ namespace Kinect
         /// <summary>
         /// The file name and location of the OpenNI configuration file used in this class.
         /// </summary>
-        private readonly string OPENNI_XML_FILE = Application.dataPath + @"/Scripts/Kinect/OpenNIConfig.xml";
+        private readonly string OPENNI_XML_FILE = Application.dataPath + @"/OpenNIConfig.xml";
 
         /// <summary>
         /// The context in which OpenNI operates (based on the configuration file)
@@ -70,9 +71,10 @@ namespace Kinect
 
             //And initialize event handlers
             UserGenerator.NewUser += OnNewUser;
-            UserGenerator.UserExit += OnLostUser;
+            UserGenerator.UserReEnter += OnUserReEnter;
+            UserGenerator.UserExit += OnUserExit;
+            UserGenerator.LostUser += OnLostUser;
             SkeletonCapability.CalibrationComplete += OnCalibrationComplete;
-
             this.TrackedUsers = new Dictionary<int, User>();
         }
 
@@ -91,6 +93,16 @@ namespace Kinect
             calibrationTimer.Start();
         }
 
+        private void OnUserReEnter(object sender, UserReEnterEventArgs e)
+        {
+            Logger.Log("Re-enter user: " + e.ID);
+            if (TrackedUsers.ContainsKey(e.ID))
+            {
+                StateManager.Instance.NumberOfPlayers++;
+                TrackedUsers[e.ID].Active = true;
+            }            
+        }
+
         /// <summary>
         /// Function that is called whenever a user can't be tracked anymore, 
         /// most likely because it left the range of the Kinect.
@@ -98,12 +110,24 @@ namespace Kinect
         /// </summary>
         /// <param name="sender">The object that called this function</param>
         /// <param name="e">The events associated with this call; used to retrieve the users id</param>
-        private void OnLostUser(object sender, UserExitEventArgs e)
+        private void OnUserExit(object sender, UserExitEventArgs e)
         {
+            Logger.Log("Exit user: " + e.ID);
             if (TrackedUsers.ContainsKey(e.ID))
             {
                 StateManager.Instance.NumberOfPlayers--;
+                TrackedUsers[e.ID].Active = false;
+            }            
+        }
+
+
+        private void OnLostUser(object sender, UserLostEventArgs e)
+        {
+            if (TrackedUsers.ContainsKey(e.ID))
+            {
                 TrackedUsers.Remove(e.ID);
+                int nr = TrackedUsers.Where(u => u.Value.Active).Count();
+                StateManager.Instance.NumberOfPlayers = nr;
             }
             Logger.Log("Lost user: " + e.ID);
         }

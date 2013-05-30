@@ -1,5 +1,5 @@
 ﻿// #define INPUT_KINECT
-#define INPUT_KEYBOARD
+#define INPUT_KINECT
 
 using UnityEngine;
 
@@ -21,7 +21,8 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 
     bool jumping = false;
     AudioBehaviour audioManager;
-	
+
+    bool kinectFailed = false;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -44,18 +45,19 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 #else
                 throw System.Exception("No input specified");
 #endif
-            StartCoroutine(SideMovement());
         }
         catch (System.Exception e)
         {
             Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
             Logger.Log("Type: " + e.GetType() + "; Message: " + e.Message.ToString() + "\nStacktrace: " + e.StackTrace.ToString());
-            Application.Quit();
-            //In the unity editor the application doesn't quit using Application.quit, so we just break using the debugger
-            //to prevent further execution of code
-#if UNITY_EDITOR
-            Debug.Break();
-#endif
+
+            Logger.Log("Fallback to keyboard input");
+            this.avatar = new Avatar(this, new KeyboardUserInput());
+            this.kinectFailed = true;
+        }
+        finally
+        {
+            StartCoroutine(SideMovement());
         }
 
     }   
@@ -78,11 +80,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     public void Update()
     {
         this.avatar.Update();
-        this.avatar.moveSpeed += Time.smoothDeltaTime / 10;
-
         if (Input.GetKey(KeyCode.S))
+		{
             transform.Translate(Vector3.forward * -2);
-
+		}
+		if(!StateManager.Instance.isPausing())
+		{
+			this.avatar.moveSpeed += Time.smoothDeltaTime / 10;	
+		}
         if (StateManager.Instance.isDead())
         {
             this.audioManager.CrashEnding("soundtrack", 2500);
@@ -101,6 +106,17 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             this.audioManager.Play("soundtrack");
         }
         
+    }
+
+    public void OnGUI() {
+        if (this.kinectFailed)
+        {
+            GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
+            guiStyle.fontSize = 50;
+            GUI.contentColor = Color.red;
+            GUI.backgroundColor = Color.clear;
+            GUI.TextArea(new Rect(Screen.width / 2 - 350, Screen.height / 2 - 120, 700, 60), "KINECT IS NOT CONNECTED", guiStyle);
+        }
     }
 
     /// <summary>

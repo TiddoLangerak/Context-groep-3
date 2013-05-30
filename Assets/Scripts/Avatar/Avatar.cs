@@ -141,15 +141,4 @@ public class Avatar
 		return false;
 	}
 	
-	
-
-    /// <summary>
-    /// This destructor is responsible for cleaning up resources, such
-    /// as the kinect thread.
-    /// </summary>
-    ~Avatar()
-    {
-        if (this._userInput != null)
-            this._userInput.Destroy();
-    }
 }
