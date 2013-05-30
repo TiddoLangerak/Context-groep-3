@@ -54,7 +54,7 @@ public class Avatar
         this._avatarBehaviour = avatarBehaviour;
         this._userInput = userInput;
 
-        StateManager.Instance.pauseOrUnpause();
+        StateManager.Instance.PauseOrUnpause();
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class Avatar
     /// </summary>
     public void Update()
 	{
-		if(!StateManager.Instance.isPausing())
+		if(!StateManager.Instance.IsPausing())
 		{
 			_avatarBehaviour.Forward(this.moveSpeed);	
 		}
@@ -97,7 +97,7 @@ public class Avatar
     /// </summary>
     public bool Left()
     {
-        if (StateManager.Instance.isPlaying() && track > 1)
+        if (StateManager.Instance.IsPlaying() && track > 1)
         {
             this.track--;
             this._avatarBehaviour.Left();
@@ -113,7 +113,7 @@ public class Avatar
     /// </summary>
     public bool Right()
     {
-        if (StateManager.Instance.isPlaying() && track < 3)
+        if (StateManager.Instance.IsPlaying() && track < 3)
         {
             this.track++;
             this._avatarBehaviour.Right();
@@ -127,16 +127,16 @@ public class Avatar
 	/// </summary>
 	public bool Up()
 	{
-        if (StateManager.Instance.isPlaying())
+        if (StateManager.Instance.IsPlaying())
         {
             this._avatarBehaviour.Up();
             return true;
         }
 		//When a new game has started => hide startscreen + (re)start game on jump
-		else if (!StateManager.Instance.isDead())
+		else if (!StateManager.Instance.IsDead())
         {
             StateManager.Instance.ShowStartScreen = false;
-            StateManager.Instance.pauseOrUnpause();            
+            StateManager.Instance.PauseOrUnpause();            
         }
 		return false;
 	}

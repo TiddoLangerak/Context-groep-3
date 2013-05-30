@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 
 /// <summary>
-/// The StateManager class is used to keep track of the game
+/// The StateManager class (=singleton class) is used to keep track of the game
 /// state and the track the player is on.
 /// </summary>
 public class StateManager
@@ -17,64 +17,87 @@ public class StateManager
         DEAD
     };
 
+    /// <summary>
+    /// Tells if the start screen should be shown or not
+    /// </summary>
     public bool ShowStartScreen { get; set; }
-    public bool NewMoneyPowerup { get; set; } 
 
     /// <summary>
-    /// Current state of the game
+    /// Holds true iff there is a new money powerup
+    /// </summary>
+    public bool NewMoneyPowerup { get; set; }
+
+    /// <summary>
+    /// The current state of the game
     /// </summary>
     private State currentState;
 
     /// <summary>
-    /// Singleton StateManager instance
+    /// The instance
     /// </summary>
     private static StateManager instance;
-	
-	/// <summary>
-	/// Stores the score.
-	/// </summary>
-	private float _score;
-    public int NumberOfPlayers { get; set; }
-	
-	/// <summary>
-	/// Get and setters for the score. (INV: score >= 0)
-	/// </summary>
-	public float score {
-		get
-		{
-			return _score;
-		}
-		set
-		{
-			Debug.Assert(value >= 0);
-			_score = value;
-		}
-	}
 
+    /// <summary>
+    /// Stores the score.
+    /// </summary>
+    private float _score;
+
+    /// <summary>
+    /// Keeps track of the nr. of players (= the multiplier)
+    /// </summary>
+    public int NumberOfPlayers { get; set; }
+
+    /// <summary>
+    /// Getter and setter for the score. (INV: score >= 0)
+    /// </summary>
+    public float Score
+    {
+        get
+        {
+            return _score;
+        }
+        set
+        {
+            Debug.Assert(value >= 0);
+            _score = value;
+        }
+    }
+
+    /// <summary>
+    /// Reset the state manager to a new instance
+    /// </summary>
     public static void Reset()
     {
         instance = new StateManager();
     }
-	
-	/// <summary>
-	/// If the player is currently invincible.
-	/// </summary>
-	private int _invincible;
-	public bool invincible {
-		get
-		{
-			return (_invincible >= 1);
-		}
-	}
-	
-	public void makeInvincible()
-	{
-		_invincible++;
-	}
-	public void undoInvincible()
-	{
-		_invincible--;
-	}
+
+    /// <summary>
+    /// Hold true iff the player is currently invincible.
+    /// </summary>
+    private int _invincible;
+    public bool Invincible
+    {
+        get
+        {
+            return (_invincible >= 1);
+        }
+    }
+
+    /// <summary>
+    /// Makes the avatar invincible
+    /// </summary>
+    public void MakeInvincible()
+    {
+        _invincible++;
+    }
+
+    /// <summary>
+    /// Makes the avatar vincible
+    /// </summary>
+    public void UndoInvincible()
+    {
+        _invincible--;
+    }
 
     /// <summary>
     /// Reset invincibility to 0. This is used mainly by the unit
@@ -100,12 +123,6 @@ public class StateManager
         }
     }
 
-    public static void reset()
-    {
-        instance = new StateManager();
-    }
-
-
     /// <summary>
     /// Private constructor to prevent creation of multiple StateManager
     /// objects. Instead, refer to the Instance property.
@@ -113,28 +130,28 @@ public class StateManager
     private StateManager()
     {
         this.currentState = State.PAUSING;
-		score = 0;
+        Score = 0;
     }
 
     /// <summary>
     /// Toggle between the pausing and playing state.
     /// </summary>
-    public void pauseOrUnpause()
+    public void PauseOrUnpause()
     {
         if (currentState == State.PLAYING)
         {
-            this.pause();
+            this.Pause();
         }
         else
         {
-            this.play();
+            this.Play();
         }
     }
 
     /// <summary>
     /// Pause the game
     /// </summary>
-    public void pause()
+    public void Pause()
     {
         this.currentState = State.PAUSING;
     }
@@ -142,15 +159,15 @@ public class StateManager
     /// <summary>
     /// Resume the game
     /// </summary>
-    public void play()
+    public void Play()
     {
         this.currentState = State.PLAYING;
     }
 
     /// <summary>
-    /// The player is dead.
+    /// The player has died
     /// </summary>/
-    public void die()
+    public void Die()
     {
         this.currentState = State.DEAD;
     }
@@ -158,8 +175,8 @@ public class StateManager
     /// <summary>
     /// Returns true iff the game is in the PAUSING state.
     /// </summary>
-    /// <returns></returns>
-    public bool isPausing()
+    /// <returns>True iff the game state is PAUSING</returns>
+    public bool IsPausing()
     {
         return State.PAUSING == this.currentState || State.DEAD == this.currentState;
     }
@@ -167,10 +184,8 @@ public class StateManager
     /// <summary>
     /// Checks if the game is playing
     /// </summary>
-    /// <returns>
-    /// True if the game is playing, false otherwise.
-    /// </returns>
-    public bool isPlaying()
+    /// <returns>True if the game is playing, false otherwise</returns>
+    public bool IsPlaying()
     {
         return State.PLAYING == this.currentState;
     }
@@ -178,10 +193,8 @@ public class StateManager
     /// <summary>
     /// Checks if the player is dead
     /// </summary>
-    /// <returns>
-    /// True if the player is dead, false otherwise.
-    /// </returns>
-    public bool isDead()
+    /// <returns>True iff the player is dead</returns>
+    public bool IsDead()
     {
         return State.DEAD == this.currentState;
     }
@@ -190,7 +203,7 @@ public class StateManager
     /// Returns the current state.
     /// </summary>
     /// <returns>Current state</returns>
-    public State getCurrentState()
+    public State GetCurrentState()
     {
         return this.currentState;
     }
@@ -199,7 +212,7 @@ public class StateManager
     /// String representation of the crurent state.
     /// </summary>
     /// <returns>Current state</returns>
-    public String toString()
+    public String ToString()
     {
         switch (currentState)
         {

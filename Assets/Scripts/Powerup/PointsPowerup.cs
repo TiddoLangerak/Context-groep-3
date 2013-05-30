@@ -13,6 +13,6 @@ public class PointsPowerup : IPowerup
     /// </summary>
     public void Collision()
     {
-        StateManager.Instance.score += POINTS_PER_PLAYER * StateManager.Instance.NumberOfPlayers;
+        StateManager.Instance.Score += POINTS_PER_PLAYER * StateManager.Instance.NumberOfPlayers;
     }
 }

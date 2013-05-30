@@ -37,7 +37,7 @@ public class StarPowerup : IPowerup
     /// </summary>
     public void Collision()
     {
-        StateManager.Instance.makeInvincible();
+        StateManager.Instance.MakeInvincible();
         timer.Start();
         behaviour.AddParticles();
     }
@@ -48,7 +48,7 @@ public class StarPowerup : IPowerup
     /// </summary>
     public void UndoInvincibility(object sender, EventArgs e)
     {
-        StateManager.Instance.undoInvincible();
+        StateManager.Instance.UndoInvincible();
         timer.Stop();
     }
 }

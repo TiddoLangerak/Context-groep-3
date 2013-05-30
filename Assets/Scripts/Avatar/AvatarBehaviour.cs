@@ -34,7 +34,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     void Start()
     {
         this.audioManager = transform.Find("2DAudio").GetComponent<AudioBehaviour>();
-        StateManager.Instance.pauseOrUnpause();
+        StateManager.Instance.PauseOrUnpause();
         try
         {
             //Try to initialize the input
@@ -84,15 +84,15 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 		{
             transform.Translate(Vector3.forward * -2);
 		}
-		if(!StateManager.Instance.isPausing())
+		if(!StateManager.Instance.IsPausing())
 		{
 			this.avatar.moveSpeed += Time.smoothDeltaTime / 10;	
 		}
-        if (StateManager.Instance.isDead())
+        if (StateManager.Instance.IsDead())
         {
             this.audioManager.CrashEnding("soundtrack", 2500);
         }
-        else if (StateManager.Instance.invincible)
+        else if (StateManager.Instance.Invincible)
         {
             if (!this.audioManager.IsPlaying("powerup"))
             {
@@ -100,7 +100,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                 this.audioManager.Play("powerup");
             }
         }
-        else if (!StateManager.Instance.invincible && !this.audioManager.IsPlaying("soundtrack"))
+        else if (!StateManager.Instance.Invincible && !this.audioManager.IsPlaying("soundtrack"))
         {
             this.audioManager.StopPlaying("powerup");
             this.audioManager.Play("soundtrack");
