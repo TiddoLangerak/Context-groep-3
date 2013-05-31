@@ -159,6 +159,5 @@ public class WorldBehaviour : MonoBehaviour
     {
         Application.LoadLevel("level");
         StateManager.Instance.ShowStartScreen = true;
-        StateManager.Instance.Score = 0;
     }
 }
