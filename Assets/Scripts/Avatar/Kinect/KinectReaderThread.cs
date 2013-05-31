@@ -66,18 +66,26 @@ namespace Kinect
                 try
                 {
                     kinectManager.Context.WaitAnyUpdateAll();
-                    foreach (User user in kinectManager.TrackedUsers.Values)
-                    {
-                        UserState currState = GetCurrentStateOfUser(user.ID);
-                        lock (user)
-                        {
-                            user.AddToHistory(currState);
-                        }
-                    }
+                    AddCurrentStatesToHistories();
                 }
                 catch (OpenNI.GeneralException ex)
                 {
                     Logger.Log(ex.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates and adds the current state of all users to their history
+        /// </summary>
+        private unsafe void AddCurrentStatesToHistories()
+        {
+            foreach (User user in kinectManager.TrackedUsers.Values)
+            {
+                UserState currState = GetCurrentStateOfUser(user.ID);
+                lock (user)
+                {
+                    user.AddToHistory(currState);
                 }
             }
         }
