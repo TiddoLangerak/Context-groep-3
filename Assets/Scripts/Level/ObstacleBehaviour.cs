@@ -1,23 +1,33 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// The behaviour of an obstacle
+/// </summary>
 class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
 {
     /// <summary>
     /// The domain-specific obstacle instance.
     /// </summary>
     private Obstacle obstacle;
-	public GameObject destroyEffect = null;
-	WorldBehaviour world;
+
+    /// <summary>
+    /// The game object containing the destroy effect
+    /// </summary>
+    public GameObject destroyEffect = null;
+
+    /// <summary>
+    /// The world of the game
+    /// </summary>
+    private WorldBehaviour world;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
     /// before any of the Update methods is called the first time.
     /// </summary>
     void Start()
-    {	
+    {
         this.obstacle = new Obstacle(this);
-		world = GameObject.Find("World").GetComponent<WorldBehaviour>();
+        world = GameObject.Find("World").GetComponent<WorldBehaviour>();
     }
 
     /// <summary>
@@ -27,24 +37,31 @@ class ObstacleBehaviour : MonoBehaviour, IObstacleBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "ShoppingCart")
-		{
-			Instantiate(destroyEffect, this.transform.position, destroyEffect.transform.localRotation);
+        {
+            Instantiate(destroyEffect, this.transform.position, destroyEffect.transform.localRotation);
             DestroySelf();
-        } 
+        }
+
         if (collision.gameObject.name != "LevelPart(Clone)" && audio && audio.enabled && !audio.isPlaying)
         {
             audio.Play();
         }
     }
-	
-	public void DestroySelf()
-	{
-		this.obstacle.Collision();
-		Destroy(this.gameObject);
-	}
-	
-	public void ReloadScene()
-	{
-		world.ReloadScene();
-	}
+
+    /// <summary>
+    /// Destroys the obstacle
+    /// </summary>
+    public void DestroySelf()
+    {
+        this.obstacle.Collision();
+        Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// Reloads the scene
+    /// </summary>
+    public void ReloadScene()
+    {
+        world.ReloadScene();
+    }
 }

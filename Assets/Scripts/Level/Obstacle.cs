@@ -1,9 +1,5 @@
-using System;
-using System.Timers;
-
 /// <summary>
-/// This class represents the avatar as domain object. Therefore, it
-/// is a plain old C# object.
+/// The business logic of an obstacle
 /// </summary>
 public class Obstacle
 {
@@ -13,13 +9,12 @@ public class Obstacle
     private IObstacleBehaviour _obstacleBehaviour;
 
     /// <summary>
-    /// Initialize obstacle. It is dependend on an IObstacleBehaviour.
+    /// Initialize obstacle. It depends on an IObstacleBehaviour.
     /// </summary>
     /// <param name="obstacleBehaviour">The obstacle behaviour</param>
     public Obstacle(IObstacleBehaviour obstacleBehaviour)
     {
         this._obstacleBehaviour = obstacleBehaviour;
-        
     }
 
     /// <summary>
@@ -27,10 +22,10 @@ public class Obstacle
     /// </summary>
     public void Collision()
     {
-		if(!StateManager.Instance.invincible)
-		{
-        	StateManager.Instance.die();
-			_obstacleBehaviour.ReloadScene();
-		}
+        if (!StateManager.Instance.Invincible)
+        {
+            StateManager.Instance.Die();
+            _obstacleBehaviour.ReloadScene();
+        }
     }
 }

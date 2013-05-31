@@ -67,4 +67,33 @@ public class LevelTest
 
         Assert.AreEqual(blockAmount + 49, levelBehavior.getTimesCalledLevelBlock());
     }
+	
+	[Test]
+	public void itemsOffsetTest()
+	{
+		level = new Level(blockAmount, 2, blockLength, levelBehavior);
+		
+		Assert.AreEqual(6, levelBehavior.getAmountOfObstacles());
+		Assert.AreEqual(3, levelBehavior.getAmountOfPowerups());
+	}
+	
+	[Test]
+	public void powerupAmountTest()
+	{
+		level = new Level(blockAmount, 2, blockLength, levelBehavior);
+		
+		level.update((int)(50 * blockLength));
+		
+		Assert.AreEqual(blockAmount, levelBehavior.getAmountOfPowerups());
+	}
+	
+	[Test]
+	public void obstacleAmountTest()
+	{
+		level = new Level(blockAmount, 2, blockLength, levelBehavior);
+		
+		level.update((int)(50 * blockLength));
+		
+		Assert.AreEqual(blockAmount*2, levelBehavior.getAmountOfObstacles());
+	}
 }

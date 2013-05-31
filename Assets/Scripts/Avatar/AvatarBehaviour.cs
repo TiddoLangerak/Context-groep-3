@@ -1,16 +1,9 @@
-﻿// #define INPUT_KINECT
-#define INPUT_KINECT
-
-using UnityEngine;
-
-#if INPUT_KINECT
+﻿using UnityEngine;
 using Kinect;
-#endif
-
 using System.Collections;
 
 /// <summary>
-/// This class represents the avatar in the game environment.
+/// This class represents behaviour of the avatar in the game environment.
 /// </summary>
 public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
 {
@@ -19,10 +12,20 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     private Avatar avatar;
 
-    bool jumping = false;
+    /// <summary>
+    /// Indicates if the avatar is jumping
+    /// </summary>
+    private bool jumping = false;
+
+    /// <summary>
+    /// The sound generator
+    /// </summary>
     AudioBehaviour audioManager;
 
-    bool kinectFailed = false;
+    /// <summary>
+    /// Indicates if the kinect initialization failed 
+    /// </summary>
+    private bool kinectFailed = false;
 
     /// <summary>
     /// Used for initialization by Unity. The Start method is called just
@@ -34,42 +37,30 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     void Start()
     {
         this.audioManager = transform.Find("2DAudio").GetComponent<AudioBehaviour>();
-        StateManager.Instance.pauseOrUnpause();
+        StateManager.Instance.PauseOrUnpause();
         try
         {
-            //Try to initialize the input
-#if INPUT_KINECT
             this.avatar = new Avatar(this, GameObject.Find("Kinect(Clone)").GetComponent<KinectUserInput>());
-#elif INPUT_KEYBOARD
-            this.avatar = new Avatar(this, new KeyboardUserInput());
-#else
-                throw System.Exception("No input specified");
-#endif
         }
-        catch (System.Exception e)
+        catch (OpenNI.GeneralException)
         {
-            Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
-            Logger.Log("Type: " + e.GetType() + "; Message: " + e.Message.ToString() + "\nStacktrace: " + e.StackTrace.ToString());
-
-            Logger.Log("Fallback to keyboard input");
-            this.avatar = new Avatar(this, new KeyboardUserInput());
-            this.kinectFailed = true;
+            HandleKinectInitializationFailure();
         }
         finally
         {
             StartCoroutine(SideMovement());
         }
-
-    }   
+    }
 
     /// <summary>
-    /// The Destroy method is called when the MonoBehaviour will be destroyed.
-    /// OnDestroy will only be called on game objects that have previously
-    /// been active.
+    /// Logs that the kinect initialization failed and sets the user input to the keyboard
     /// </summary>
-    void OnDestroy()
+    private void HandleKinectInitializationFailure()
     {
-        //GUI.TextArea(new Rect(10, 40, 200, 220), avatar.ToString());
+        Logger.Log("Input initialization failed! Please check if your controller is connected properly.");
+        Logger.Log("Fallback to keyboard input");
+        this.avatar = new Avatar(this, new KeyboardUserInput());
+        this.kinectFailed = true;
     }
 
     /// <summary>
@@ -81,34 +72,61 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     {
         this.avatar.Update();
         if (Input.GetKey(KeyCode.S))
-		{
+        {
             transform.Translate(Vector3.forward * -2);
-		}
-		if(!StateManager.Instance.isPausing())
-		{
-			this.avatar.moveSpeed += Time.smoothDeltaTime / 10;	
-		}
-        if (StateManager.Instance.isDead())
+        }
+        IncreaseMoveSpeed();
+        UpdateAudio();
+    }
+
+    /// <summary>
+    /// Increases the movement speed when the game isn't paused
+    /// </summary>
+    private void IncreaseMoveSpeed()
+    {
+        if (!StateManager.Instance.IsPausing())
+        {
+            this.avatar.MoveSpeed += Time.smoothDeltaTime / 10;
+        }
+    }
+
+    /// <summary>
+    /// Plays the correct audio
+    /// </summary>
+    private void UpdateAudio()
+    {
+        if (StateManager.Instance.IsDead())
         {
             this.audioManager.CrashEnding("soundtrack", 2500);
         }
-        else if (StateManager.Instance.invincible)
+        else if (StateManager.Instance.Invincible)
         {
-            if (!this.audioManager.IsPlaying("powerup"))
-            {
-                this.audioManager.StopPlaying("soundtrack");
-                this.audioManager.Play("powerup");
-            }
+            PlayPowerupAudio();
         }
-        else if (!StateManager.Instance.invincible && !this.audioManager.IsPlaying("soundtrack"))
+        else if (!StateManager.Instance.Invincible && !this.audioManager.IsPlaying("soundtrack"))
         {
             this.audioManager.StopPlaying("powerup");
             this.audioManager.Play("soundtrack");
         }
-        
     }
 
-    public void OnGUI() {
+    /// <summary>
+    /// Starts playing the powerup audio if it isn't playing already
+    /// </summary>
+    private void PlayPowerupAudio()
+    {
+        if (!this.audioManager.IsPlaying("powerup"))
+        {
+            this.audioManager.StopPlaying("soundtrack");
+            this.audioManager.Play("powerup");
+        }
+    }
+
+    /// <summary>
+    /// Show a message on the screen if the kinect initialization failed
+    /// </summary>
+    public void OnGUI()
+    {
         if (this.kinectFailed)
         {
             GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
@@ -120,7 +138,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     }
 
     /// <summary>
-    /// Move the avatar forward by the given move speed.
+    /// Move the avatar forward by the given move speed
     /// </summary>
     public void Forward(float moveSpeed)
     {
@@ -128,7 +146,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     }
 
     /// <summary>
-    /// Move player to the right track.
+    /// Move avatar to the right track
     /// </summary>
     public void Right()
     {
@@ -136,21 +154,23 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     }
 
     /// <summary>
-    /// Move player to the left track.
+    /// Move avatar to the left track
     /// </summary>
-    /// <returns>1 iff a movement is possible</returns>
     public void Left()
     {
         StartCoroutine(MoveAnimation(Vector3.left * 6, 100));
     }
 
+    /// <summary>
+    /// Move avatar up
+    /// </summary>
     public void Up()
     {
         StartCoroutine(UpAndDownAnimation());
     }
 
     /// <summary>
-    /// A coroutine responsible for moving the avatar. Yields a
+    /// A coroutine responsible for moving the avatar sideways. Yields a
     /// WaitForSeconds to pause execution and prevent moving
     /// over multiple tracks at a time.
     /// </summary>
@@ -166,6 +186,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
     }
 
+    /// <summary>
+    /// A coroutine responsible for moving the avatar up.
+    /// </summary>
     IEnumerator UpAndDownAnimation()
     {
         if (!jumping)
@@ -177,9 +200,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves the avatar with an animation
+    /// </summary>
+    /// <param name="targetlocation">The end location of the animation</param>
+    /// <param name="quick">The speed of the animation</param>
     IEnumerator MoveAnimation(Vector3 targetlocation, int quick)
     {
-        int x = (int)Mathf.Round(quick / avatar.moveSpeed) + 1;
+        int x = (int)Mathf.Round(quick / avatar.MoveSpeed) + 1;
         for (int i = 0; i < x; i++)
         {
             transform.Translate(targetlocation / x);
@@ -187,5 +215,4 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
         yield return 0;
     }
-
 }

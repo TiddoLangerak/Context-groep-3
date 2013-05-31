@@ -12,7 +12,7 @@ public class AvatarTest
     }
 
     [Test]
-    public void testAvatarInitialization()
+    public void avatarInitializationTest()
     {
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
         var mockUserInput = new Mock<IUserInput>();
@@ -70,7 +70,7 @@ public class AvatarTest
     }
 
     [Test]
-    public void moveDeadAvatar()
+    public void moveDeadAvatarTest()
     {
         // Arrange
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
