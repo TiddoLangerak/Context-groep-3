@@ -1,20 +1,35 @@
 using UnityEngine;
 using System.Timers;
-using System.Collections;
 
+/// <summary>
+/// Implements the behaviour of the points powerup
+/// </summary>
 public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
 {
-	protected PointsPowerup powerup;
+    /// <summary>
+    /// The PointsPowerup associated with this behaviour
+    /// </summary>
+    protected PointsPowerup powerup;
+
+    /// <summary>
+    /// The audio manager (used for sound effect after collision)
+    /// </summary>
     private AudioBehaviour audioManager;
 
-	// Use this for initialization
-	void Start ()
-	{
-		powerup = new PointsPowerup();
+    /// <summary>
+    /// Initializes the instance variables. (This function is automatically called by Unity)
+    /// </summary>
+    void Start()
+    {
+        powerup = new PointsPowerup();
         this.audioManager = GameObject.Find("2DAudio").GetComponent<AudioBehaviour>();
-	}
-	
-	void OnCollisionEnter(Collision collision)
+    }
+
+    /// <summary>
+    /// Increases the score and shows it clearly on the screen for 2 seconds
+    /// </summary>
+    /// <param name="collision">The collision belonging to this game object</param>
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "ShoppingCart")
         {
@@ -26,15 +41,15 @@ public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
 
             powerup.Collision();
             this.audioManager.Play("money");
-			Destroy(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 
     /// <summary>
-    /// Resets the score label to its default look.
+    /// Resets the score label to its default look after the timer is expired.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The sender of the event</param>
+    /// <param name="e">The arguments belonging to the event</param>
     private void ResetScoreVisibility(object sender, ElapsedEventArgs e)
     {
         if (sender.GetType() == typeof(System.Timers.Timer))
