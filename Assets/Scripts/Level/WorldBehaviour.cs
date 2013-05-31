@@ -3,25 +3,47 @@ using System.Collections;
 using System.Timers;
 using System;
 
+/// <summary>
+/// Implements the behaviour of the world
+/// </summary>
 public class WorldBehaviour : MonoBehaviour
 {
-	public GameObject inputObject;
-	public float reloadDuration = 3;
-	public float scoreMultplier = 5;
-	
-	bool sceneNeedsReloading = false;
-	ITimer timer = new TimerAdapter();
     /// <summary>
-    /// Used for initialization
+    /// The input game object
+    /// </summary>
+    public GameObject inputObject;
+
+    /// <summary>
+    /// The duration for the reload timer
+    /// </summary>
+    public float reloadDuration = 3;
+
+    /// <summary>
+    /// The multiplier of the score
+    /// </summary>
+    public float scoreMultiplier = 5;
+
+    /// <summary>
+    /// Indicates if the scene needs to be reloaded
+    /// </summary>
+    private bool sceneNeedsReloading = false;
+
+    /// <summary>
+    /// The timer used for reloading the scene
+    /// </summary>
+    private ITimer timer = new TimerAdapter();
+
+    /// <summary>
+    /// Initializes the input if needed and reloads the scene if needed
     /// </summary>
     void Start()
     {
-        StartCoroutine(onKey());
-		if (GameObject.Find("Kinect(Clone)") == null)
-		{
-			Instantiate(inputObject);
-		}
-		this.timer.Interval = (int)(reloadDuration*1000);
+        StartCoroutine(OnKey());
+        if (GameObject.Find("Kinect(Clone)") == null)
+        {
+            Instantiate(inputObject);
+        }
+        this.timer.Interval = (int)(reloadDuration * 1000);
         this.timer.Elapsed += new ElapsedEventHandler(ReloadSceneTimerElapsed);
     }
 
@@ -31,8 +53,8 @@ public class WorldBehaviour : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (!StateManager.Instance.isPausing())
-            StateManager.Instance.score += (Time.deltaTime * scoreMultplier * StateManager.Instance.NumberOfPlayers);
+        if (!StateManager.Instance.IsPausing())
+            StateManager.Instance.Score += (Time.deltaTime * scoreMultiplier * StateManager.Instance.NumberOfPlayers);
         if (sceneNeedsReloading)
             ResetGame();
     }
@@ -46,22 +68,47 @@ public class WorldBehaviour : MonoBehaviour
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.textArea);
         guiStyle.fontSize = 50;
-        GUI.contentColor = Color.white;
-        GUI.backgroundColor = Color.clear;        
-        GUI.TextArea(new Rect(10, 70, 350, 60), "Multiplier: " + StateManager.Instance.NumberOfPlayers, guiStyle);
+        ShowMultiplier(guiStyle);
+        ChangeScoreColorIfNeeded();
+        GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.Score), guiStyle);
+        GUI.contentColor = Color.red;
+        ShowGameState(guiStyle);
+    }
 
+    /// <summary>
+    /// Changes the color of the score label if the money powerup is active
+    /// </summary>
+    private static void ChangeScoreColorIfNeeded()
+    {
         if (StateManager.Instance.NewMoneyPowerup)
         {
-            GUI.contentColor = Color.red;
+            GUI.contentColor = Color.green;
         }
-        GUI.TextArea(new Rect(10, 10, 350, 60), "Score: " + Mathf.Round(StateManager.Instance.score), guiStyle);
+    }
 
-        GUI.contentColor = Color.red;
-        if (StateManager.Instance.isPausing() && !StateManager.Instance.isDead())
+    /// <summary>
+    /// Show the multiplier in the top left corner of the screen
+    /// </summary>
+    /// <param name="guiStyle">The style used for the label</param>
+    private static void ShowMultiplier(GUIStyle guiStyle)
+    {
+        GUI.contentColor = Color.white;
+        GUI.backgroundColor = Color.clear;
+        GUI.TextArea(new Rect(10, 70, 350, 60), "Multiplier: " + StateManager.Instance.NumberOfPlayers, guiStyle);
+    }
+
+    /// <summary>
+    /// Shows 'Paused', 'Game Over' or nothing in the top left corner, depending on the gamestate
+    /// </summary>
+    /// <param name="guiStyle">The style used for the labels</param>
+    private static void ShowGameState(GUIStyle guiStyle)
+    {
+        if (StateManager.Instance.IsPausing() && !StateManager.Instance.IsDead())
         {
             GUI.TextArea(new Rect(Screen.width / 2 - 110, Screen.height / 2 - 41, 350, 60), "Paused", guiStyle);
         }
-        if (StateManager.Instance.isDead())
+
+        if (StateManager.Instance.IsDead())
         {
             GUI.TextArea(new Rect(Screen.width / 2 - 170, Screen.height / 2 - 41, 350, 60), "Game Over", guiStyle);
         }
@@ -69,22 +116,15 @@ public class WorldBehaviour : MonoBehaviour
 
     /// <summary>
     /// Provides ability to pause the game (on 'P')
-    /// and to close the game (on 'ESC').
     /// </summary>
-    IEnumerator onKey()
+    IEnumerator OnKey()
     {
         while (true)
         {
-            if (Input.GetKey(KeyCode.P) && !StateManager.Instance.isDead())
+            if (Input.GetKey(KeyCode.P) && !StateManager.Instance.IsDead())
             {
-                StateManager.Instance.pauseOrUnpause();
+                StateManager.Instance.PauseOrUnpause();
                 yield return new WaitForSeconds(0.2f);
-            }
-            else if (Input.GetKey(KeyCode.Escape))
-            {
-                // Close the application
-                // Using Application.Quit will result in "Not Responding"
-                yield return 0;
             }
             else
             {
@@ -92,20 +132,33 @@ public class WorldBehaviour : MonoBehaviour
             }
         }
     }
-	
-	public void ReloadScene()
-	{
-		timer.Start();
-	}
-	private void ReloadSceneTimerElapsed(object sender, EventArgs e)
-	{
-		timer.Stop();
-		sceneNeedsReloading = true;
-	}
-	public void ResetGame()
+
+    /// <summary>
+    /// Start the timer for reloading the scene
+    /// </summary>
+    public void ReloadScene()
     {
-		Application.LoadLevel("level");
-		StateManager.Instance.ShowStartScreen = true;
-        StateManager.Instance.score = 0;
+        timer.Start();
+    }
+
+    /// <summary>
+    /// Reload the scene
+    /// </summary>
+    /// <param name="sender">The source of the event</param>
+    /// <param name="e">The arguments of the event</param>
+    private void ReloadSceneTimerElapsed(object sender, EventArgs e)
+    {
+        timer.Stop();
+        sceneNeedsReloading = true;
+    }
+
+    /// <summary>
+    /// Reset the game, i.e. reload sceen, show start screen and reset score
+    /// </summary>
+    public void ResetGame()
+    {
+        Application.LoadLevel("level");
+        StateManager.Instance.ShowStartScreen = true;
+        StateManager.Instance.Score = 0;
     }
 }

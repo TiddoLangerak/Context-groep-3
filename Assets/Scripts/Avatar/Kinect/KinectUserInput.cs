@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,17 +9,37 @@ namespace Kinect
     /// </summary>
     public class KinectUserInput : MonoBehaviour, IUserInput
     {
+        /// <summary>
+        /// The KinectManager associated with the input
+        /// </summary>
         private KinectManager kinectMgr;
-        private KinectReaderThread kinectThread;
-        private bool initialized = false;
-		
-		public void Awake()
-		{
-			DontDestroyOnLoad(this);
-		}
 
         /// <summary>
-        /// Sets up and starts the kinect thread, such that input can be processed
+        /// The Kinect thread associated with the input
+        /// </summary>
+        private KinectReaderThread kinectThread;
+
+        /// <summary>
+        /// The nr. for each movement
+        /// </summary>
+        private Dictionary<UserMovement, int> movementFreqencies;
+
+        /// <summary>
+        /// Indicates if the kinect input is initialized
+        /// </summary>
+        private bool initialized = false;
+
+        /// <summary>
+        /// Doesn't destroy this object when the scene is reloaded
+        /// </summary>
+        public void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
+        /// <summary>
+        /// Sets up and starts the kinect thread, such that input can be processed, if the input
+        /// is not initialized already
         /// </summary>
         public void Initialize()
         {
@@ -39,52 +58,89 @@ namespace Kinect
         /// <returns>The current movement of the avatar</returns>
         public AvatarMovement CurrentMovement()
         {
-            Dictionary<UserMovement, int> movementFreqencies = new Dictionary<UserMovement, int>();
+            movementFreqencies = new Dictionary<UserMovement, int>();
             Dictionary<int, User> trackedUsers;
             lock (kinectMgr)
             {
                 trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
             }
+            FillMovementFrequencies(trackedUsers);
+            return GetCurrAvatarMovement();
+        }
 
+        /// <summary>
+        /// Fills the movementfrequencies dictionary based on the movement of the tracked users
+        /// </summary>
+        /// <param name="trackedUsers">The tracked users</param>
+        private void FillMovementFrequencies(Dictionary<int, User> trackedUsers)
+        {
             foreach (User user in trackedUsers.Values)
             {
                 if (user.Active)
                 {
-                    UserMovement movement = user.currentMovement;
-                    if (movementFreqencies.ContainsKey(movement))
-                    {
-                        movementFreqencies[movement]++;
-                    }
-                    else
-                    {
-                        movementFreqencies.Add(movement, 1);
-                    }
+                    UserMovement movement = user.CurrentMovement;
+                    UpdateMovementFreqEntry(movement);
                 }
             }
+        }
 
+        /// <summary>
+        /// Increments the frequency of movement with 1 if it is already in the dictionary,
+        /// add the movement with frequency 1 otherwise.
+        /// </summary>
+        /// <param name="movement">The movement entry to update</param>
+        private void UpdateMovementFreqEntry(UserMovement movement)
+        {
+            if (movementFreqencies.ContainsKey(movement))
+            {
+                movementFreqencies[movement]++;
+            }
+            else
+            {
+                movementFreqencies.Add(movement, 1);
+            }
+        }
+
+        /// <summary>
+        /// Returns the current movement of the avatar
+        /// </summary>
+        /// <returns>The current movement of the avatar</returns>
+        private AvatarMovement GetCurrAvatarMovement()
+        {
             if (movementFreqencies.Count > 0)
             {
                 //retrieve the movement with the maximum frequency
                 UserMovement currMovement = movementFreqencies.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 
-                if (movementFreqencies[currMovement] > StateManager.Instance.NumberOfPlayers/2)
+                if (movementFreqencies[currMovement] > StateManager.Instance.NumberOfPlayers / 2)
                 {
-                    switch (currMovement)
-                    {
-                        case UserMovement.Left:
-                            return AvatarMovement.Left;
-                        case UserMovement.Right:
-                            return AvatarMovement.Right;
-                        case UserMovement.Jump:
-                            return AvatarMovement.Jump;
-                    }
+                    return GetCorrectAvatarMovement(currMovement);
                 }
             }
             return AvatarMovement.None;
         }
 
         /// <summary>
-        /// Stop the kinect thread.
+        /// Returns the AvatarMovement that corresponds with currMovement
+        /// </summary>
+        /// <param name="currMovement">The current movement of all users</param>
+        /// <returns>The current movement of the avatar</returns>
+        private AvatarMovement GetCorrectAvatarMovement(UserMovement currMovement)
+        {
+            switch (currMovement)
+            {
+                case UserMovement.Left:
+                    return AvatarMovement.Left;
+                case UserMovement.Right:
+                    return AvatarMovement.Right;
+                case UserMovement.Jump:
+                    return AvatarMovement.Jump;
+            }
+            return AvatarMovement.None;
+        }
+
+        /// <summary>
+        /// Stop the kinect thread and reset the nr. of players
         /// </summary>
         public void OnDestroy()
         {
@@ -93,43 +149,6 @@ namespace Kinect
                 this.kinectThread.Stop();
             }
             StateManager.Instance.NumberOfPlayers = 0;
-        }
-
-        /// <summary>
-        /// Returns a string representation of the user input, containing the nr. of players and the current movement of
-        /// each player.
-        /// </summary>
-        /// <returns></returns>
-        public override String ToString()
-        {
-            Dictionary<int, User> trackedUsers;
-            lock (kinectMgr)
-            {
-                trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
-            }
-
-            String res = "Nr. of players: " + trackedUsers.Count + "\n\n";
-            foreach (User user in trackedUsers.Values )
-            {
-                res += user.ID + ": ";
-                switch(user.currentMovement)
-                {
-                    case UserMovement.Left:
-                        res += "Left";
-                        break;
-                    case UserMovement.Right:
-                        res += "Right";
-                        break;
-                    case UserMovement.Jump:
-                        res += "Jump";
-                        break;
-                    default:
-                        res+= "None";
-                        break;
-                }
-                res += "\n";
-            }
-            return res;
         }
     }
 }

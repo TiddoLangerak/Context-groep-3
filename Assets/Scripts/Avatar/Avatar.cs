@@ -1,45 +1,32 @@
-using Kinect;
-using System;
-using System.Collections;
-
-
 /// <summary>
 /// This class represents the avatar as domain object. Therefore, it
 /// is a plain old C# object.
 /// </summary>
 public class Avatar
 {
-	/// <summary>
-	/// Gets or sets the move speed.
-	/// </summary>
-	/// <value>
-	/// The move speed.
-	/// </value>
-	public float moveSpeed { get; set; }
-	
-	/// <summary>
-	/// Gets or sets the track.
-	/// </summary>
-	/// <value>
-	/// The track.
-	/// </value>
-	public int track { get; set; }
-	
-	/// <summary>
-	/// Gets or sets the _avatar behaviour.
-	/// </summary>
-	/// <value>
-	/// The _avatar behaviour.
-	/// </value>
-	private IAvatarBehaviour _avatarBehaviour { get; set; }
+    /// <summary>
+    /// Gets or sets the move speed.
+    /// </summary>
+    /// <value>The move speed</value>
+    public float MoveSpeed { get; set; }
+
+    /// <summary>
+    /// Gets or sets the track.
+    /// </summary>
+    /// <value>The track</value>
+    public int Track { get; set; }
+
+    /// <summary>
+    /// Gets or sets the _avatar behaviour.
+    /// </summary>
+    /// <value>The avatar behaviour</value>
+    private IAvatarBehaviour AvatarBehaviour { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
     /// </summary>
-    /// <value>
-    /// The user input
-    /// </value>
-    private IUserInput _userInput { get; set; }
+    /// <value>The user input</value>
+    private IUserInput UserInput { get; set; }
 
     /// <summary>
     /// Used for initialization. The Start method is called just
@@ -47,14 +34,14 @@ public class Avatar
     /// </summary>
     public Avatar(IAvatarBehaviour avatarBehaviour, IUserInput userInput)
     {
-        this.track = 2;
-        this.moveSpeed = 15;
+        this.Track = 2;
+        this.MoveSpeed = 15;
 
         userInput.Initialize();
-        this._avatarBehaviour = avatarBehaviour;
-        this._userInput = userInput;
+        this.AvatarBehaviour = avatarBehaviour;
+        this.UserInput = userInput;
 
-        StateManager.Instance.pauseOrUnpause();
+        StateManager.Instance.PauseOrUnpause();
     }
 
     /// <summary>
@@ -63,82 +50,82 @@ public class Avatar
     /// the avatar is moved backwards.
     /// </summary>
     public void Update()
-	{
-		if(!StateManager.Instance.isPausing())
-		{
-			_avatarBehaviour.Forward(this.moveSpeed);	
-		}
-	}
-	
-    public bool MovementHandler()
     {
-            switch (this._userInput.CurrentMovement())
-            {
-                case AvatarMovement.Left:
-                    return this.Left();
-                case AvatarMovement.Right:
-                    return this.Right();
-				case AvatarMovement.Jump:
-					return this.Up();
-				case AvatarMovement.Increase:
-					moveSpeed+= 2.0f;
-					break;
-				case AvatarMovement.Decrease:
-					moveSpeed-= 1.0f;
-					break;
-                default:
-                    break;
-            }
-		return false;
+        if (!StateManager.Instance.IsPausing())
+        {
+            AvatarBehaviour.Forward(this.MoveSpeed);
+        }
     }
 
     /// <summary>
-    /// Move player to the left track.
+    /// Handles the movement
+    /// </summary>
+    /// <returns></returns>
+    public bool MovementHandler()
+    {
+        switch (this.UserInput.CurrentMovement())
+        {
+            case AvatarMovement.Left:
+                return this.Left();
+            case AvatarMovement.Right:
+                return this.Right();
+            case AvatarMovement.Jump:
+                return this.Up();
+            case AvatarMovement.Increase:
+                MoveSpeed += 2.0f;
+                break;
+            case AvatarMovement.Decrease:
+                MoveSpeed -= 1.0f;
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Move player one track to the left
     /// </summary>
     public bool Left()
     {
-        if (StateManager.Instance.isPlaying() && track > 1)
+        if (StateManager.Instance.IsPlaying() && Track > 1)
         {
-            this.track--;
-            this._avatarBehaviour.Left();
-			return true;
+            this.Track--;
+            this.AvatarBehaviour.Left();
+            return true;
         }
-		return false;		
+        return false;
     }
 
     /// <summary>
-    /// Move avatar one track to the right. As precondition we assume that
-    /// the player is allowed to move right (e.g. not already on the
-    /// rightmost lane)
+    /// Move avatar one track to the right
     /// </summary>
     public bool Right()
     {
-        if (StateManager.Instance.isPlaying() && track < 3)
+        if (StateManager.Instance.IsPlaying() && Track < 3)
         {
-            this.track++;
-            this._avatarBehaviour.Right();
-			return true;
-        }
-		return false;
-    }
-	
-	/// <summary>
-	/// Up this instance.
-	/// </summary>
-	public bool Up()
-	{
-        if (StateManager.Instance.isPlaying())
-        {
-            this._avatarBehaviour.Up();
+            this.Track++;
+            this.AvatarBehaviour.Right();
             return true;
         }
-		//When a new game has started => hide startscreen + (re)start game on jump
-		else if (!StateManager.Instance.isDead())
+        return false;
+    }
+
+    /// <summary>
+    /// Let the avatar jump and hide the startscreen when the game should be started
+    /// </summary>
+    public bool Up()
+    {
+        if (StateManager.Instance.IsPlaying())
+        {
+            this.AvatarBehaviour.Up();
+            return true;
+        }
+        else if (!StateManager.Instance.IsDead())
         {
             StateManager.Instance.ShowStartScreen = false;
-            StateManager.Instance.pauseOrUnpause();            
+            StateManager.Instance.PauseOrUnpause();
         }
-		return false;
-	}
-	
+        return false;
+    }
 }

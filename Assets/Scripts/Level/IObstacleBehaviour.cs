@@ -1,6 +1,10 @@
-﻿using System;
-
+﻿/// <summary>
+/// Interface for the behaviour of obstacles
+/// </summary>
 public interface IObstacleBehaviour
 {
-	void ReloadScene();
+    /// <summary>
+    /// Reloads the scene
+    /// </summary>
+    void ReloadScene();
 }
