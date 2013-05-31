@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using System;
 
 [TestFixture]
 public class StateManagerTest
@@ -8,34 +7,34 @@ public class StateManagerTest
     public void InitializationTest()
     {
         StateManager stateM = StateManager.Instance;
-        Assert.IsTrue(stateM.isPausing());
+        Assert.IsTrue(stateM.IsPausing());
     }
 
     [Test]
     public void StartingTest()
     {
         StateManager stateM = StateManager.Instance;
-        stateM.play();
-        Assert.IsFalse(stateM.isPausing());
+        stateM.Play();
+        Assert.IsFalse(stateM.IsPausing());
     }
 
     [Test]
     public void PausingTest1()
     {
         StateManager stateM = StateManager.Instance;
-        stateM.play();
-        stateM.pauseOrUnpause();
-        Assert.IsTrue(stateM.isPausing());
+        stateM.Play();
+        stateM.PauseOrUnpause();
+        Assert.IsTrue(stateM.IsPausing());
     }
 
     [Test]
     public void PausingTest2()
     {
         StateManager stateM = StateManager.Instance;
-        stateM.play();
-        stateM.pauseOrUnpause();
-        stateM.pauseOrUnpause();
-        Assert.IsFalse(stateM.isPausing());
+        stateM.Play();
+        stateM.PauseOrUnpause();
+        stateM.PauseOrUnpause();
+        Assert.IsFalse(stateM.IsPausing());
     }
 
     [Test]
@@ -48,17 +47,17 @@ public class StateManagerTest
     public void TestDead()
     {
         // Act
-        StateManager.Instance.die();
+        StateManager.Instance.Die();
 
         // Assert
-        Assert.AreEqual(true, StateManager.Instance.isDead());
+        Assert.AreEqual(true, StateManager.Instance.IsDead());
     }
 
     /*[Test]
     public void PauseWithMovementTest()
     {
         StateManager stateM = StateManager.Instance;
-        Assert.IsTrue(stateM.isPausing());
+        Assert.IsTrue(stateM.IsPausing());
         Assert.AreEqual(0, stateM.left());
         Assert.AreEqual(0, stateM.right());
     }
@@ -67,8 +66,8 @@ public class StateManagerTest
     public void PlayingWithMovementTest()
     {
         StateManager stateM = StateManager.Instance;
-        stateM.play();
-        Assert.IsFalse(stateM.isPausing());
+        stateM.Play();
+        Assert.IsFalse(stateM.IsPausing());
         Assert.AreEqual(-1, stateM.left());
         Assert.AreEqual( 1, stateM.right());
     }*/

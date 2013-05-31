@@ -1,5 +1,3 @@
-using UnityEngine;
-using System.Collections;
 using NUnit.Framework;
 
 /// <summary>
@@ -14,7 +12,7 @@ public class LevelTest
     const int blockAmount = 5;
     const int powerupOffset = 0;
     const float blockLength = 1.0f;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -42,11 +40,11 @@ public class LevelTest
     {
         level = new Level(blockAmount, powerupOffset, blockLength, levelBehavior);
 
-        level.update((int)blockLength);
+        level.Update((int)blockLength);
 
         Assert.AreEqual(blockAmount, levelBehavior.getAmountOfLevelBlocks());
 
-        level.update((int)(50 * blockLength));
+        level.Update((int)(50 * blockLength));
 
         Assert.AreEqual(blockAmount, levelBehavior.getAmountOfLevelBlocks());
     }
@@ -59,41 +57,41 @@ public class LevelTest
     {
         level = new Level(blockAmount, powerupOffset, blockLength, levelBehavior);
 
-        level.update((int)(blockLength));
+        level.Update((int)(blockLength));
 
         Assert.AreEqual(blockAmount, levelBehavior.getTimesCalledLevelBlock());
 
-        level.update((int)(50 * blockLength));
+        level.Update((int)(50 * blockLength));
 
         Assert.AreEqual(blockAmount + 49, levelBehavior.getTimesCalledLevelBlock());
     }
-	
-	[Test]
-	public void itemsOffsetTest()
-	{
-		level = new Level(blockAmount, 2, blockLength, levelBehavior);
-		
-		Assert.AreEqual(6, levelBehavior.getAmountOfObstacles());
-		Assert.AreEqual(3, levelBehavior.getAmountOfPowerups());
-	}
-	
-	[Test]
-	public void powerupAmountTest()
-	{
-		level = new Level(blockAmount, 2, blockLength, levelBehavior);
-		
-		level.update((int)(50 * blockLength));
-		
-		Assert.AreEqual(blockAmount, levelBehavior.getAmountOfPowerups());
-	}
-	
-	[Test]
-	public void obstacleAmountTest()
-	{
-		level = new Level(blockAmount, 2, blockLength, levelBehavior);
-		
-		level.update((int)(50 * blockLength));
-		
-		Assert.AreEqual(blockAmount*2, levelBehavior.getAmountOfObstacles());
-	}
+
+    [Test]
+    public void itemsOffsetTest()
+    {
+        level = new Level(blockAmount, 2, blockLength, levelBehavior);
+
+        Assert.AreEqual(6, levelBehavior.getAmountOfObstacles());
+        Assert.AreEqual(3, levelBehavior.getAmountOfPowerups());
+    }
+
+    [Test]
+    public void powerupAmountTest()
+    {
+        level = new Level(blockAmount, 2, blockLength, levelBehavior);
+
+        level.Update((int)(50 * blockLength));
+
+        Assert.AreEqual(blockAmount, levelBehavior.getAmountOfPowerups());
+    }
+
+    [Test]
+    public void obstacleAmountTest()
+    {
+        level = new Level(blockAmount, 2, blockLength, levelBehavior);
+
+        level.Update((int)(50 * blockLength));
+
+        Assert.AreEqual(blockAmount * 2, levelBehavior.getAmountOfObstacles());
+    }
 }

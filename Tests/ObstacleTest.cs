@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Moq;
 
 [TestFixture]
@@ -16,7 +15,7 @@ public class ObstacleTest
         obstacle.Collision();
 
         // Assert
-        Assert.AreEqual(StateManager.State.DEAD, StateManager.Instance.getCurrentState());
+        Assert.AreEqual(StateManager.State.DEAD, StateManager.Instance.GetCurrentState());
     }
 
     [Test]
@@ -52,6 +51,6 @@ public class ObstacleTest
         obstacle.Collision();
 
         // Assert
-        Assert.AreEqual(0, StateManager.Instance.score);
+        Assert.AreEqual(0, StateManager.Instance.Score);
     }
 }
