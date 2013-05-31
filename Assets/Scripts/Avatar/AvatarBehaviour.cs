@@ -46,6 +46,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             HandleKinectInitializationFailure();
         }
+        catch (System.DllNotFoundException)
+        {
+            Logger.Log("OpenNI DLL not found. Check if OpenNI is installed properly");
+            HandleKinectInitializationFailure();
+        }
         finally
         {
             StartCoroutine(SideMovement());
