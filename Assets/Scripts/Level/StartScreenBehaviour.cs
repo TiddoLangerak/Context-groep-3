@@ -36,6 +36,16 @@ public class StartScreenBehaviour : MonoBehaviour
     public Texture line;
 
     /// <summary>
+    /// The texture of the movement image
+    /// </summary>
+    public Texture movement;
+
+    /// <summary>
+    /// The texture for the multiplier image
+    /// </summary>
+    public Texture users;
+
+    /// <summary>
     /// Show the startscreen on startup, called automatically by Unity
     /// </summary>
     void Start()
@@ -66,7 +76,33 @@ public class StartScreenBehaviour : MonoBehaviour
         ShowObstacleImages();
         ShowSecondTextArea();
         ShowPowerupImages();
+        ShowMovementExplanation();
+        ShowMultiplierExplanation();
         ShowStatusFooter();
+    }
+
+    /// <summary>
+    /// Show the multiplier explanation text and image
+    /// </summary>
+    private void ShowMultiplierExplanation()
+    {
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        guiStyle.fontSize = 24;
+        string text = "More players is more fun (=points):";
+        GUI.Label(new Rect(600, 330, 700, 200), text, guiStyle);
+        GUI.DrawTexture(new Rect(600, 365, 200, 200), users);
+    }
+
+    /// <summary>
+    /// Show the movement explanation image incl. text
+    /// </summary>
+    private void ShowMovementExplanation()
+    {
+        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        guiStyle.fontSize = 24;
+        string text = "Move like this:";
+        GUI.Label(new Rect(200, 330, 700, 200), text, guiStyle);
+        GUI.DrawTexture(new Rect(200, 365, 100, 200), movement);
     }
 
     /// <summary>
@@ -95,9 +131,7 @@ public class StartScreenBehaviour : MonoBehaviour
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
         guiStyle.fontSize = 24;
-        string text = "The purpose of this game is to get the highest possible score. This is done by avoiding the obstacles as long as possible. " +
-        "The obstacles can be avoided by leaning your bodies to the left or to the right. " +
-        "Obstacles can also be avoided by jumping over them. The three obstacles used in the game are:";
+        string text = "Avoid these:";
         GUI.Label(new Rect(200, 125, 700, 200), text, guiStyle);
     }
 
@@ -106,9 +140,9 @@ public class StartScreenBehaviour : MonoBehaviour
     /// </summary>
     private void ShowObstacleImages()
     {
-        GUI.DrawTexture(new Rect(200, 280, 100, 100), cupASoup);
-        GUI.DrawTexture(new Rect(310, 280, 100, 100), page);
-        GUI.DrawTexture(new Rect(420, 280, 100, 100), beer);
+        GUI.DrawTexture(new Rect(200, 160, 100, 100), cupASoup);
+        GUI.DrawTexture(new Rect(310, 160, 100, 100), page);
+        GUI.DrawTexture(new Rect(420, 160, 100, 100), beer);
     }
 
     /// <summary>
@@ -118,10 +152,8 @@ public class StartScreenBehaviour : MonoBehaviour
     {
         GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
         guiStyle.fontSize = 24;
-        string text = "The group's score can be increased by picking up money and by increasing the multiplier. " +
-            "The multiplier is based on the number of players, so more players means a higher score. " +
-            "The game also has a star powerup which makes you invincible for a while. The money and stars are shown in the following way:";
-        GUI.Label(new Rect(200, 390, 700, 200), text, guiStyle);
+        string text = "Grab these:";
+        GUI.Label(new Rect(600, 125, 700, 200), text, guiStyle);
     }
 
     /// <summary>
@@ -129,8 +161,8 @@ public class StartScreenBehaviour : MonoBehaviour
     /// </summary>
     private void ShowPowerupImages()
     {
-        GUI.DrawTexture(new Rect(200, 545, 100, 100), money);
-        GUI.DrawTexture(new Rect(310, 545, 100, 100), star);
+        GUI.DrawTexture(new Rect(600, 160, 100, 100), money);
+        GUI.DrawTexture(new Rect(710, 160, 100, 100), star);
     }
 
     /// <summary>
@@ -142,11 +174,11 @@ public class StartScreenBehaviour : MonoBehaviour
         guiStyle.fontSize = 40;
         if (StateManager.Instance.NumberOfPlayers > 0)
         {
-            GUI.Label(new Rect(360, 680, 600, 100), "Jump to start the game", guiStyle);
+            GUI.Label(new Rect(350, 650, 600, 100), "Jump to start the game", guiStyle);
         }
         else
         {
-            GUI.Label(new Rect(175, 680, 800, 100), "The game needs at least one player to start", guiStyle);
+            GUI.Label(new Rect(175, 650, 800, 100), "The game needs at least one player to start", guiStyle);
         }
     }
 }
