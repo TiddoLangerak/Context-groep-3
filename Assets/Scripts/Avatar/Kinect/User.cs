@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenNI;
+using Util;
 
 namespace Kinect
 {
@@ -49,31 +50,15 @@ namespace Kinect
         public bool Active { get; set; }
 
         /// <summary>
-        /// Constant indicating the minimal ratio necessary to detect leaning of the user.
-        /// This ratio is used together with the TRESHOLD_LEANING_HEAD ratio
-        /// The leaning ratio is calculated as followed:
-        ///     -a = The horizontal distance between right shoulder and torso joints
-        ///     -b = The horizontal distance between left shoulder and torso joins
-        ///     Leaning ratio left: b/a
-        ///     Leaning ratio right: a/b
+        /// Constant indicating the minimal angle needed to detect leaning (in radian)
         /// </summary>
-        private const double TRESHOLD_LEANING = 1.2;
-
-        /// <summary>
-        /// Constant indicating the minimal ratio necessary to detect leaning of the user.
-        /// This ratio is used together with the TRESHOLD_LEANING ratio.
-        /// The leaning head ratio is calculated as followed:
-        ///     -a = horizontal distance between head and torso joints
-        ///     -b = horizontal distance between shoulders
-        ///     Leaning head ratio = a/b
-        /// </summary>
-        private const double TRESHOLD_LEANING_HEAD = 0.5;
+        private const double TRESHOLD_LEANING = 0.4;
 
         /// <summary>
         /// Constant indicating the minimal ration needed to detect a jump of the user.
         /// This jumping ratio is calculated as followed:
         ///     -a = vertical difference in torso position during the history
-        ///     -b = horizontal distance between the shoulders (needed for normalization)
+        ///     -b = distance between the shoulders (needed for normalization)
         ///     Jumping ration = a/b
         /// </summary>
         private const double TRESHOLD_JUMPING = 0.8;
@@ -159,35 +144,25 @@ namespace Kinect
             }
 
             UserState currState = movementHistory.Last.Value;
-            float leftDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.torsoPos.Position.X);
-            float rightDistance = Math.Abs(currState.rightShoulderPos.Position.X - currState.torsoPos.Position.X);
-            float headDistance = Math.Abs(currState.headPos.Position.X - currState.torsoPos.Position.X);
-            float shoulderDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.rightShoulderPos.Position.X);
-            float normalizedHeadDistance = (shoulderDistance != 0) ? (headDistance / shoulderDistance) : 0;
-
-            return DetectLeaning(leftDistance, rightDistance, normalizedHeadDistance);
-        }
+            Point3D vector = PointUtils.CreateDirectionVector(currState.torsoPos.Position, currState.headPos.Position);
+            double angle = Math.Atan(vector.X / vector.Y);
+            return DetectLeaning(angle);
+        }        
 
         /// <summary>
-        /// Detects if the user is leaning to the left or to the right.
+        /// Detects and returns the leaning movement
         /// </summary>
-        /// <param name="leftDistance">Horizontal distance between left shoulder and torso </param>
-        /// <param name="rightDistance">Horizontal distance between right shoulder and torso</param>
-        /// <param name="normalizedHeadDistance">Normalized vertical distance between the head and the torso</param>
-        /// <returns></returns>
-        private UserMovement DetectLeaning(float leftDistance, float rightDistance, float normalizedHeadDistance)
+        /// <param name="angle">The angle of the vector (head-torso)</param>
+        /// <returns>The movement of the user</returns>
+        private UserMovement DetectLeaning(double angle)
         {
-            /// If the head is far of center, the user will most likely be leaning to one way or the other
-            if (normalizedHeadDistance > TRESHOLD_LEANING_HEAD)
+            if (angle < -TRESHOLD_LEANING)
             {
-                if (leftDistance / rightDistance > TRESHOLD_LEANING)
-                {
-                    return UserMovement.Left;
-                }
-                else if (rightDistance / leftDistance > TRESHOLD_LEANING)
-                {
-                    return UserMovement.Right;
-                }
+                return UserMovement.Left;
+            }
+            else if (angle > TRESHOLD_LEANING)
+            {
+                return UserMovement.Right;
             }
             return UserMovement.None;
         }
@@ -201,9 +176,9 @@ namespace Kinect
         {
             UserState minTorsoPosition = movementHistory.Aggregate((l, r) => l.torsoPos.Position.Y < r.torsoPos.Position.Y ? l : r);
             UserState currState = movementHistory.Last.Value;
-            float heightDifference = currState.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
-            float shoulderDistance = Math.Abs(currState.leftShoulderPos.Position.X - currState.rightShoulderPos.Position.X);
-            float normalizedDifference = (shoulderDistance != 0) ? (heightDifference / shoulderDistance) : 0;
+            double heightDifference = currState.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
+            double shoulderDistance = PointUtils.PointDistance(currState.leftShoulderPos.Position, currState.rightShoulderPos.Position);
+            double normalizedDifference = (shoulderDistance != 0) ? (heightDifference / shoulderDistance) : 0;            
 
             if (normalizedDifference > TRESHOLD_JUMPING)
             {
@@ -211,6 +186,6 @@ namespace Kinect
                 return true;
             }
             return (currState.timestamp - lastJumpTime) < JUMP_TIMEOUT * 10000;
-        }
+        }        
     }
 }
