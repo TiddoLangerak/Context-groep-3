@@ -83,6 +83,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         IncreaseMoveSpeed();
         UpdateAudio();
     }
+	
+	void OnCollisionEnter(Collision collision) 
+	{
+		if(collision.gameObject.name == "LevelPart(Clone)")
+		{
+			jumping = false;	
+		}
+	}
 
     /// <summary>
     /// Increases the movement speed when the game isn't paused
@@ -171,7 +179,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Up()
     {
-        StartCoroutine(UpAndDownAnimation());
+		if(!jumping)
+		{
+			rigidbody.velocity = transform.TransformDirection(new Vector3(0, 12, 0));
+			jumping = true;
+		}
     }
 
     /// <summary>
@@ -188,20 +200,6 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
                 yield return new WaitForSeconds(0.5f);
             }
             yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-
-    /// <summary>
-    /// A coroutine responsible for moving the avatar up.
-    /// </summary>
-    IEnumerator UpAndDownAnimation()
-    {
-        if (!jumping)
-        {
-            jumping = true;
-            yield return StartCoroutine(MoveAnimation(Vector3.up * 8, 400));
-            yield return StartCoroutine(MoveAnimation(Vector3.down * 8, 400));
-            jumping = false;
         }
     }
 
