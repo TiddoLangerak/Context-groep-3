@@ -147,7 +147,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
             guiStyle.fontSize = 50;
             GUI.contentColor = Color.red;
             GUI.backgroundColor = Color.clear;
-            GUI.TextArea(new Rect(Screen.width / 2 - 350, Screen.height / 2 - 120, 700, 60), "KINECT IS NOT CONNECTED", guiStyle);
+            GUI.TextArea(new Rect(Screen.width / 2 - 350, Screen.height / 2 - 120, 700, 60), "KINECT IS NOT KINECTED", guiStyle);
         }
     }
 
