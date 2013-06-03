@@ -42,8 +42,9 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         {
             this.avatar = new Avatar(this, GameObject.Find("Kinect(Clone)").GetComponent<KinectUserInput>());
         }
-        catch (OpenNI.GeneralException)
+        catch (OpenNI.GeneralException e)
         {
+			Logger.Log(e.Message);
             HandleKinectInitializationFailure();
         }
         catch (System.DllNotFoundException)
