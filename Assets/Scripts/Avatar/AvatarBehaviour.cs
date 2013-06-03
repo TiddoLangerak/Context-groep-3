@@ -15,7 +15,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// <summary>
     /// Indicates if the avatar is jumping
     /// </summary>
-    private bool jumping = false;
+    private bool jumping = true;
 
     /// <summary>
     /// The sound generator
