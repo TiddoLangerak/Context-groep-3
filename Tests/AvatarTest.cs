@@ -1,4 +1,3 @@
-using System.Collections;
 using NUnit.Framework;
 using Moq;
 
@@ -8,7 +7,7 @@ public class AvatarTest
     [SetUp]
     public void testSetup()
     {
-        StateManager.Instance.pause();
+        StateManager.Instance.Pause();
     }
 
     [Test]
@@ -18,7 +17,7 @@ public class AvatarTest
         var mockUserInput = new Mock<IUserInput>();
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
-        Assert.AreEqual(2, av.track);
+        Assert.AreEqual(2, av.Track);
     }
 
     [Test]
@@ -29,16 +28,16 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
-        Assert.AreEqual(1, av.track);
+        Assert.AreEqual(1, av.Track);
 
         av.Right();
-        Assert.AreEqual(2, av.track);
+        Assert.AreEqual(2, av.Track);
 
         av.Right();
-        Assert.AreEqual(3, av.track);
+        Assert.AreEqual(3, av.Track);
 
         av.Left();
-        Assert.AreEqual(2, av.track);
+        Assert.AreEqual(2, av.Track);
     }
 
     [Test]
@@ -49,10 +48,10 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Left();
-        Assert.AreEqual(1, av.track);
+        Assert.AreEqual(1, av.Track);
 
         av.Left();
-        Assert.AreEqual(1, av.track);
+        Assert.AreEqual(1, av.Track);
     }
 
     [Test]
@@ -63,10 +62,10 @@ public class AvatarTest
         Avatar av = new Avatar(mockAvatarBehaviour.Object, mockUserInput.Object);
 
         av.Right();
-        Assert.AreEqual(3, av.track);
+        Assert.AreEqual(3, av.Track);
 
         av.Right();
-        Assert.AreEqual(3, av.track);
+        Assert.AreEqual(3, av.Track);
     }
 
     [Test]
@@ -75,18 +74,18 @@ public class AvatarTest
         // Arrange
         var mockAvatarBehaviour = new Mock<IAvatarBehaviour>();
         var mockUserInput = new Mock<IUserInput>();
-        
+
         Avatar av = new Avatar(
             mockAvatarBehaviour.Object,
             mockUserInput.Object
         );
 
-        StateManager.Instance.die();
+        StateManager.Instance.Die();
 
         // Act
         av.Right();
 
         // Assert
-        Assert.AreEqual(av.track, 2, "A dead avatar should be able to move");
+        Assert.AreEqual(av.Track, 2, "A dead avatar should be able to move");
     }
 }

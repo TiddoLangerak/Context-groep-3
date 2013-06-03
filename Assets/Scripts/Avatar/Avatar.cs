@@ -124,6 +124,7 @@ public class Avatar
         else if (!StateManager.Instance.IsDead())
         {
             StateManager.Instance.ShowStartScreen = false;
+            StateManager.Instance.Score = 0;
             StateManager.Instance.PauseOrUnpause();
         }
         return false;

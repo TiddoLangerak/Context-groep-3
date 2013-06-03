@@ -31,7 +31,7 @@ public class PointsPowerupBehaviour : MonoBehaviour, IPointsPowerupBehaviour
     /// <param name="collision">The collision belonging to this game object</param>
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "ShoppingCart")
+        if (collision.gameObject.name == "Avatar")
         {
             StateManager.Instance.NewMoneyPowerup = true;
             Timer scoreBetterVisible = new Timer();

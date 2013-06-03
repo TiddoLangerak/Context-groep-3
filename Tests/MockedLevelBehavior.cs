@@ -3,42 +3,42 @@
 /// 
 /// Counts the amount of blocks currently in the game and counts the amount of times the create function is called.
 /// </summary>
-class MockedLevelBehavior : ILevelBehavior
+class MockedLevelBehavior : ILevelBehaviour
 {
     private int amountOfLevelBlocks = 0;
     private int amountOfObstacles = 0;
-	private int amountOfPowerups = 0;
-	private int amountOfDecorations = 0;
+    private int amountOfPowerups = 0;
+    private int amountOfDecorations = 0;
     private int timesCalledLevelBlock = 0;
     private int timesCalledObstacle = 0;
     object levelBlockObj = new object();
     object obstacleObj = new object();
-	object powerupObj = new object();
-	object decorationObj = new object();
+    object powerupObj = new object();
+    object decorationObj = new object();
 
-    public object makeLevelBlock(float pos)
+    public object MakeLevelBlock(float pos)
     {
         amountOfLevelBlocks++;
         timesCalledLevelBlock++;
         return levelBlockObj;
     }
-    public object makeObstacle(int a, float pos)
+    public object MakeObstacle(int a, float pos)
     {
         amountOfObstacles++;
         timesCalledObstacle++;
         return obstacleObj;
     }
-	public object makePowerUp(int line, float position)
+    public object MakePowerUp(int line, float position)
     {
-		amountOfPowerups++;
+        amountOfPowerups++;
         return powerupObj;
     }
-    public object makeDecoration(bool left, float position, int height)
+    public object MakeDecoration(bool left, float position, int height)
     {
-		amountOfDecorations++;
+        amountOfDecorations++;
         return decorationObj;
     }
-    public void destroyObject(object gameObject)
+    public void DestroyObject(object gameObject)
     {
         if (gameObject == levelBlockObj)
         {
@@ -48,32 +48,32 @@ class MockedLevelBehavior : ILevelBehavior
         {
             amountOfObstacles--;
         }
-		else if (gameObject == powerupObj)
-		{
-			amountOfPowerups--;
-		}
-		else if (gameObject == decorationObj)
-		{
-			amountOfDecorations--;
-		}
+        else if (gameObject == powerupObj)
+        {
+            amountOfPowerups--;
+        }
+        else if (gameObject == decorationObj)
+        {
+            amountOfDecorations--;
+        }
     }
     public int getAmountOfLevelBlocks()
     {
         return amountOfLevelBlocks;
     }
-	public int getAmountOfObstacles()
-	{
-		return amountOfObstacles;
-	}
-	public int getAmountOfPowerups()
+    public int getAmountOfObstacles()
+    {
+        return amountOfObstacles;
+    }
+    public int getAmountOfPowerups()
     {
         return amountOfPowerups;
     }
-	public int getAmountOfDecorations()
-	{
-		return amountOfDecorations;
-	}
-	
+    public int getAmountOfDecorations()
+    {
+        return amountOfDecorations;
+    }
+
     public int getTimesCalledLevelBlock()
     {
         return timesCalledLevelBlock;

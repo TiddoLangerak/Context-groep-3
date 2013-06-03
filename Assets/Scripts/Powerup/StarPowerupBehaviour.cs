@@ -44,7 +44,7 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
     /// <param name="collision">The data of the collision</param>
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "ShoppingCart")
+        if (collision.gameObject.name == "Avatar")
         {
             powerup.Collision();
             Destroy(this.gameObject);

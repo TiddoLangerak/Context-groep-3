@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 [TestFixture]
 class PointsPowerupTest
@@ -7,7 +6,7 @@ class PointsPowerupTest
     [SetUp]
     public void testSetup()
     {
-        StateManager.Instance.score = 0;
+        StateManager.Instance.Score = 0;
         StateManager.Instance.NumberOfPlayers = 1;
     }
 
@@ -16,25 +15,35 @@ class PointsPowerupTest
     {
         PointsPowerup pp = new PointsPowerup();
 
-        Assert.AreEqual(0, StateManager.Instance.score);
+        Assert.AreEqual(0, StateManager.Instance.Score);
     }
 
     [Test]
     public void testCollisionSingle()
     {
+        // Arrange
         PointsPowerup pp = new PointsPowerup();
+        float score = StateManager.Instance.Score;
+
+        // Act
         pp.Collision();
 
-        Assert.AreEqual(50, StateManager.Instance.score);
+        // Assert
+        Assert.AreEqual(score + PointsPowerup.POINTS_PER_PLAYER, StateManager.Instance.Score);
     }
 
     [Test]
     public void testCollisionDouble()
     {
+        // Arrange
         PointsPowerup pp = new PointsPowerup();
+        float score = StateManager.Instance.Score;
+
+        // Act
         pp.Collision();
         pp.Collision();
 
-        Assert.AreEqual(100, StateManager.Instance.score);
+        // Assert
+        Assert.AreEqual(score + 2 * PointsPowerup.POINTS_PER_PLAYER, StateManager.Instance.Score);
     }
 }

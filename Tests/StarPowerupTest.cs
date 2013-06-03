@@ -9,14 +9,14 @@ class StarPowerupTest
     [SetUp]
     public void testSetup()
     {
-        StateManager.Instance.score = 0;
+        StateManager.Instance.Score = 0;
         StateManager.Instance.ResetInvincibility();
     }
 
     [Test]
     public void testInitialState()
     {
-        Assert.AreEqual(false, StateManager.Instance.invincible);
+        Assert.AreEqual(false, StateManager.Instance.Invincible);
     }
 
     [Test]
@@ -28,15 +28,14 @@ class StarPowerupTest
 
         StarPowerup starPowerup = new StarPowerup(
             mockStarPowerupBehaviour.Object,
-            mockTimer.Object,
-            0
+            mockTimer.Object
         );
 
         // Act
         starPowerup.Collision();
 
         // Assert
-        Assert.AreEqual(true, StateManager.Instance.invincible);
+        Assert.AreEqual(true, StateManager.Instance.Invincible);
     }
 
     [Test]
@@ -48,16 +47,14 @@ class StarPowerupTest
 
         StarPowerup starPowerup = new StarPowerup(
             mockStarPowerupBehaviour.Object,
-            mockTimer.Object,
-            0
+            mockTimer.Object
         );
 
         // Act
         starPowerup.Collision();
         mockTimer.Raise(m => m.Elapsed += null, new EventArgs() as ElapsedEventArgs);
-        //starPowerup.timerElapsed(null, null);
 
         // Assert
-        Assert.AreEqual(false, StateManager.Instance.invincible);
+        Assert.AreEqual(false, StateManager.Instance.Invincible);
     }
 }
