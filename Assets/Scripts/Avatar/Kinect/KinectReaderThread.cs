@@ -57,7 +57,7 @@ namespace Kinect
         /// <summary>
         /// The function that is called when the thread is started. 
         /// This function is therefore responsible for the functionality of the thread. 
-        /// The functionality of this thread is retrieving the current state of the users.
+        /// The functionality of this thread is retrieving the current state of the users that are in range.
         /// </summary>
         private unsafe void RunThread()
         {
@@ -66,6 +66,7 @@ namespace Kinect
                 try
                 {
                     kinectManager.Context.WaitAnyUpdateAll();
+                    kinectManager.RemoveOutOfRangeUsers();
                     AddCurrentStatesToHistories();
                 }
                 catch (OpenNI.GeneralException ex)

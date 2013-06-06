@@ -1,5 +1,6 @@
 using OpenNI;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Timers;
 using UnityEngine;
@@ -15,6 +16,11 @@ namespace Kinect
         /// The file name and location of the OpenNI configuration file used in this class.
         /// </summary>
         private readonly string OPENNI_XML_FILE = Application.dataPath + @"/OpenNIConfig.xml";
+
+        /// <summary>
+        /// Defines the range in which users are tracked.
+        /// </summary>
+        private const int KINECT_RANGE = 4000;
 
         /// <summary>
         /// The context in which OpenNI operates (based on the configuration file)
@@ -170,16 +176,37 @@ namespace Kinect
             if (e.Status == CalibrationStatus.OK)
             {
                 Logger.Log("Calibration succeeded on user: " + e.ID);
-                Logger.Log("Start tracking user: " + e.ID);
-                SkeletonCapability.StartTracking(e.ID);
-                TrackedUsers.Add(e.ID, new User(e.ID));
-                StateManager.Instance.NumberOfPlayers++;
+                CalibrationCompleteAction(e.ID);
             }
             else if (e.Status != CalibrationStatus.ManualAbort)
             {
                 Logger.Log("Calibration failed on user: " + e.ID);
                 Logger.Log("Retrying calibration on user: " + e.ID);
                 SkeletonCapability.RequestCalibration(e.ID, false);
+            }
+        }
+
+        /// <summary>
+        /// Start tracking the user if he/she is within the range, otherwise request a new calibration
+        /// after 5 seconds.
+        /// </summary>
+        /// <param name="userID">The id of the user</param>
+        private void CalibrationCompleteAction(int userID)
+        {
+            if (UserGenerator.GetCoM(userID).Z <= KINECT_RANGE)
+            {
+                Logger.Log("Start tracking user: " + userID);
+                SkeletonCapability.StartTracking(userID);
+                TrackedUsers.Add(userID, new User(userID));
+                StateManager.Instance.NumberOfPlayers++;
+            }
+            else
+            {
+                Logger.Log("User " + userID + " out of range");
+                System.Timers.Timer calibrationTimer = new System.Timers.Timer();
+                calibrationTimer.Interval = 5000;
+                calibrationTimer.Elapsed += (src, a) => RequestCalibrationForUser(src, a, userID);
+                calibrationTimer.Start();
             }
         }
 
@@ -198,6 +225,29 @@ namespace Kinect
 
             Logger.Log("Requesting calibration for user: " + userID);
             SkeletonCapability.RequestCalibration(userID, true);
+        }
+
+        /// <summary>
+        /// Removes all users from TrackedUsers that are out of range (and stops tracking them).
+        /// Also, a calibration is requested for these users.
+        /// </summary>
+        public void RemoveOutOfRangeUsers()
+        {
+            lock (TrackedUsers)
+            {
+                int[] users = TrackedUsers.Keys.ToArray();
+                foreach (int userID in users)
+                {
+                    if (UserGenerator.GetCoM(userID).Z > KINECT_RANGE + 500)
+                    {
+                        Logger.Log("User " + userID + " went out of range");
+                        StateManager.Instance.NumberOfPlayers--;
+                        SkeletonCapability.StopTracking(userID);
+                        TrackedUsers.Remove(userID);
+                        SkeletonCapability.RequestCalibration(userID, true);
+                    }
+                }
+            }
         }
     }
 }
