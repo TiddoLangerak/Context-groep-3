@@ -52,7 +52,7 @@ namespace Kinect
         /// <summary>
         /// Constant indicating the minimal angle needed to detect leaning (in radian)
         /// </summary>
-        private const double TRESHOLD_LEANING = 0.4;
+        private const double TRESHOLD_LEANING = 0.3;
 
         /// <summary>
         /// Constant indicating the minimal ration needed to detect a jump of the user.
