@@ -119,16 +119,55 @@ public class Level
         levelBlockQueue.Enqueue(behaviour.MakeLevelBlock(blockLength * lastAdded));
         lastAdded++;
     }
+	
+	private void AddOneObstacle()
+	{
+		obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(RandomLine(), blockLength * lastAdded - blockLength));
+	}
+	private void AddTwoObstacles()
+	{
+		int line1 = RandomLine();
+        int line2 = (line1 + 2) % 3 - 1;
+        obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line1, blockLength * lastAdded - blockLength));
+        obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line2, blockLength * lastAdded - blockLength));
+	}
+	private void AddThreeObstacles()
+	{
+		obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(-1, blockLength * lastAdded - blockLength));
+	    obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(0, blockLength * lastAdded - blockLength));
+		obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(1, blockLength * lastAdded - blockLength));
+	}
 
     /// <summary>
     /// Add two new obstacles to the game environment
     /// </summary>
     private void AddObstacles()
     {
-        int line1 = RandomLine();
-        int line2 = (line1 + 2) % 3 - 1;
-        obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line1, blockLength * lastAdded - blockLength));
-        obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line2, blockLength * lastAdded - blockLength));
+		Random r = new Random();
+        double chance = r.NextDouble();
+		if (lastAdded < 5)
+		{
+			if(chance < 0.4)
+				AddOneObstacle();
+			else
+				AddTwoObstacles();
+		}
+		else if (lastAdded < 15)
+		{
+			AddTwoObstacles();
+		}
+		else
+		{
+			if(chance<0.8)
+			{
+				AddTwoObstacles();
+			}
+			else
+			{
+				AddThreeObstacles();
+			}
+		}
+		
     }
 
     /// <summary>
