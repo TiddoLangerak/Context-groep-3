@@ -120,10 +120,17 @@ public class Level
         lastAdded++;
     }
 	
+	/// <summary>
+    /// Add one new obstacle to the game environment
+    /// </summary>
 	private void AddOneObstacle()
 	{
 		obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(RandomLine(), blockLength * lastAdded - blockLength));
 	}
+	
+	/// <summary>
+    /// Add two new obstacle to the game environment
+    /// </summary>
 	private void AddTwoObstacles()
 	{
 		int line1 = RandomLine();
@@ -131,6 +138,10 @@ public class Level
         obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line1, blockLength * lastAdded - blockLength));
         obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(line2, blockLength * lastAdded - blockLength));
 	}
+	
+	/// <summary>
+    /// Add three new obstacle to the game environment
+    /// </summary>
 	private void AddThreeObstacles()
 	{
 		obstacleBlockQueue.Enqueue(behaviour.MakeObstacle(-1, blockLength * lastAdded - blockLength));
@@ -139,7 +150,7 @@ public class Level
 	}
 
     /// <summary>
-    /// Add two new obstacles to the game environment
+    /// Add new obstacles to the game environment
     /// </summary>
     private void AddObstacles()
     {
