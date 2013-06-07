@@ -84,14 +84,4 @@ public class LevelTest
 
         Assert.AreEqual(blockAmount, levelBehavior.getAmountOfPowerups());
     }
-
-    [Test]
-    public void obstacleAmountTest()
-    {
-        level = new Level(blockAmount, 2, blockLength, levelBehavior);
-
-        level.Update((int)(50 * blockLength));
-
-        Assert.AreEqual(blockAmount * 2, levelBehavior.getAmountOfObstacles());
-    }
 }
