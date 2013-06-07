@@ -219,4 +219,10 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
         yield return 0;
     }
+	
+	public void SetRotation(double angle)
+	{
+		Transform model = transform.FindChild("Model");
+		model.localEulerAngles = Vector3.up * (float)angle;
+	}
 }

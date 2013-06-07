@@ -29,6 +29,8 @@ namespace Kinect
         /// Indicates if the kinect input is initialized
         /// </summary>
         private bool initialized = false;
+		
+		private double avarageAngle = 0;
 
         /// <summary>
         /// Doesn't destroy this object when the scene is reloaded
@@ -52,6 +54,25 @@ namespace Kinect
                 initialized = true;
             }
         }
+		
+		public double CurrentAverageAngle()
+		{
+			return avarageAngle;
+		}
+		private void CalculateAverageAngle(Dictionary<int, User> trackedUsers)
+		{
+			int userAmount = 0;
+			double angleSum = 0;
+			foreach (User user in trackedUsers.Values)
+            {
+                if (user.Active)
+                {
+					angleSum += user.angle;
+					userAmount++;
+                }
+            }
+			avarageAngle = angleSum / Math.Max(1, userAmount);
+		}
 
         /// <summary>
         /// Calculate the current movement of the avatar, based on the user movements.
@@ -66,6 +87,7 @@ namespace Kinect
                 trackedUsers = new Dictionary<int, User>(kinectMgr.TrackedUsers);
             }
             FillMovementFrequencies(trackedUsers);
+			CalculateAverageAngle(trackedUsers);
             return GetCurrAvatarMovement();
         }
 

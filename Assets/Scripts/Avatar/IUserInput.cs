@@ -13,4 +13,6 @@ public interface IUserInput
     /// </summary>
     /// <returns>The current movement</returns>
     AvatarMovement CurrentMovement();
+	
+	double CurrentAverageAngle();
 }

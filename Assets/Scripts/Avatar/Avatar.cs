@@ -21,6 +21,22 @@ public class Avatar
     /// </summary>
     /// <value>The avatar behaviour</value>
     private IAvatarBehaviour AvatarBehaviour { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the previous angle.
+	/// </summary>
+	/// <value>
+	/// The previous angle.
+	/// </value>/
+	private double previousAngle { get; set; }
+	
+	/// <summary>
+	/// Gets or sets the current angle.
+	/// </summary>
+	/// <value>
+	/// The current angle.
+	/// </value>
+	private double currentAngle { get; set; }
 
     /// <summary>
     /// Gets or sets the user input
@@ -55,6 +71,9 @@ public class Avatar
         {
             AvatarBehaviour.Forward(this.MoveSpeed);
         }
+		previousAngle = currentAngle;
+		currentAngle = UserInput.CurrentAverageAngle() * 20;
+		AvatarBehaviour.SetRotation((previousAngle + currentAngle)/2);
     }
 
     /// <summary>

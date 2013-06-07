@@ -53,4 +53,9 @@ class KeyboardUserInput : IUserInput
     {
         StateManager.Instance.NumberOfPlayers = 0;
     }
+	
+	public double CurrentAverageAngle()
+	{
+		return 0;
+	}
 }

@@ -72,6 +72,14 @@ namespace Kinect
         /// Time-out used to fix the problem of users not jumping at exactly the same time
         /// </summary>
         private const int JUMP_TIMEOUT = 250;
+		
+		/// <summary>
+		/// Gets or sets the angle.
+		/// </summary>
+		/// <value>
+		/// Indicates how far the user leans over.
+		/// </value>
+		public double angle {get; private set;}
 
         /// <summary>
         /// The current movement of the user
@@ -145,7 +153,7 @@ namespace Kinect
 
             UserState currState = movementHistory.Last.Value;
             Point3D vector = PointUtils.CreateDirectionVector(currState.torsoPos.Position, currState.headPos.Position);
-            double angle = Math.Atan(vector.X / vector.Y);
+            angle = Math.Atan(vector.X / vector.Y);
             return DetectLeaning(angle);
         }        
 
