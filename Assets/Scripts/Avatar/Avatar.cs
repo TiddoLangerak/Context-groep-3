@@ -135,7 +135,7 @@ public class Avatar
     /// </summary>
     public bool Up()
     {
-        if (StateManager.Instance.IsPlaying())
+        if (StateManager.Instance.IsPlaying() && StateManager.Instance.JumpingEnabled)
         {
             this.AvatarBehaviour.Up();
             return true;
