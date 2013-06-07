@@ -28,6 +28,10 @@ public class StateManager
     public bool NewMoneyPowerup { get; set; }
 
     /// <summary>
+    /// Indicates if jumping is enabled (to avoid jumping when in game over state)
+    /// </summary>
+    public bool JumpingEnabled { get; set; }
+    /// <summary>
     /// The current state of the game
     /// </summary>
     private State currentState;
@@ -131,6 +135,7 @@ public class StateManager
     {
         this.currentState = State.PAUSING;
         Score = 0;
+        JumpingEnabled = true;
     }
 
     /// <summary>
@@ -165,11 +170,12 @@ public class StateManager
     }
 
     /// <summary>
-    /// The player has died
+    /// The player has died, disable jumping while game over
     /// </summary>/
     public void Die()
     {
         this.currentState = State.DEAD;
+        this.JumpingEnabled = false;
     }
 
     /// <summary>

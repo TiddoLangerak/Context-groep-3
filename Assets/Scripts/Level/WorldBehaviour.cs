@@ -153,11 +153,12 @@ public class WorldBehaviour : MonoBehaviour
     }
 
     /// <summary>
-    /// Reset the game, i.e. reload sceen, show start screen and reset score
+    /// Reset the game, i.e. reload sceen, show start screen and re-enable jumping
     /// </summary>
     public void ResetGame()
     {
         Application.LoadLevel("level");
         StateManager.Instance.ShowStartScreen = true;
+        StateManager.Instance.JumpingEnabled = true;
     }
 }
