@@ -5,10 +5,10 @@ using UnityEngine;
 /// </summary>
 public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
 {
-	/// <summary>
-	/// Name of the object which contains the particles.
-	/// </summary>
-	public const string PARTICLE_OBJECT_NAME = "StarPowerupParticles";
+    /// <summary>
+    /// Name of the object which contains the particles.
+    /// </summary>
+    public const string PARTICLE_OBJECT_NAME = "StarPowerupParticles";
     /// <summary>
     /// The StarPowerup associated with this behaviour
     /// </summary>
@@ -61,11 +61,11 @@ public class StarPowerupBehaviour : MonoBehaviour, IStarPowerupBehaviour
     public void AddParticles()
     {
         GameObject avatar = GameObject.Find("Avatar");
-		Transform prevParticles = avatar.transform.FindChild(PARTICLE_OBJECT_NAME);
-		if (prevParticles)
-			Destroy(prevParticles.gameObject);
+        Transform prevParticles = avatar.transform.FindChild(PARTICLE_OBJECT_NAME);
+        if (prevParticles)
+            Destroy(prevParticles.gameObject);
         particles = (GameObject)Instantiate(particlePrefab, avatar.transform.position + particlePrefab.transform.position, Quaternion.identity);
         particles.transform.parent = avatar.transform;
-		particles.name = PARTICLE_OBJECT_NAME;
+        particles.name = PARTICLE_OBJECT_NAME;
     }
 }

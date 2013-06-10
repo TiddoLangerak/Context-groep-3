@@ -6,8 +6,8 @@ namespace Util
     /// <summary>
     /// Contains helper functions for the OpenNI Point3D struct
     /// </summary>
-	class PointUtils
-	{
+    class PointUtils
+    {
         /// <summary>
         /// Calculates the length of the vector
         /// </summary>
@@ -43,5 +43,5 @@ namespace Util
         {
             return VectorLength(CreateDirectionVector(point1, point2));
         }
-	}
+    }
 }

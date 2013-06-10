@@ -23,6 +23,6 @@ public interface IAvatarBehaviour
     /// Move the avatar up
     /// </summary>
     void Up();
-	
-	void SetRotation(double angle);
+
+    void SetRotation(double angle);
 }

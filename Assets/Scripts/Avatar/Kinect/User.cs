@@ -72,14 +72,14 @@ namespace Kinect
         /// Time-out used to fix the problem of users not jumping at exactly the same time
         /// </summary>
         private const int JUMP_TIMEOUT = 250;
-		
-		/// <summary>
-		/// Gets or sets the angle.
-		/// </summary>
-		/// <value>
-		/// Indicates how far the user leans over.
-		/// </value>
-		public double angle {get; private set;}
+
+        /// <summary>
+        /// Gets or sets the angle.
+        /// </summary>
+        /// <value>
+        /// Indicates how far the user leans over.
+        /// </value>
+        public double angle { get; private set; }
 
         /// <summary>
         /// The current movement of the user
@@ -155,7 +155,7 @@ namespace Kinect
             Point3D vector = PointUtils.CreateDirectionVector(currState.torsoPos.Position, currState.headPos.Position);
             angle = Math.Atan(vector.X / vector.Y);
             return DetectLeaning(angle);
-        }        
+        }
 
         /// <summary>
         /// Detects and returns the leaning movement
@@ -186,7 +186,7 @@ namespace Kinect
             UserState currState = movementHistory.Last.Value;
             double heightDifference = currState.torsoPos.Position.Y - minTorsoPosition.torsoPos.Position.Y;
             double shoulderDistance = PointUtils.PointDistance(currState.leftShoulderPos.Position, currState.rightShoulderPos.Position);
-            double normalizedDifference = (shoulderDistance != 0) ? (heightDifference / shoulderDistance) : 0;            
+            double normalizedDifference = (shoulderDistance != 0) ? (heightDifference / shoulderDistance) : 0;
 
             if (normalizedDifference > TRESHOLD_JUMPING)
             {
@@ -194,6 +194,6 @@ namespace Kinect
                 return true;
             }
             return (currState.timestamp - lastJumpTime) < JUMP_TIMEOUT * 10000;
-        }        
+        }
     }
 }

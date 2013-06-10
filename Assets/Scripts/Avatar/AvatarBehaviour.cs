@@ -44,7 +44,7 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
         catch (OpenNI.GeneralException e)
         {
-			Logger.Log(e.Message);
+            Logger.Log(e.Message);
             HandleKinectInitializationFailure();
         }
         catch (System.DllNotFoundException)
@@ -84,14 +84,14 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         IncreaseMoveSpeed();
         UpdateAudio();
     }
-	
-	void OnCollisionEnter(Collision collision) 
-	{
-		if(collision.gameObject.name == "LevelPart(Clone)")
-		{
-			jumping = false;	
-		}
-	}
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "LevelPart(Clone)")
+        {
+            jumping = false;
+        }
+    }
 
     /// <summary>
     /// Increases the movement speed when the game isn't paused
@@ -180,11 +180,11 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
     /// </summary>
     public void Up()
     {
-		if(!jumping)
-		{
-			rigidbody.velocity = transform.TransformDirection(new Vector3(0, 12, 0));
-			jumping = true;
-		}
+        if (!jumping)
+        {
+            rigidbody.velocity = transform.TransformDirection(new Vector3(0, 12, 0));
+            jumping = true;
+        }
     }
 
     /// <summary>
@@ -219,10 +219,10 @@ public class AvatarBehaviour : MonoBehaviour, IAvatarBehaviour
         }
         yield return 0;
     }
-	
-	public void SetRotation(double angle)
-	{
-		Transform model = transform.FindChild("Model");
-		model.localEulerAngles = Vector3.up * (float)angle;
-	}
+
+    public void SetRotation(double angle)
+    {
+        Transform model = transform.FindChild("Model");
+        model.localEulerAngles = Vector3.up * (float)angle;
+    }
 }
