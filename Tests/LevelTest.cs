@@ -71,7 +71,6 @@ public class LevelTest
     {
         level = new Level(blockAmount, 2, blockLength, levelBehavior);
 
-        Assert.AreEqual(6, levelBehavior.getAmountOfObstacles());
         Assert.AreEqual(3, levelBehavior.getAmountOfPowerups());
     }
 
